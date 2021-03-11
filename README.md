@@ -1,6 +1,6 @@
 
 
-**ModerationSystem Plugin**<br />
+### **ModerationSystem Plugin**<br />
 
 Welcome to ModerationSystem plugin!
 
