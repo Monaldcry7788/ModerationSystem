@@ -50,7 +50,7 @@ You can see settings and edit them inside your Exiled config.
 
 If you found bug please contact me on discord: **Twitch.tv/Monaldcry7788#9248** .<br /><br />
 
-If you like the plugin, you can make a donation on paypal: paypal.me/monaldcry7788
+If you like the plugin, you can make a donation on paypal: https://paypal.me/monaldcry7788
 
 ### Downloads
 ![img](https://img.shields.io/github/downloads/Monaldcry7788/ModerationSystem/total?style=for-the-badge)
