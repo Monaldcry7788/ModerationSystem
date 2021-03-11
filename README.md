@@ -11,6 +11,8 @@ Welcome to ModerationSystem plugin!
 - **Kick Command:** You can kick a player, and everything will be stored in the database
 - **Ban Command:** You can ban a player and decide the time, and everything is stored in the database
 - **PlayerInfo Command:** You can see the penalties of the selected player
+- **Unmute Command:** You can remove mute of player
+- **Unwarn Command:** You can remove mute of player
 - **Warn Message:** You can set private broadcast to warned player. (you can use {reason} variable for reason)
 - **Mute Message:** You can set private broadcast to muted player. (you can use {reason} and {duration} variables for reason and duration)
 - **Kick Message:** You can set kick reason. (you can use {reason} variable for reason)
@@ -19,6 +21,15 @@ Welcome to ModerationSystem plugin!
 ### Required: 
 - Exiled 2.8.0
 - LiteDB 5.0.9.0
+
+### Important:
+each server must have it's own database, you cannot have multiple server on same database.
+If you run multiple server just change the database name in configs so each server will have it's own db.
+If in your first server in config the database name is Warns
+In the second server config you must set database name with another name
+Example :
+First server config: databaseName: Warns
+Second server config: databaseName: Warns1
 
 ### Config
 
@@ -49,6 +60,8 @@ You can see settings and edit them inside your Exiled config.
 
 
 If you found bug please contact me on discord: **Twitch.tv/Monaldcry7788#9248** .<br /><br />
+
+For the database system, I took a cue from this plugin: https://github.com/iopietro/TextChat
 
 If you like the plugin, you can make a donation on paypal: https://paypal.me/monaldcry7788
 
