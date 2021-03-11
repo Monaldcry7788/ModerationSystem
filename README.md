@@ -4,7 +4,7 @@
 
 Welcome to ModerationSystem plugin!
 
-**What's is MS plugin?**: MS plugin is a moderation plugin, you can find many commands to moderate your server: mute, ban, kick, warn and playerinfo.
+**What is MS plugin?**: MS plugin is a moderation plugin, you can find many commands to moderate your server: mute, ban, kick, warn and playerinfo.
 
 - **Warn Command:** You can warn a player, and everything will be stored in the database
 - **Mute Command:** You can mute a player and decide the mute time, and everything will be stored in the database
