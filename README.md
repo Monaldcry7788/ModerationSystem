@@ -41,11 +41,11 @@ You can see settings and edit them inside your Exiled config.
 | Commands  | Args | Permission | Description | 
 | ------------- | ------------- | ------------- | ------------- |
 | ModerationSystem / ms  | none  | none | show sub-command |
-| Warn / w  | player name or id - reason  | ms.warn | Warn a player |
-| Mute / m  | Player name or ID - time (minute) - reason | ms.mute | Mute a player |
-| Kick / k | player name or ID - reason | ms.kick | Kick a player |
-| Ban / b | player name or ID - time (minute) - reason | ms.ban | Ban a player |
-| PlayerInfo / pi | Player name or id | ms.playerinfo | Show infractions of player |
+| ms warn / w  | player name or id - reason  | ms.warn | Warn a player |
+| ms mute / m  | Player name or ID - time (minute) - reason | ms.mute | Mute a player |
+| ms kick / k | player name or ID - reason | ms.kick | Kick a player |
+| ms ban / b | player name or ID - time (minute) - reason | ms.ban | Ban a player |
+| ms playerInfo / pi | Player name or id | ms.playerinfo | Show infractions of player |
 
 
 If you found bug please contact me on discord: **Twitch.tv/Monaldcry7788#9248** .<br /><br />
