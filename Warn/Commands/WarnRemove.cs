@@ -44,7 +44,7 @@ namespace ModerationSystem
 
             if (!int.TryParse(arguments.At(1), out int id))
             {
-                response = $"{id} is not a valid duration!";
+                response = $"{id} is not a valid ID!";
                 return false;
             }
 
