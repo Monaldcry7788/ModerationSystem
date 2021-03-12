@@ -61,7 +61,7 @@ You can see settings and edit them inside your Exiled config.
 
 If you found bug please contact me on discord: **Twitch.tv/Monaldcry7788#9248** .<br /><br />
 
-For the database system, I took a cue from this plugin: https://github.com/iopietro/TextChat
+For the database system, I took a cue from this plugin: ![TextChat](https://github.com/iopietro/TextChat)
 
 If you like the plugin, you can make a donation on paypal: https://paypal.me/monaldcry7788
 
