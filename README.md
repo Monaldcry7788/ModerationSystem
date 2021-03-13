@@ -4,7 +4,7 @@
 
 Welcome to ModerationSystem plugin!
 
-**What is MS plugin?**: MS plugin is a moderation plugin, you can find many commands to moderate your server: mute, ban, kick, warn and playerinfo.
+**What is MS plugin?**: MS plugin is a moderation plugin, you can find many commands to moderate your server: mute, ban, kick, warn, playerinfo, unmute and unwarn.
 
 - **Warn Command:** You can warn a player, and everything will be stored in the database
 - **Mute Command:** You can mute a player and decide the mute time, and everything will be stored in the database
@@ -18,18 +18,30 @@ Welcome to ModerationSystem plugin!
 - **Kick Message:** You can set kick reason. (you can use {reason} variable for reason)
 - **Ban Message**: You can set ban reason. (you can use {reason} variable for reason)
 
-### Required: 
-- Exiled 2.8.0
-- LiteDB 5.0.9.0
+### Installation:
+
+Download latest version of plugin and player ModerationSystem.dll into Plugin Exiled folder, place LiteDB.dll into dependeces folder and restart the server!
+
+### Minium Required: 
+- Exiled ![2.8.0](https://github.com/Exiled-Team/EXILED/releases/tag/2.8.0)
+- LiteDB ![5.0.9.0](https://github.com/mbdavid/LiteDB/releases/tag/v5.0.9)
 
 ### Important:
 each server must have it's own database, you cannot have multiple server on same database.
 If you run multiple server just change the database name in configs so each server will have it's own db.
 If in your first server in config the database name is Warns
 In the second server config you must set database name with another name
-Example :
-First server config: databaseName: Warns
-Second server config: databaseName: Warns1
+**Example**:
+First server config: 
+  databaseName: Warns
+Second server config:
+  databaseName: Warns1
+
+### To do:
+- Database Sync
+- unban command
+- Weebhook
+- broadcast to staff when player will be warned/kicked/muted/banned
 
 ### Config
 
@@ -46,6 +58,9 @@ You can see settings and edit them inside your Exiled config.
 | KickMessage | string  | The message when player will be kicked |
 | BanMessage | string  | The message when player will be banned  |
 | MuteMessage | Broadcast  | The private broadcast to muted player  |
+| AutoKickEnable | bool | Enable or disable autokick |
+| MaxiumWarn | int | Maxium numer of warns for the kick |
+| AutoKickMessage | string | AutoKick message |
 
 **Commands**
 
@@ -56,14 +71,16 @@ You can see settings and edit them inside your Exiled config.
 | ms mute / m  | Player name or ID - time (minute) - reason | ms.mute | Mute a player |
 | ms kick / k | player name or ID - reason | ms.kick | Kick a player |
 | ms ban / b | player name or ID - time (minute) - reason | ms.ban | Ban a player |
-| ms playerInfo / pi | Player name or id | ms.playerinfo | Show infractions of player |
-
+| ms playerInfo / pi | Player name or ID | ms.playerinfo | Show infractions of player |
+| ms unmute / um | player name or ID - mute ID | ms.unmute | Remove mute of player |
+| ms unwarn / uw | player name or ID - warn ID | ms.unwarn | Remove warn of player |
+ 
 
 If you found bug please contact me on discord: **Twitch.tv/Monaldcry7788#9248** .<br /><br />
 
 For the database system, I took a cue from this plugin: ![TextChat](https://github.com/iopietro/TextChat)
 
-If you like the plugin, you can make a donation on paypal: https://paypal.me/monaldcry7788
+If you like the plugin, you can make a donation on paypal: |[PayPal](https://paypal.me/monaldcry7788)
 
 ### Downloads
 ![img](https://img.shields.io/github/downloads/Monaldcry7788/ModerationSystem/total?style=for-the-badge)
