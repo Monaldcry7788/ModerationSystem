@@ -4,7 +4,7 @@
 
 Welcome to ModerationSystem plugin!
 
-**What is MS plugin?**: MS plugin is a moderation plugin, you can find many commands to moderate your server: mute, ban, kick, warn, playerinfo, unmute and unwarn.
+**What is ModerationSystem plugin?**: ModerationSystem plugin is a moderation plugin, you can find many commands to moderate your server: mute, ban, kick, warn, playerinfo, unmute and unwarn.
 
 - **Warn Command:** You can warn a player, and everything will be stored in the database
 - **Mute Command:** You can mute a player and decide the mute time, and everything will be stored in the database
@@ -17,6 +17,9 @@ Welcome to ModerationSystem plugin!
 - **Mute Message:** You can set private broadcast to muted player. (you can use {reason} and {duration} variables for reason and duration)
 - **Kick Message:** You can set kick reason. (you can use {reason} variable for reason)
 - **Ban Message**: You can set ban reason. (you can use {reason} variable for reason)
+- **Enable Auto Kick**: You can enable auto kick.
+- **Maximum Warn for kick**: You can set maximum amount of warns after the autokick
+- **AutoKick Message**: You can set autokick message (you can use {reason} variable for reason)
 
 ### Installation:
 
@@ -29,7 +32,7 @@ Download latest version of plugin and player ModerationSystem.dll into Plugin Ex
 ### Important:
 each server must have it's own database, you cannot have multiple server on same database.
 If you run multiple server just change the database name in configs so each server will have it's own db.
-If in your first server in config the database name is Warns
+If in your first server config the database name is Warns
 In the second server config you must set database name with another name
 
 **Example**:
