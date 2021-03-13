@@ -31,9 +31,12 @@ each server must have it's own database, you cannot have multiple server on same
 If you run multiple server just change the database name in configs so each server will have it's own db.
 If in your first server in config the database name is Warns
 In the second server config you must set database name with another name
+
 **Example**:
+
 First server config: 
   databaseName: Warns
+  
 Second server config:
   databaseName: Warns1
 
