@@ -31,22 +31,19 @@ Welcome to ModerationSystem plugin!
 The variable avariable in all sanction private broadcast is:
 - **{reason}**
 
-
 The variable avariable in warn saction private broadcast is:
 - **{reason}**: reason of warn
-
 
 The variable avariable in kick saction disconnect reason is:
 - **{reason}**: reason of kick
 
-
 The variable avariable in ban saction disconnect reason is:
 - **{reason}**: reason of ban
-
 
 The variable avariable in mute saction private broadcast is:
 - **{duration}**: duration of mute (in minutes)
 - **{reason}**: reason of mute
+
 
 
 
@@ -56,23 +53,20 @@ The variables avariable in all webhook messages are:
 - **{target.Id}**: steamid of player sanctioned
 - **{reason}**: reason of sanction
 
-
 The variable avariable in warn webhook message is:
 - **{warnid}**: id of warn
 
-
 The variable avariable in kick webhook message is:
 - **{kickid}**: id of kick
-
 
 The variables avariable in mute webhook message are:
 - **{duration}**: mute duration (in minutes)
 - **{muteid}**: id of mute
 
-
 The variables avariable in ban webhook message are:
 - **{duration}**: ban duration (in minutes)
 - **{banid}**: id of ban
+
 
 
 ### Installation:
@@ -148,7 +142,7 @@ If you found bug please contact me on discord: **Twitch.tv/Monaldcry7788#9248** 
 
 For the database system, I took a cue from this plugin: ![TextChat](https://github.com/iopietro/TextChat)
 
-If you like the plugin, you can make a donation on paypal: |[PayPal](https://paypal.me/monaldcry7788)
+If you like the plugin, you can make a donation on paypal: ![PayPal](https://paypal.me/monaldcry7788)
 
 ### Downloads
 ![img](https://img.shields.io/github/downloads/Monaldcry7788/ModerationSystem/total?style=for-the-badge)
