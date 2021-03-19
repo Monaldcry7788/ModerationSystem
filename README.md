@@ -31,18 +31,23 @@ Welcome to ModerationSystem plugin!
 The variable avariable in all sanction private broadcast is:
 - **{reason}**
 
+
 The variable avariable in warn saction private broadcast is:
 - **{reason}**: reason of warn
+
 
 The variable avariable in kick saction disconnect reason is:
 - **{reason}**: reason of kick
 
+
 The variable avariable in ban saction disconnect reason is:
 - **{reason}**: reason of ban
+
 
 The variable avariable in mute saction private broadcast is:
 - **{duration}**: duration of mute (in minutes)
 - **{reason}**: reason of mute
+
 
 
 The variables avariable in all webhook messages are:
@@ -51,19 +56,24 @@ The variables avariable in all webhook messages are:
 - **{target.Id}**: steamid of player sanctioned
 - **{reason}**: reason of sanction
 
+
 The variable avariable in warn webhook message is:
 - **{warnid}**: id of warn
 
+
 The variable avariable in kick webhook message is:
 - **{kickid}**: id of kick
+
 
 The variables avariable in mute webhook message are:
 - **{duration}**: mute duration (in minutes)
 - **{muteid}**: id of mute
 
+
 The variables avariable in ban webhook message are:
 - **{duration}**: ban duration (in minutes)
 - **{banid}**: id of ban
+
 
 ### Installation:
 
