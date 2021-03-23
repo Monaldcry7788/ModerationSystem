@@ -105,7 +105,6 @@ You can see settings and edit them inside your Exiled config.
 | Name  | Type | Description | 
 | ------------- | ------------- | ------------- |
 | IsEnabled  | bool  | Enable or Disable the plugin |
-| EnableCreatorCommand | bool | Enable or Disable the creator command |
 | DatabaseName | string | The name of the database |
 | WarnMessage | Broadcast  | The private Broadcast to warned player |
 | KickMessage | string  | The message when player will be kicked |
