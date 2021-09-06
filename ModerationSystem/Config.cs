@@ -24,16 +24,7 @@
 
         [Description("The private broadcast when player get muted")]
         public Exiled.API.Features.Broadcast MuteMessage { get; private set; } = new Broadcast("<size=30><color=red>You has been muted for </color><color=aqua>{duration} minutes</color></size>\n<size=26><color=aqua>{reason}</color></size>", 10);
-
-        [Description("Enable or disable auto kick")]
-        public bool AutoKickEnable { get; private set; } = true;
-
-        [Description("Maximum number of warns for the kick")]
-        public int MaximumWarn { get; private set; } = 4;
-
-        [Description("AutoKick message")]
-        public string AutoKickMessage { get; private set; } = "Final warn: {reason}";
-
+        
         [Description("WebHook URL")]
         public string WebHookURL { get; private set; } = "CHANGE ME";
 

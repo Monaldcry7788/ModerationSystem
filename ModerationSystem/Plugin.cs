@@ -25,11 +25,6 @@
             Exiled.Events.Handlers.Player.Destroying += Events.OnDestroying;
             
             Database.Open();
-            if (Config.WebHookURL == "CHANGE ME")
-            {
-                Log.Error("Change Webhook URl in the Exiled config");
-                WebhookEnabled = false;
-            }
             try
             {
                 Webhook.Http.sendMessage("**Server Connected!**", "ModerationSystem connected!");

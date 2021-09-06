@@ -55,10 +55,6 @@
             {
                 Webhook.Http.sendMessage(Plugin.Singleton.Config.WarnedMessageWebHook.Replace("{staffer}", sender.LogName).Replace("{target.Name}", dPlayer.Name).Replace("{target.Id}", dPlayer.Id + "@" + dPlayer.Authentication).Replace("{reason}", reason).Replace("{warnid}", warnid.ToString()), "**New Warn**");
             }
-            if (Plugin.Singleton.Config.AutoKickEnable)
-            {
-                Kick(LiteDatabase.GetCollection<Collections.Warn>().Find(x => x.Target.Id == dPlayer.Id).ToList(), target, reason);
-            }
             response = $"The player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) has been warned for: {reason}";
             return true;
 
@@ -68,14 +64,6 @@
         {
             warns.Count().ToString();
             return warns.Count().ToString();
-        }
-
-        private void Kick(List<Collections.Warn> warns, Exiled.API.Features.Player player, string reason)
-        {
-            if (warns.Count() == Plugin.Singleton.Config.MaximumWarn)
-            {
-                player.Disconnect(Plugin.Singleton.Config.AutoKickMessage.Replace("{reason}", reason));
-            }
         }
     }
 }
