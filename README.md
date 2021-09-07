@@ -23,9 +23,6 @@ Welcome to ModerationSystem plugin!
 - **Mute Webhook Message**: You can set message to diplay on discord when player will be muted
 - **Kick Webhook Message**: You can set message to diplay on discord when player will be kicked
 - **Ban Webhook Message**: You can set message to diplay on discord when player will be banned
-- **Enable Auto Kick**: You can enable auto kick.
-- **Maximum Warn for kick**: You can set maximum amount of warns after the autokick
-- **AutoKick Message**: You can set autokick message
 
 ### Variables:
 The variable avariable in all sanction private broadcast is:
@@ -93,8 +90,8 @@ Second server config:
   databaseName: Warns1
 
 ### To do:
-- Database Sync
 - broadcast to staff when player will be warned/kicked/muted/banned
+- Anti team kill
 
 ### Config
 
@@ -110,9 +107,6 @@ You can see settings and edit them inside your Exiled config.
 | KickMessage | string  | The message when player will be kicked |
 | BanMessage | string  | The message when player will be banned  |
 | MuteMessage | Broadcast  | The private broadcast to muted player  |
-| AutoKickEnable | bool | Enable or disable autokick |
-| MaxiumWarn | int | Maxium numer of warns for the kick |
-| AutoKickMessage | string | AutoKick message |
 | WebHookURL | string | Webhook URL |
 | WebHookName | string | Name of Webhook |
 | WarnedMessageWebHook | string | The Message to display to discord when player will be warned |
@@ -138,8 +132,6 @@ You can see settings and edit them inside your Exiled config.
  
 
 If you found bug please contact me on discord: **Twitch.tv/Monaldcry7788#9248** .<br /><br />
-
-For the database system, I took a cue from this plugin: ![TextChat](https://github.com/iopietro/TextChat)
 
 If you like the plugin, you can make a donation on paypal: ![PayPal](https://paypal.me/monaldcry7788)
 
