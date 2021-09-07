@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony, Version=2.0.4.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\Desktop\DLL aggiornati\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\..\Desktop\DLL aggiornati\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
@@ -119,6 +122,7 @@
     <Compile Include="Database\Warn.cs" />
     <Compile Include="Events\Events.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Method.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Webhook\Http.cs" />

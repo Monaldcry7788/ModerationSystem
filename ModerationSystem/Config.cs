@@ -1,4 +1,6 @@
-﻿namespace ModerationSystem
+﻿using ModerationSystem.Commands;
+
+namespace ModerationSystem
 {
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
@@ -42,6 +44,15 @@
 
         [Description("The Message when player will be kicked (Webhook)")]
         public string KickedMessageWebHook { get; private set; } = "**Staffer:**\n {staffer}\n\n**Target:**\n {target.Name} {target.Id}\n\n**Kickid:**\n {kickid}\n\n**Reason:**\n {reason}";
+
+        [Description("Enable or disable anti team kill")]
+        public bool IsAntiTeamKillEnabled { get; private set; } = true;
+
+        [Description("Number of peaple for invoke reverse team kill")]
+        public int ReverseTeamKillNumber { get; private set; } = 2;
+
+        [Description("Action for reverse team kill: nothing, warn, kick, ban")]
+        public string Action { get; set; } = "kick";
 
 
     }

@@ -60,38 +60,15 @@
                 response = "Reason can't be null";
                 return false;
             }
-
             if (dPlayer.IsMuted())
             {
                 response = "Player already muted";
                 return false;
             }
-            var i = MuteCount(LiteDatabase.GetCollection<Collections.Mute>().Find(w => w.Target.Id == dPlayer.Id).ToList());
-            var muteid = Convert.ToInt32(i);
-            new Collections.Mute(dPlayer, issuer, reason, duration, DateTime.Now, DateTime.Now.AddMinutes(duration), muteid).Save();
-            int time = Convert.ToInt32(duration);
-            MutePlayer(time * 60, target);
-            target?.Broadcast(Plugin.Singleton.Config.MuteMessage.Duration, Plugin.Singleton.Config.MuteMessage.Content.Replace("{duration}", duration.ToString()).Replace("{reason}", reason));
-            if (Plugin.Singleton.WebhookEnabled)
-            {
-                Webhook.Http.sendMessage(Plugin.Singleton.Config.MutedMessageWebHook.Replace("{staffer}", sender.LogName).Replace("{target.Name}", dPlayer.Name).Replace("{target.Id}", dPlayer.Id + "@").Replace("{duration}", duration.ToString()).Replace("{reason}", reason).Replace("{muteid}", muteid.ToString()), "New Mute");
-            }
+            Method.Mute(target, sender, issuer, dPlayer, reason, duration);
             response = $"The player {dPlayer.Name} ({dPlayer.Name}@{dPlayer.Authentication}) has been muted for: {duration} minute(s) with reason: {reason}";
             return true;
         }
 
-        private IEnumerator<float> MutePlayer(float duration, Exiled.API.Features.Player player)
-        {
-            player.IsMuted = true;
-            player.IsIntercomMuted = true;
-            yield return Timing.WaitForSeconds(duration);
-            player.IsMuted = false;
-            player.IsIntercomMuted = false;
-        }
-        private string MuteCount(List<Collections.Mute> mutes)
-        {
-            mutes.Count().ToString();
-            return mutes.Count().ToString();
-        }
     }
 }

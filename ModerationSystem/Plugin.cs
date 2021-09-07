@@ -12,8 +12,8 @@
         internal Events.Events Events{ get; private set; }
         public override string Author { get; } = "Twitch.tv/Monaldcry7788#9248";
         public override string Name { get; } = "ModerationSystem";
-        public override Version Version { get; } = new Version(1, 1, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 8, 0);
+        public override Version Version { get; } = new Version(2, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
         public bool WebhookEnabled { get; private set; } = false;
 
         public override void OnEnabled()

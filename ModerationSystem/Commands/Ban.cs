@@ -61,32 +61,10 @@ namespace ModerationSystem.Commands
                 response = "Player is already banned!";
                 return false;
             }
-
-            var i = BanCount(LiteDatabase.GetCollection<Collections.Ban>().Find(x => x.Target.Id == dPlayer.Id).ToList());
-            var banid = Convert.ToInt32(i);
-            new Collections.Ban(dPlayer, issuer, reason, duration, DateTime.Now, DateTime.Now.AddMinutes(duration), banid).Save();
-            BanHandler.IssueBan(new BanDetails()
-            {
-                Expires = DateTime.UtcNow.AddMinutes(duration).Ticks,
-                Id = dPlayer.Id + "@" + dPlayer.Authentication,
-                IssuanceTime = DateTime.Now.Ticks,
-                Reason = reason,
-                Issuer = issuer.Name,
-                OriginalName = dPlayer.Name
-            }, BanHandler.BanType.UserId);
-            target?.Disconnect($"You has been banned!: {reason}");
-            if (Plugin.Singleton.WebhookEnabled)
-            {
-                Webhook.Http.sendMessage(Plugin.Singleton.Config.BanMessageWebHook.Replace("{staffer}", sender.LogName).Replace("{target.Name}", dPlayer.Name).Replace("{target.Id}", dPlayer.Id + "@" + dPlayer.Authentication).Replace("{duration}", duration.ToString()).Replace("{reason}", reason).Replace("{banid}", banid.ToString()), "New Ban!");
-            }
+            Method.Ban(target, sender, issuer, dPlayer, reason, duration);
             response = $"The player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) has been banned for {duration} minute(s) with reason: {reason}";
             return true;
         }
-
-        private string BanCount(List<Collections.Ban> bans)
-        {
-            bans.Count().ToString();
-            return bans.Count().ToString();
-        }
+        
     }
 }

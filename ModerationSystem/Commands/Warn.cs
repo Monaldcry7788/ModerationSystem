@@ -47,23 +47,10 @@
                 response = "Reason can't be null";
                 return false;
             }
-            var i = WarnCount(LiteDatabase.GetCollection<Collections.Warn>().Find(w => w.Target.Id == dPlayer.Id).ToList());
-            int warnid = Convert.ToInt32(i);
-            new Collections.Warn(dPlayer, issuer, reason, DateTime.Now, warnid).Save();
-            target?.Broadcast(Plugin.Singleton.Config.WarnMessage.Duration, Plugin.Singleton.Config.WarnMessage.Content.Replace("{reason}", reason));
-            if (Plugin.Singleton.WebhookEnabled)
-            {
-                Webhook.Http.sendMessage(Plugin.Singleton.Config.WarnedMessageWebHook.Replace("{staffer}", sender.LogName).Replace("{target.Name}", dPlayer.Name).Replace("{target.Id}", dPlayer.Id + "@" + dPlayer.Authentication).Replace("{reason}", reason).Replace("{warnid}", warnid.ToString()), "**New Warn**");
-            }
+            Method.Warn(target, sender, issuer, dPlayer, reason);
             response = $"The player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) has been warned for: {reason}";
             return true;
 
-        }
-
-        private string WarnCount(List<Collections.Warn> warns)
-        {
-            warns.Count().ToString();
-            return warns.Count().ToString();
         }
     }
 }

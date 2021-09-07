@@ -53,14 +53,7 @@ namespace ModerationSystem.Commands
             List<Player> players = Player.List.Where(x => x.RawUserId == dPlayer.Id).ToList();
             if (!players.IsEmpty())
             {
-                var i = KickCount(LiteDatabase.GetCollection<Collections.Kick>().Find(x => x.Target.Id == dPlayer.Id).ToList());
-                var kickid = Convert.ToInt32(i);
-                new Collections.Kick(dPlayer, issuer, reason, DateTime.Now, kickid).Save();
-                target?.Disconnect(Plugin.Singleton.Config.KickMessage.Replace("{reason}", reason));
-                if (Plugin.Singleton.WebhookEnabled)
-                {
-                    Webhook.Http.sendMessage(Plugin.Singleton.Config.KickedMessageWebHook.Replace("{staffer}", sender.LogName).Replace("{target.Name}", dPlayer.Name).Replace("{target.Id}", dPlayer.Id + "@" + dPlayer.Authentication).Replace("{reason}", reason).Replace("{kickid}", kickid.ToString()), "New Kick!");
-                }
+                Method.Kick(target, sender, issuer, dPlayer, reason);
                 response = $"The player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) has been kicked for: {reason}";
                 return true;
             }
@@ -68,10 +61,6 @@ namespace ModerationSystem.Commands
             return false;
         }
 
-        private string KickCount(List<Collections.Kick> kicks)
-        {
-            kicks.Count().ToString();
-            return kicks.Count().ToString();
-        }
+
     }
 }
