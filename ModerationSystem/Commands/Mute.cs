@@ -1,14 +1,11 @@
-﻿namespace ModerationSystem.Commands
-{
-    using CommandSystem;
-    using Exiled.API.Features;
-    using Exiled.Permissions.Extensions;
-    using MEC;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using static ModerationSystem.Database;
+﻿using System;
+using System.Linq;
+using CommandSystem;
+using Exiled.API.Features;
+using Exiled.Permissions.Extensions;
 
+namespace ModerationSystem.Commands
+{
     public class Mute : ICommand
     {
         private Mute()
@@ -19,7 +16,7 @@
 
         public string Command { get; } = "mute";
 
-        public string[] Aliases { get; } = new[] { "m" };
+        public string[] Aliases { get; } = { "m" };
 
         public string Description { get; } = "Mute a player";
 
@@ -37,9 +34,9 @@
                 return false;
             }
 
-            Player target = Player.Get(arguments.At(0));
-            Collections.Player dPlayer = arguments.At(0).GetPlayer();
-            Collections.Player issuer = ((CommandSender)sender).GetStaffer();
+            var target = Player.Get(arguments.At(0));
+            var dPlayer = arguments.At(0).GetPlayer();
+            var issuer = ((CommandSender)sender).GetStaffer();
 
             if (dPlayer == null)
             {
@@ -47,28 +44,30 @@
                 return false;
             }
 
-            if (!double.TryParse(arguments.At(1), out double duration) || duration < 1)
+            if (!double.TryParse(arguments.At(1), out var duration) || duration < 1)
             {
                 response = "Insert a valid duration";
                 return false;
             }
 
-            string reason = string.Join(" ", arguments.Skip(2).Take(arguments.Count - 2));
+            var reason = string.Join(" ", arguments.Skip(2).Take(arguments.Count - 2));
 
             if (string.IsNullOrEmpty(reason))
             {
                 response = "Reason can't be null";
                 return false;
             }
+
             if (dPlayer.IsMuted())
             {
                 response = "Player already muted";
                 return false;
             }
+
             Method.Mute(target, sender, issuer, dPlayer, reason, duration);
-            response = $"The player {dPlayer.Name} ({dPlayer.Name}@{dPlayer.Authentication}) has been muted for: {duration} minute(s) with reason: {reason}";
+            response =
+                $"The player {dPlayer.Name} ({dPlayer.Name}@{dPlayer.Authentication}) has been muted for: {duration} minute(s) with reason: {reason}";
             return true;
         }
-
     }
 }

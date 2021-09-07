@@ -1,5 +1,5 @@
-﻿using LiteDB;
-using System;
+﻿using System;
+using LiteDB;
 
 namespace ModerationSystem.Collections
 {
@@ -19,18 +19,21 @@ namespace ModerationSystem.Collections
             Kickid = kickid;
         }
 
-        public ObjectId Id { get; private set; }
+        public ObjectId Id { get; }
 
-        public Player Target { get; private set; }
+        public Player Target { get; }
 
-        public Player Issuer { get; private set; }
+        public Player Issuer { get; }
 
-        public string Reason { get; private set; }
+        public string Reason { get; }
 
-        public DateTime Date { get; private set; }
-        public int Kickid { get; private set; }
+        public DateTime Date { get; }
+        public int Kickid { get; }
 
 
-        public void Save() => Database.LiteDatabase.GetCollection<Kick>().Insert(this);
+        public void Save()
+        {
+            Database.LiteDatabase.GetCollection<Kick>().Insert(this);
+        }
     }
 }

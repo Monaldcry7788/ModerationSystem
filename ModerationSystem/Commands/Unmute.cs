@@ -1,8 +1,8 @@
-﻿using CommandSystem;
-using Exiled.API.Features;
-using Exiled.Permissions.Extensions;
-using System;
+﻿using System;
 using System.Linq;
+using CommandSystem;
+using Exiled.Permissions.Extensions;
+using ModerationSystem.Collections;
 using static ModerationSystem.Database;
 
 namespace ModerationSystem.Commands
@@ -19,7 +19,7 @@ namespace ModerationSystem.Commands
 
         public string Command { get; } = "unmute";
 
-        public string[] Aliases { get; } = new[] { "um" };
+        public string[] Aliases { get; } = { "um" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -34,32 +34,36 @@ namespace ModerationSystem.Commands
                 response = "Usage: ms unmute/um <player name or ID> <ID>";
                 return false;
             }
-            Collections.Player dPlayer = arguments.At(0).GetPlayer();
-            Collections.Player issuer = ((CommandSender)sender).GetStaffer();
-            Player target = Player.Get(arguments.At(0));
+
+            var dPlayer = arguments.At(0).GetPlayer();
+            var issuer = ((CommandSender)sender).GetStaffer();
+            var target = Exiled.API.Features.Player.Get(arguments.At(0));
             if (dPlayer == null)
             {
                 response = "Player not found!";
                 return false;
             }
 
-            if (!int.TryParse(arguments.At(1), out int id))
+            if (!int.TryParse(arguments.At(1), out var id))
             {
                 response = "Invalid ID";
                 return false;
             }
-            var muteid = LiteDatabase.GetCollection<Collections.Mute>().Find(x => x.Target.Id == dPlayer.Id && x.Muteid == id).ToList();
+
+            var muteid = LiteDatabase.GetCollection<Collections.Mute>()
+                .Find(x => x.Target.Id == dPlayer.Id && x.Muteid == id).ToList();
             if (!muteid.IsEmpty())
             {
                 RemoveMute(dPlayer, id);
                 response = $"Mute {id} has been removed!";
                 return true;
             }
+
             response = "Mute ID not found";
             return false;
         }
 
-        private void RemoveMute(Collections.Player player, int id)
+        private void RemoveMute(Player player, int id)
         {
             LiteDatabase.GetCollection<Collections.Mute>().DeleteMany(x => x.Muteid == id);
         }

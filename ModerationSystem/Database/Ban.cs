@@ -1,5 +1,5 @@
-﻿using LiteDB;
-using System;
+﻿using System;
+using LiteDB;
 
 namespace ModerationSystem.Collections
 {
@@ -9,7 +9,8 @@ namespace ModerationSystem.Collections
         {
         }
 
-        public Ban(Player target, Player issuer, string reason, double duration, DateTime date, DateTime expire, int banid)
+        public Ban(Player target, Player issuer, string reason, double duration, DateTime date, DateTime expire,
+            int banid)
         {
             Id = ObjectId.NewObjectId();
             Target = target;
@@ -21,21 +22,24 @@ namespace ModerationSystem.Collections
             Banid = banid;
         }
 
-        public ObjectId Id { get; private set; }
+        public ObjectId Id { get; }
 
-        public Player Target { get; private set; }
+        public Player Target { get; }
 
-        public Player Issuer { get; private set; }
+        public Player Issuer { get; }
 
-        public string Reason { get; private set; }
+        public string Reason { get; }
 
-        public double Duration { get; private set; }
+        public double Duration { get; }
 
-        public DateTime Date { get; private set; }
+        public DateTime Date { get; }
 
-        public DateTime Expire { get; private set; }
-        public int Banid { get; private set; }
+        public DateTime Expire { get; }
+        public int Banid { get; }
 
-        public void Save() => Database.LiteDatabase.GetCollection<Ban>().Insert(this);
+        public void Save()
+        {
+            Database.LiteDatabase.GetCollection<Ban>().Insert(this);
+        }
     }
 }

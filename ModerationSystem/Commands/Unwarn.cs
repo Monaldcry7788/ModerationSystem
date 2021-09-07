@@ -1,8 +1,8 @@
-﻿using CommandSystem;
-using Exiled.API.Features;
-using Exiled.Permissions.Extensions;
-using System;
+﻿using System;
 using System.Linq;
+using CommandSystem;
+using Exiled.Permissions.Extensions;
+using ModerationSystem.Collections;
 using static ModerationSystem.Database;
 
 namespace ModerationSystem.Commands
@@ -19,7 +19,7 @@ namespace ModerationSystem.Commands
 
         public string Command { get; } = "unwarn";
 
-        public string[] Aliases { get; } = new[] { "uw" };
+        public string[] Aliases { get; } = { "uw" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -34,34 +34,36 @@ namespace ModerationSystem.Commands
                 response = "Usage: ms unwarn/uw <player name or ID> <ID>";
                 return false;
             }
-            Collections.Player dPlayer = arguments.At(0).GetPlayer();
-            Collections.Player issuer = ((CommandSender)sender).GetStaffer();
-            Player target = Player.Get(arguments.At(0));
+
+            var dPlayer = arguments.At(0).GetPlayer();
             if (dPlayer == null)
             {
                 response = "Player not found!";
                 return false;
             }
 
-            if (!int.TryParse(arguments.At(1), out int id))
+            if (!int.TryParse(arguments.At(1), out var id))
             {
                 response = "Invalid ID";
                 return false;
             }
-            var warnid = LiteDatabase.GetCollection<Collections.Warn>().Find(x => x.Target.Id == dPlayer.Id && x.Warnid == id).ToList();
+
+            var warnid = LiteDatabase.GetCollection<Collections.Warn>()
+                .Find(x => x.Target.Id == dPlayer.Id && x.Warnid == id).ToList();
             if (!warnid.IsEmpty())
             {
                 RemoveWarn(dPlayer, id);
                 response = $"Warn {id} has been removed!";
                 return true;
             }
+
             response = "Warn ID not found";
             return false;
         }
 
-        private void RemoveWarn(Collections.Player player, int id)
+        private void RemoveWarn(Player player, int id)
         {
-            LiteDatabase.GetCollection<Collections.Warn>().DeleteMany(x => x.Warnid == id);
+            LiteDatabase.GetCollection<Collections.Warn>().DeleteMany(x => x.Warnid == id && x.Target == player);
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System.IO;
+﻿using System.IO;
 using System.Net;
+using Newtonsoft.Json;
 
 namespace ModerationSystem.Webhook
 {
@@ -8,14 +8,14 @@ namespace ModerationSystem.Webhook
     {
         public static void sendMessage(string message, string title)
         {
-            string token = Plugin.Singleton.Config.WebHookURL;
+            var token = Plugin.Singleton.Config.WebHookURL;
             WebRequest wr = (HttpWebRequest)WebRequest.Create(token);
             wr.ContentType = "application/json";
             wr.Method = "POST";
 
             using (var sw = new StreamWriter(wr.GetRequestStream()))
             {
-                string json = JsonConvert.SerializeObject(new
+                var json = JsonConvert.SerializeObject(new
                 {
                     username = Plugin.Singleton.Config.WebHookName,
                     embeds = new[]
@@ -23,13 +23,14 @@ namespace ModerationSystem.Webhook
                         new
                         {
                             description = message,
-                            title = title,
+                            title,
                             color = "8464285"
                         }
                     }
                 });
                 sw.Write(json);
             }
+
             var response = (HttpWebResponse)wr.GetResponse();
         }
     }

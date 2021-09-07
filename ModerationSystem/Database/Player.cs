@@ -1,8 +1,8 @@
-﻿namespace ModerationSystem.Collections
-{
-    using LiteDB;
-    using System;
+﻿using System;
+using LiteDB;
 
+namespace ModerationSystem.Collections
+{
     public class Player
     {
         [BsonCtor]
@@ -20,9 +20,21 @@
         public string Name { get; internal set; }
 
 
-        public bool IsMuted() => Database.LiteDatabase.GetCollection<Mute>().Exists(mute => mute.Target.Id == Id && mute.Expire > DateTime.Now);
+        public bool IsMuted()
+        {
+            return Database.LiteDatabase.GetCollection<Mute>()
+                .Exists(mute => mute.Target.Id == Id && mute.Expire > DateTime.Now);
+        }
 
-        public void Save() => Database.LiteDatabase.GetCollection<Player>().Upsert(this);
-        public bool IsBanned() => Database.LiteDatabase.GetCollection<Ban>().Exists(ban => ban.Target.Id == Id && ban.Expire > DateTime.Now);
+        public void Save()
+        {
+            Database.LiteDatabase.GetCollection<Player>().Upsert(this);
+        }
+
+        public bool IsBanned()
+        {
+            return Database.LiteDatabase.GetCollection<Ban>()
+                .Exists(ban => ban.Target.Id == Id && ban.Expire > DateTime.Now);
+        }
     }
 }
