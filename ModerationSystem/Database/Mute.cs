@@ -21,20 +21,20 @@ namespace ModerationSystem.Collections
             Expire = expire;
         }
 
-        public ObjectId Id { get; }
+        public ObjectId Id { get; set; }
 
-        public Player Target { get; }
+        public Player Target { get; set; }
 
-        public Player Issuer { get; }
+        public Player Issuer { get; set; }
 
-        public string Reason { get; }
+        public string Reason { get; set; }
 
-        public double Duration { get; }
+        public double Duration { get; set; }
 
-        public DateTime Date { get; }
+        public DateTime Date { get; set; }
 
-        public DateTime Expire { get; }
-        public int Muteid { get; private set; }
+        public DateTime Expire { get; set; }
+        public int Muteid { get; set; }
 
         public void Save()
         {

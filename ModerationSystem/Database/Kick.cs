@@ -19,16 +19,16 @@ namespace ModerationSystem.Collections
             Kickid = kickid;
         }
 
-        public ObjectId Id { get; }
+        public ObjectId Id { get; set; }
 
-        public Player Target { get; }
+        public Player Target { get; set; }
 
-        public Player Issuer { get; }
+        public Player Issuer { get; set; }
 
-        public string Reason { get; }
+        public string Reason { get; set; }
 
-        public DateTime Date { get; }
-        public int Kickid { get; }
+        public DateTime Date { get; set; }
+        public int Kickid { get; set; }
 
 
         public void Save()
