@@ -30,7 +30,7 @@ namespace ModerationSystem.Commands
 
             if (arguments.Count < 2)
             {
-                response = "Usage: ms ban/b <player name or ID> <duration (minutes)> <reason>";
+                response = "Usage: ms ban/b <player name or ID> <duration(s/m/h/d)> <reason>";
                 return false;
             }
 

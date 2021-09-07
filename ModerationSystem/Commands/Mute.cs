@@ -30,7 +30,7 @@ namespace ModerationSystem.Commands
 
             if (arguments.Count < 2)
             {
-                response = "Usage: ms mute/m <player name or ID> <time (in minutes)> <reason>";
+                response = "Usage: ms mute/m <player name or ID> <time(s/m/h/d)> <reason>";
                 return false;
             }
 
