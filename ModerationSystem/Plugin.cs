@@ -23,7 +23,6 @@ namespace ModerationSystem
             Events = new Events.Events();
             Player.Verified += Events.OnVerified;
             Player.Destroying += Events.OnDestroying;
-            Player.Dying += Events.OnDying;
 
             Database.Open();
             try
@@ -44,7 +43,6 @@ namespace ModerationSystem
         {
             Player.Verified -= Events.OnVerified;
             Player.Destroying -= Events.OnDestroying;
-            Player.Dying -= Events.OnDying;
             Events = null;
 
             Database.Close();
