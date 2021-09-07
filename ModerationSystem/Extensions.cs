@@ -8,12 +8,6 @@ namespace ModerationSystem
 
     public static class Extensions
     {
-        public static bool IsMuted(this Player player)
-        {
-            return LiteDatabase.GetCollection<Mute>()
-                .Exists(mute => mute.Target.Id == player.UserId && mute.Expire > DateTime.Now);
-        }
-
         public static Collections.Player GetPlayer(this string player)
         {
             return Player.Get(player)?.GetPlayer() ??

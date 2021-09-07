@@ -8,6 +8,7 @@ namespace ModerationSystem
     public class Plugin : Plugin<Config>
     {
         public static Plugin Singleton;
+
         internal Events.Events Events { get; private set; }
         public override string Author { get; } = "Twitch.tv/Monaldcry7788#9248";
         public override string Name { get; } = "ModerationSystem";

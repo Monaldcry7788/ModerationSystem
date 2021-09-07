@@ -50,8 +50,7 @@ namespace ModerationSystem.Commands
                 return false;
             }
 
-            var muteid = LiteDatabase.GetCollection<Collections.Mute>()
-                .Find(x => x.Target.Id == dPlayer.Id && x.Muteid == id).ToList();
+            var muteid = LiteDatabase.GetCollection<Collections.Mute>().Find(x => x.Target == dPlayer).ToList();
             if (!muteid.IsEmpty())
             {
                 RemoveMute(dPlayer, id);
@@ -65,7 +64,7 @@ namespace ModerationSystem.Commands
 
         private void RemoveMute(Player player, int id)
         {
-            LiteDatabase.GetCollection<Collections.Mute>().DeleteMany(x => x.Muteid == id);
+            LiteDatabase.GetCollection<Collections.Mute>().DeleteMany(x => x.Muteid == id && player == x.Target);
         }
     }
 }

@@ -8,7 +8,6 @@ namespace ModerationSystem.Events
 
     internal class Events
     {
-        public Dictionary<Player, int> teamkill = new Dictionary<Player, int>();
 
         public void OnVerified(VerifiedEventArgs ev)
         {

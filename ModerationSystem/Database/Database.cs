@@ -10,7 +10,7 @@ namespace ModerationSystem
 {
     internal static class Database
     {
-        public static Player ServerPlayer = new Player("Server", "Server", "Server");
+        public static Player ServerPlayer = new Player(null, null, "Server");
         public static LiteDatabase LiteDatabase { get; private set; }
 
         public static Dictionary<Exiled.API.Features.Player, Player> PlayerData { get; } =

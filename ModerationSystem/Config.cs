@@ -6,6 +6,9 @@ namespace ModerationSystem
 {
     public class Config : IConfig
     {
+        [Description("Enable or disable the plugin")]
+        public bool IsEnabled { get; set; } = true;
+        
         [Description("The name of the database")]
         public string DatabaseName { get; set; } = "Warns";
 
@@ -42,28 +45,5 @@ namespace ModerationSystem
         [Description("The Message when player will be kicked (Webhook)")]
         public string KickedMessageWebHook { get; set; } =
             "**Staffer:**\n {staffer}\n\n**Target:**\n {target.Name} {target.Id}\n\n**Kickid:**\n {kickid}\n\n**Reason:**\n {reason}";
-
-        [Description("Enable or disable anti team kill")]
-        public bool IsAntiTeamKillEnabled { get; set; } = true;
-
-        [Description("Number of peaple for invoke reverse team kill")]
-        public int ReverseTeamKillNumber { get; set; } = 2;
-
-        [Description("Action for reverse team kill: nothing, warn, kick, ban")]
-        public string Action { get; set; } = "kick";
-
-        [Description("Action reason for reverse team kill")]
-        public Dictionary<string, string> ActionReason { get; set; } = new Dictionary<string, string>
-        {
-            {
-                "warn", "<color=yellow>TeamKill</color>"
-            },
-        };
-
-        [Description("Ban duration for teamkill (in minutes)")]
-        public int BanDuration { get; set; } = 60;
-
-        [Description("Enable or disable the plugin")]
-        public bool IsEnabled { get; set; } = true;
     }
 }

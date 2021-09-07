@@ -32,7 +32,7 @@ namespace ModerationSystem
 
         public static void Mute(Player target, Collections.Player issuer, Collections.Player dPlayer, string reason, double duration, string durationType)
         {
-            var i = MuteCount(LiteDatabase.GetCollection<Mute>().Find(m => m.Target.Id == dPlayer.Id).ToList());
+            var i = MuteCount(LiteDatabase.GetCollection<Mute>().Find(m => m.Target == dPlayer).ToList());
             var muteid = Convert.ToInt32(i);
             new Mute(dPlayer, issuer, reason, duration, DateTime.Now, DateTime.Now.AddSeconds(duration), muteid).Save();
             var time = Convert.ToInt32(duration);
@@ -93,7 +93,7 @@ namespace ModerationSystem
                 Issuer = issuer.Name,
                 OriginalName = dPlayer.Name
             }, BanHandler.BanType.UserId);
-            target?.Disconnect($"You has been banned!: {reason}");
+            target?.Disconnect(Plugin.Singleton.Config.BanMessage.Replace("{reason}", reason));
             if (Plugin.Singleton.WebhookEnabled)
                 Http.sendMessage(
                     Plugin.Singleton.Config.BanMessageWebHook
