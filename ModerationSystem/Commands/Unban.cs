@@ -36,7 +36,6 @@ namespace ModerationSystem.Commands
             }
 
             var dPlayer = arguments.At(0).GetPlayer();
-            var issuer = ((CommandSender)sender).GetStaffer();
             var target = Exiled.API.Features.Player.Get(arguments.At(0));
             if (dPlayer == null)
             {
@@ -53,11 +52,10 @@ namespace ModerationSystem.Commands
             if (!dPlayer.IsBanned())
                 response = $"Player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) isn't banned!";
 
-            var banid = LiteDatabase.GetCollection<Collections.Ban>()
-                .Find(x => x.Target.Id == dPlayer.Id && x.Banid == id).ToList();
+            var banid = LiteDatabase.GetCollection<Collections.Ban>().Find(x => x.Target.Id == dPlayer.Id).ToList();
             if (!banid.IsEmpty())
             {
-                RemoveBan(dPlayer, target, id);
+                RemoveBan(dPlayer, id);
                 response = $"Player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) unbanned!";
                 return true;
             }
@@ -66,11 +64,10 @@ namespace ModerationSystem.Commands
             return false;
         }
 
-        private void RemoveBan(Player chatPlayer, Exiled.API.Features.Player player, int id)
+        private void RemoveBan(Player player, int id)
         {
-            BanHandler.RemoveBan(player.IPAddress, BanHandler.BanType.IP);
-            BanHandler.RemoveBan(player.UserId, BanHandler.BanType.UserId);
-            LiteDatabase.GetCollection<Collections.Ban>().DeleteMany(x => x.Banid == id);
+            BanHandler.RemoveBan(player.Id+player.Authentication, BanHandler.BanType.UserId);
+            LiteDatabase.GetCollection<Collections.Ban>().DeleteMany(x => x.Banid == id && player == x.Target);
         }
     }
 }

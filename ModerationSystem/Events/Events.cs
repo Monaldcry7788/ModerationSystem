@@ -37,31 +37,36 @@ namespace ModerationSystem.Events
         {
             if (!Plugin.Singleton.Config.IsAntiTeamKillEnabled) return;
             if (e.Killer.Team != e.Target.Team) return;
+            if (e.Killer == e.Target) return;
+            if (RoundSummary.singleton.RoundEnded) return;
+            if (e.HitInformation.Tool.Name == "WALL") return;
             if (!teamkill.ContainsKey(e.Killer)) teamkill.Add(e.Killer, 0);
             var playerinfo = teamkill[e.Killer];
-            if (playerinfo < Plugin.Singleton.Config.ReverseTeamKillNumber)
+            Log.Debug(playerinfo);
+            if (playerinfo > Plugin.Singleton.Config.ReverseTeamKillNumber)
             {
+                switch (Plugin.Singleton.Config.Action)
+                {
+                    case "warn":
+                        Method.Warn(e.Killer, ServerPlayer, e.Killer.GetPlayer(),
+                            Plugin.Singleton.Config.ActionReason["warn"]);
+                        break;
+                    case "kick":
+                        Method.Kick(e.Killer, ServerPlayer, e.Killer.GetPlayer(),
+                            Plugin.Singleton.Config.ActionReason["kick"]);
+                        break;
+                    case "ban":
+                        Method.Ban(e.Killer, ServerPlayer, e.Killer.GetPlayer(), Plugin.Singleton.Config.ActionReason["ban"], Plugin.Singleton.Config.BanDuration * 60);
+                        break;
+                    case "nothing":
+                        break;
+                }
+
                 e.IsAllowed = false;
-                playerinfo++;
-                teamkill[e.Killer] = playerinfo;
                 return;
             }
-
-            switch (Plugin.Singleton.Config.Action)
-            {
-                case "warn":
-                    Method.Warn(e.Killer, ServerPlayer, e.Killer.GetPlayer(),
-                        Plugin.Singleton.Config.ActionReason["warn"]);
-                    break;
-                case "kick":
-                    Method.Kick(e.Killer, ServerPlayer, e.Killer.GetPlayer(),
-                        Plugin.Singleton.Config.ActionReason["kick"]);
-                    break;
-                case "ban":
-                    Method.Ban(e.Killer, ServerPlayer, e.Killer.GetPlayer(),
-                        Plugin.Singleton.Config.ActionReason["ban"], Plugin.Singleton.Config.BanDuration * 60);
-                    break;
-            }
+            playerinfo = playerinfo+1;
+            teamkill[e.Killer] = playerinfo;
         }
     }
 }

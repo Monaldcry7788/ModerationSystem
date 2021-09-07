@@ -19,7 +19,7 @@ namespace ModerationSystem.Collections
             Kickid = kickid;
         }
 
-        public ObjectId Id { get; set; }
+        public ObjectId Id { get;}
 
         public Player Target { get; set; }
 

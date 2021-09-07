@@ -43,8 +43,16 @@ namespace ModerationSystem.Commands
                 response = "Player not found!!";
                 return false;
             }
+            var arg1 = arguments.At(1).ToCharArray().ToList();
+            var durationType = arg1.LastOrDefault();
+            arg1.Remove(arg1.LastOrDefault());
+            if (durationType.ToString() != "s" && durationType.ToString() != "m" && durationType.ToString() != "h" && durationType.ToString() != "d")
+            {
+                response = $"{durationType} is not a valid durationType. Avariables: s/m/h/d";
+                return false;
+            }
 
-            if (!double.TryParse(arguments.At(1), out var duration) || duration < 1)
+            if (!int.TryParse(arguments.At(1).Replace(durationType.ToString(), ""), out var duration) || duration < 1)
             {
                 response = "Insert a valid duration";
                 return false;
@@ -63,10 +71,22 @@ namespace ModerationSystem.Commands
                 response = "Player already muted";
                 return false;
             }
-
-            Method.Mute(target, sender, issuer, dPlayer, reason, duration);
-            response =
-                $"The player {dPlayer.Name} ({dPlayer.Name}@{dPlayer.Authentication}) has been muted for: {duration} minute(s) with reason: {reason}";
+            switch (durationType.ToString())
+            {
+                case "s":
+                    Method.Mute(target, issuer, dPlayer, reason, duration, durationType.ToString());
+                    break;
+                case "m":
+                    Method.Mute(target, issuer, dPlayer, reason, duration*60, durationType.ToString());
+                    break;
+                case "h":
+                    Method.Mute(target, issuer, dPlayer, reason, duration * 3600, durationType.ToString());
+                    break;
+                case "d":
+                    Method.Mute(target, issuer, dPlayer, reason, duration*86400, durationType.ToString());
+                    break;
+            }
+            response = $"The player {dPlayer.Name} ({dPlayer.Name}@{dPlayer.Authentication}) has been muted for: {duration}{durationType} with reason: {reason}";
             return true;
         }
     }
