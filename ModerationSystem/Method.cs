@@ -16,8 +16,7 @@ namespace ModerationSystem
         //Public methods
         public static void Warn(Player target, Collections.Player issuer, Collections.Player dPlayer, string reason)
         {
-            var i = WarnCount(LiteDatabase.GetCollection<Warn>().Find(w => w.Target.Id == dPlayer.Id).ToList());
-            var warnid = Convert.ToInt32(i);
+            var warnid = WarnCount(LiteDatabase.GetCollection<Warn>().Find(w => w.Target.Id == dPlayer.Id).ToList());
             new Warn(dPlayer, issuer, reason, DateTime.Now, warnid).Save();
             target?.Broadcast(Plugin.Singleton.Config.WarnMessage.Duration,
                 Plugin.Singleton.Config.WarnMessage.Content.Replace("{reason}", reason));
@@ -32,8 +31,7 @@ namespace ModerationSystem
 
         public static void Mute(Player target, Collections.Player issuer, Collections.Player dPlayer, string reason, double duration, string durationType)
         {
-            var i = MuteCount(LiteDatabase.GetCollection<Mute>().Find(m => m.Target == dPlayer).ToList());
-            var muteid = Convert.ToInt32(i);
+            var muteid = MuteCount(LiteDatabase.GetCollection<Mute>().Find(m => m.Target == dPlayer).ToList());
             new Mute(dPlayer, issuer, reason, duration, DateTime.Now, DateTime.Now.AddSeconds(duration), muteid).Save();
             var time = Convert.ToInt32(duration);
             Timing.RunCoroutine(MutePlayer(time, target));
@@ -66,8 +64,7 @@ namespace ModerationSystem
 
         public static void Kick(Player target, Collections.Player issuer, Collections.Player dPlayer, string reason)
         {
-            var i = KickCount(LiteDatabase.GetCollection<Kick>().Find(x => x.Target.Id == dPlayer.Id).ToList());
-            var kickid = Convert.ToInt32(i);
+            var kickid = KickCount(LiteDatabase.GetCollection<Kick>().Find(x => x.Target.Id == dPlayer.Id).ToList());
             new Kick(dPlayer, issuer, reason, DateTime.Now, kickid).Save();
             target?.Disconnect(Plugin.Singleton.Config.KickMessage.Replace("{reason}", reason));
             if (Plugin.Singleton.WebhookEnabled)
@@ -81,8 +78,7 @@ namespace ModerationSystem
 
         public static void Ban(Player target, Collections.Player issuer, Collections.Player dPlayer, string reason, int duration)
         {
-            var i = BanCount(LiteDatabase.GetCollection<Ban>().Find(x => x.Target.Id == dPlayer.Id).ToList());
-            var banid = Convert.ToInt32(i);
+            var banid = BanCount(LiteDatabase.GetCollection<Ban>().Find(x => x.Target.Id == dPlayer.Id).ToList());
             new Ban(dPlayer, issuer, reason, duration, DateTime.Now, DateTime.Now.AddSeconds(duration), banid).Save();
             BanHandler.IssueBan(new BanDetails
             {
@@ -114,28 +110,12 @@ namespace ModerationSystem
             player.IsIntercomMuted = false;
         }
 
-        private static string BanCount(List<Ban> bans)
-        {
-            bans.Count().ToString();
-            return bans.Count().ToString();
-        }
+        private static int BanCount(List<Ban> bans) => bans.Count;
 
-        private static string KickCount(List<Kick> kicks)
-        {
-            kicks.Count().ToString();
-            return kicks.Count().ToString();
-        }
+        private static int KickCount(List<Kick> kicks) => kicks.Count;
 
-        private static string MuteCount(List<Mute> mutes)
-        {
-            mutes.Count().ToString();
-            return mutes.Count().ToString();
-        }
+        private static int MuteCount(List<Mute> mutes) => mutes.Count;
 
-        private static string WarnCount(List<Warn> warns)
-        {
-            warns.Count().ToString();
-            return warns.Count().ToString();
-        }
+        private static int WarnCount(List<Warn> warns) => warns.Count;
     }
 }
