@@ -13,8 +13,7 @@ namespace ModerationSystem
         public static Player ServerPlayer = new Player(null, null, "Server");
         public static LiteDatabase LiteDatabase { get; private set; }
 
-        public static Dictionary<Exiled.API.Features.Player, Player> PlayerData { get; } =
-            new Dictionary<Exiled.API.Features.Player, Player>();
+        public static Dictionary<Exiled.API.Features.Player, Player> PlayerData { get; } = new Dictionary<Exiled.API.Features.Player, Player>();
 
         public static string Folder => Path.Combine(Paths.Plugins, Plugin.Singleton.Config.DatabaseName);
         public static string FullPath => Path.Combine(Folder, $"{Plugin.Singleton.Config.DatabaseName}.db");
@@ -42,8 +41,6 @@ namespace ModerationSystem
                 LiteDatabase.GetCollection<Ban>().EnsureIndex(warn => warn.Issuer.Id);
                 LiteDatabase.GetCollection<Ban>().EnsureIndex(warn => warn.Date);
                 LiteDatabase.GetCollection<Ban>().EnsureIndex(warn => warn.Expire);
-
-
                 Log.Info("Database Loaded!");
             }
             catch (Exception e)

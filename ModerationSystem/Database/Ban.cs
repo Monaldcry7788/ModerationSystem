@@ -9,7 +9,7 @@ namespace ModerationSystem.Collections
         {
         }
 
-        public Ban(Player target, Player issuer, string reason, double duration, DateTime date, DateTime expire,
+        public Ban(Player target, Player issuer, string reason, string duration, DateTime date, DateTime expire,
             int banid)
         {
             Id = ObjectId.NewObjectId();
@@ -22,7 +22,7 @@ namespace ModerationSystem.Collections
             Banid = banid;
         }
 
-        public ObjectId Id { get; set; }
+        public ObjectId Id { get; }
 
         public Player Target { get; set; }
 
@@ -30,7 +30,7 @@ namespace ModerationSystem.Collections
 
         public string Reason { get; set; }
 
-        public double Duration { get; set; }
+        public string Duration { get; set; }
 
         public DateTime Date { get; set; }
 

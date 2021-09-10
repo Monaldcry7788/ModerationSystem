@@ -9,7 +9,7 @@ namespace ModerationSystem.Collections
         {
         }
 
-        public Mute(Player target, Player issuer, string reason, double duration, DateTime date, DateTime expire,
+        public Mute(Player target, Player issuer, string reason, string duration, DateTime date, DateTime expire,
             int muteid)
         {
             Id = ObjectId.NewObjectId();
@@ -19,6 +19,7 @@ namespace ModerationSystem.Collections
             Duration = duration;
             Date = date;
             Expire = expire;
+            Muteid = muteid;
         }
 
         public ObjectId Id { get; set; }
@@ -29,7 +30,7 @@ namespace ModerationSystem.Collections
 
         public string Reason { get; set; }
 
-        public double Duration { get; set; }
+        public string Duration { get; set; }
 
         public DateTime Date { get; set; }
 

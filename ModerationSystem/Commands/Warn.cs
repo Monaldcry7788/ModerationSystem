@@ -3,6 +3,7 @@ using System.Linq;
 using CommandSystem;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
+using Broadcast = Exiled.API.Features.Broadcast;
 
 namespace ModerationSystem.Commands
 {
@@ -51,8 +52,8 @@ namespace ModerationSystem.Commands
             }
 
             Method.Warn(target, issuer, dPlayer, reason);
-            response =
-                $"The player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) has been warned for: {reason}";
+            Method.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.StaffWarnMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}").Replace("{reason}", reason)));
+            response = $"The player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) has been warned for: {reason}";
             return true;
         }
     }

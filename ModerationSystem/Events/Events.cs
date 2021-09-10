@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Exiled.API.Features;
-using Exiled.Events.EventArgs;
+﻿using Exiled.Events.EventArgs;
 
 namespace ModerationSystem.Events
 {

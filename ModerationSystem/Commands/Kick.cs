@@ -54,11 +54,10 @@ namespace ModerationSystem.Commands
             if (!players.IsEmpty())
             {
                 Method.Kick(target, issuer, dPlayer, reason);
-                response =
-                    $"The player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) has been kicked for: {reason}";
+                Method.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.StaffKickMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}").Replace("{reason}", reason)));
+                response = $"The player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) has been kicked for: {reason}";
                 return true;
             }
-
             response = "Player not found!";
             return false;
         }

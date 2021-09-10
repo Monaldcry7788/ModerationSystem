@@ -19,7 +19,7 @@ namespace ModerationSystem.Collections
             Warnid = warnid;
         }
 
-        public ObjectId Id { get; set; }
+        public ObjectId Id { get; }
 
         public Player Target { get; set; }
 
@@ -30,9 +30,7 @@ namespace ModerationSystem.Collections
         public DateTime Date { get; set; }
         public int Warnid { get; set; }
 
-        public void Save()
-        {
-            Database.LiteDatabase.GetCollection<Warn>().Insert(this);
-        }
+        public void Save() => Database.LiteDatabase.GetCollection<Warn>().Insert(this);
+        
     }
 }

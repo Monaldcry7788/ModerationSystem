@@ -36,7 +36,6 @@ namespace ModerationSystem.Commands
             }
 
             var dPlayer = arguments.At(0).GetPlayer();
-            var issuer = ((CommandSender)sender).GetStaffer();
             var target = Exiled.API.Features.Player.Get(arguments.At(0));
             if (dPlayer == null)
             {

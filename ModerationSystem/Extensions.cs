@@ -1,6 +1,4 @@
-﻿using System;
-using ModerationSystem.Collections;
-using Player = Exiled.API.Features.Player;
+﻿using Player = Exiled.API.Features.Player;
 
 namespace ModerationSystem
 {
@@ -18,15 +16,17 @@ namespace ModerationSystem
 
         public static Collections.Player GetPlayer(this Player player)
         {
-            if (player == null || string.IsNullOrEmpty(player.UserId) && !player.IsHost)
-                return null;
-            if (player.IsHost)
-                return ServerPlayer;
-            if (PlayerData.TryGetValue(player, out var dPlayer))
-                return dPlayer;
+            if (player == null || string.IsNullOrEmpty(player.UserId) && !player.IsHost) return null;
+            if (player.IsHost) return ServerPlayer;
+            if (PlayerData.TryGetValue(player, out var dPlayer)) return dPlayer;
             return LiteDatabase.GetCollection<Collections.Player>().FindById(player.RawUserId);
         }
-
+        private static string GetRawUserId(this string userId)
+        {
+            int index = userId.LastIndexOf('@');
+            if (index == -1) return userId;
+            return userId.Substring(0, index);
+        }
         public static Collections.Player GetStaffer(this CommandSender sender)
         {
             return new Collections.Player
@@ -36,20 +36,6 @@ namespace ModerationSystem
                 sender?.Nickname ?? "Server"
             );
         }
-
-        public static string GetAuthentication(this string userId)
-        {
-            return userId.Substring(userId.LastIndexOf('@') + 1);
+        private static string GetAuthentication(this string userId) => userId.Substring(userId.LastIndexOf('@') + 1);
         }
-
-        public static string GetRawUserId(this string userId)
-        {
-            var index = userId.LastIndexOf('@');
-
-            if (index == -1)
-                return userId;
-
-            return userId.Substring(0, index);
-        }
-    }
 }

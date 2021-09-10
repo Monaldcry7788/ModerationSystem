@@ -43,18 +43,20 @@ namespace ModerationSystem.Commands
                 response = "Player not found!!";
                 return false;
             }
-            var arg1 = arguments.At(1).ToCharArray().ToList();
-            var durationType = arg1.LastOrDefault();
-            arg1.Remove(arg1.LastOrDefault());
-            if (durationType.ToString() != "s" && durationType.ToString() != "m" && durationType.ToString() != "h" && durationType.ToString() != "d")
+            
+            string duration;
+            try
             {
-                response = $"{durationType} is not a valid durationType. Avariables: s/m/h/d";
-                return false;
+                duration = Convert.ToDateTime(arguments.At(1)).ToString("HH:mm:ss");
+                if (!DateTime.TryParse(duration, out DateTime durationDateTime))
+                {
+                    response = $"{durationDateTime} is not a valid duration. Valid id: ss:mm:hh:dd";
+                    return false;
+                }
             }
-
-            if (!int.TryParse(arguments.At(1).Replace(durationType.ToString(), ""), out var duration) || duration < 1)
+            catch (Exception e)
             {
-                response = "Insert a valid duration";
+                response = $"{arguments.At(1)} is not a valid duration. Valid duration: HH:mm:ss";
                 return false;
             }
 
@@ -71,22 +73,9 @@ namespace ModerationSystem.Commands
                 response = "Player already muted";
                 return false;
             }
-            switch (durationType.ToString())
-            {
-                case "s":
-                    Method.Mute(target, issuer, dPlayer, reason, duration, durationType.ToString());
-                    break;
-                case "m":
-                    Method.Mute(target, issuer, dPlayer, reason, duration*60, durationType.ToString());
-                    break;
-                case "h":
-                    Method.Mute(target, issuer, dPlayer, reason, duration * 3600, durationType.ToString());
-                    break;
-                case "d":
-                    Method.Mute(target, issuer, dPlayer, reason, duration*86400, durationType.ToString());
-                    break;
-            }
-            response = $"The player {dPlayer.Name} ({dPlayer.Name}@{dPlayer.Authentication}) has been muted for: {duration}{durationType} with reason: {reason}";
+            Method.Mute(target, issuer, dPlayer, reason, Convert.ToDateTime(duration));
+            Method.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.StaffMuteMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}").Replace("{reason}", reason).Replace("{time}", duration)));
+            response = $"The player {dPlayer.Name} ({dPlayer.Name}@{dPlayer.Authentication}) has been muted for: {duration}. With reason: {reason}";
             return true;
         }
     }

@@ -48,8 +48,7 @@ namespace ModerationSystem.Commands
                 return false;
             }
 
-            var warnid = LiteDatabase.GetCollection<Collections.Warn>()
-                .Find(x => x.Target.Id == dPlayer.Id && x.Warnid == id).ToList();
+            var warnid = LiteDatabase.GetCollection<Collections.Warn>().Find(x => x.Target.Id == dPlayer.Id && x.Warnid == id).ToList();
             if (!warnid.IsEmpty())
             {
                 RemoveWarn(dPlayer, id);

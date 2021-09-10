@@ -7,10 +7,7 @@ namespace ModerationSystem.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Main : ParentCommand
     {
-        public Main()
-        {
-            LoadGeneratedCommands();
-        }
+        public Main() => LoadGeneratedCommands();
 
         public override string Command { get; } = "moderationsystem";
 
@@ -18,7 +15,7 @@ namespace ModerationSystem.Commands
 
         public override string Description { get; } = string.Empty;
 
-        public override void LoadGeneratedCommands()
+        public sealed override void LoadGeneratedCommands()
         {
             RegisterCommand(Mute.Instance);
             RegisterCommand(Warn.Instance);
@@ -30,8 +27,7 @@ namespace ModerationSystem.Commands
             RegisterCommand(Unmute.Instance);
         }
 
-        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender,
-            out string response)
+        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             response = "Please, specify a sub command: warn, ban, kick, mute, playerinfo, unmute, unwarn, unban";
             return false;

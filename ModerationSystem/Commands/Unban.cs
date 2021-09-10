@@ -2,8 +2,8 @@
 using System.Linq;
 using CommandSystem;
 using Exiled.Permissions.Extensions;
-using ModerationSystem.Collections;
 using static ModerationSystem.Database;
+using Player = ModerationSystem.Collections.Player;
 
 namespace ModerationSystem.Commands
 {
@@ -28,7 +28,6 @@ namespace ModerationSystem.Commands
                 response = "You can't do this command";
                 return false;
             }
-
             if (arguments.Count != 2)
             {
                 response = "Usage: ms unban/ub <player name or ID> <ID>";
@@ -36,7 +35,6 @@ namespace ModerationSystem.Commands
             }
 
             var dPlayer = arguments.At(0).GetPlayer();
-            var target = Exiled.API.Features.Player.Get(arguments.At(0));
             if (dPlayer == null)
             {
                 response = "Player not found!";
@@ -67,6 +65,7 @@ namespace ModerationSystem.Commands
         private void RemoveBan(Player player, int id)
         {
             BanHandler.RemoveBan(player.Id+player.Authentication, BanHandler.BanType.UserId);
+            BanHandler.RemoveBan(player.Id+player.Authentication, BanHandler.BanType.IP);
             LiteDatabase.GetCollection<Collections.Ban>().DeleteMany(x => x.Banid == id && player == x.Target);
         }
     }

@@ -19,7 +19,7 @@ namespace ModerationSystem.Collections
             Kickid = kickid;
         }
 
-        public ObjectId Id { get;}
+        public ObjectId Id { get; }
 
         public Player Target { get; set; }
 
@@ -31,9 +31,6 @@ namespace ModerationSystem.Collections
         public int Kickid { get; set; }
 
 
-        public void Save()
-        {
-            Database.LiteDatabase.GetCollection<Kick>().Insert(this);
-        }
+        public void Save() => Database.LiteDatabase.GetCollection<Kick>().Insert(this);
     }
 }

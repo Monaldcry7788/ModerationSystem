@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using CommandSystem;
-using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using NorthwoodLib.Pools;
 
@@ -35,11 +34,7 @@ namespace ModerationSystem.Commands
                 response = "Usage: ms playerinfo/pi <player name or ID>";
                 return false;
             }
-
-            var target = Player.Get(arguments.At(0));
             var dPlayer = arguments.At(0).GetPlayer();
-            var issuer = ((CommandSender)sender).GetStaffer();
-
             if (dPlayer == null)
             {
                 response = "Player not found!!";
@@ -63,52 +58,36 @@ namespace ModerationSystem.Commands
         private string GetWarn(List<Collections.Warn> warns)
         {
             var message = StringBuilderPool.Shared.Rent();
-            message.Append($"[Warns: ({warns.Count()})]").AppendLine().AppendLine();
+            message.Append($"[Warns: ({warns.Count})]").AppendLine().AppendLine();
             foreach (var p in warns)
-                message.AppendLine($"Warn ID: {p.Warnid}")
-                    .AppendLine($"Reason: {p.Reason}")
-                    .AppendLine($"Issuer: {p.Issuer.Name}")
-                    .AppendLine($"Date: {p.Date}").AppendLine();
+                message.AppendLine($"Warn ID: {p.Warnid}").AppendLine($"Reason: {p.Reason}").AppendLine($"Issuer: {p.Issuer.Name}").AppendLine($"Date: {p.Date}").AppendLine();
             return StringBuilderPool.Shared.ToStringReturn(message);
         }
 
         private string GetMute(List<Collections.Mute> mutes)
         {
             var message = StringBuilderPool.Shared.Rent();
-            message.Append($"[Mutes: ({mutes.Count()})]").AppendLine().AppendLine();
+            message.Append($"[Mutes: ({mutes.Count})]").AppendLine().AppendLine();
             foreach (var p in mutes)
-                message.AppendLine($"Mute ID: {p.Muteid}")
-                    .AppendLine($"Reason: {p.Reason}")
-                    .AppendLine($"Issuer: {p.Issuer.Name}")
-                    .AppendLine($"Duration: {p.Duration}")
-                    .AppendLine($"Date: {p.Date}")
-                    .AppendLine($"Expire: {p.Expire}").AppendLine();
+                message.AppendLine($"Mute ID: {p.Muteid}").AppendLine($"Reason: {p.Reason}").AppendLine($"Issuer: {p.Issuer.Name}").AppendLine($"Duration: {p.Duration}").AppendLine($"Date: {p.Date}").AppendLine($"Expire: {p.Expire}").AppendLine();
             return StringBuilderPool.Shared.ToStringReturn(message);
         }
 
         private string GetKick(List<Collections.Kick> kicks)
         {
             var message = StringBuilderPool.Shared.Rent();
-            message.Append($"[Kick: ({kicks.Count()})]").AppendLine().AppendLine();
+            message.Append($"[Kick: ({kicks.Count})]").AppendLine().AppendLine();
             foreach (var p in kicks)
-                message.AppendLine($"Kick ID: {p.Kickid}")
-                    .AppendLine($"Reason: {p.Reason}")
-                    .AppendLine($"Issuer: {p.Issuer.Name}")
-                    .AppendLine($"Date: {p.Date}").AppendLine();
+                message.AppendLine($"Kick ID: {p.Kickid}").AppendLine($"Reason: {p.Reason}").AppendLine($"Issuer: {p.Issuer.Name}").AppendLine($"Date: {p.Date}").AppendLine();
             return StringBuilderPool.Shared.ToStringReturn(message);
         }
 
         private string GetBan(List<Collections.Ban> bans)
         {
             var message = StringBuilderPool.Shared.Rent();
-            message.Append($"[Ban: ({bans.Count()})]").AppendLine().AppendLine();
+            message.Append($"[Ban: ({bans.Count})]").AppendLine().AppendLine();
             foreach (var p in bans)
-                message.AppendLine($"Warn ID: {p.Banid}")
-                    .AppendLine($"Reason: {p.Reason}")
-                    .AppendLine($"Issuer: {p.Issuer.Name}")
-                    .AppendLine($"Duration: {p.Duration}")
-                    .AppendLine($"Date: {p.Date}")
-                    .AppendLine($"Expire: {p.Expire}").AppendLine();
+                message.AppendLine($"Warn ID: {p.Banid}").AppendLine($"Reason: {p.Reason}").AppendLine($"Issuer: {p.Issuer.Name}").AppendLine($"Duration: {p.Duration}").AppendLine($"Date: {p.Date}").AppendLine($"Expire: {p.Expire}").AppendLine();
             return StringBuilderPool.Shared.ToStringReturn(message);
         }
     }
