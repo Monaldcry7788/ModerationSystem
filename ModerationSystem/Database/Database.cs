@@ -12,6 +12,11 @@ namespace ModerationSystem
     {
         public static Player ServerPlayer = new Player(null, null, "Server");
         public static LiteDatabase LiteDatabase { get; private set; }
+        public static ILiteCollection<Player> PlayerCollection { get; private set; }
+        public static ILiteCollection<Warn> WarnCollection { get; private set; }
+        public static ILiteCollection<Kick> KickCollection { get; private set; }
+        public static ILiteCollection<Mute> MuteCollection { get; private set; }
+        public static ILiteCollection<Ban> BanCollection { get; private set; }
 
         public static Dictionary<Exiled.API.Features.Player, Player> PlayerData { get; } = new Dictionary<Exiled.API.Features.Player, Player>();
 
@@ -25,22 +30,27 @@ namespace ModerationSystem
                 if (!Directory.Exists(Folder)) Directory.CreateDirectory(Folder);
 
                 LiteDatabase = new LiteDatabase(FullPath);
+                PlayerCollection = LiteDatabase.GetCollection<Player>();
+                WarnCollection = LiteDatabase.GetCollection<Warn>();
+                KickCollection = LiteDatabase.GetCollection<Kick>();
+                MuteCollection = LiteDatabase.GetCollection<Mute>();
+                BanCollection = LiteDatabase.GetCollection<Ban>();
 
-                LiteDatabase.GetCollection<Player>().EnsureIndex(player => player.Id, true);
-                LiteDatabase.GetCollection<Mute>().EnsureIndex(mute => mute.Target.Id);
-                LiteDatabase.GetCollection<Mute>().EnsureIndex(mute => mute.Issuer.Id);
-                LiteDatabase.GetCollection<Mute>().EnsureIndex(mute => mute.Date);
-                LiteDatabase.GetCollection<Mute>().EnsureIndex(mute => mute.Expire);
-                LiteDatabase.GetCollection<Warn>().EnsureIndex(warn => warn.Target.Id);
-                LiteDatabase.GetCollection<Warn>().EnsureIndex(warn => warn.Issuer.Id);
-                LiteDatabase.GetCollection<Warn>().EnsureIndex(warn => warn.Date);
-                LiteDatabase.GetCollection<Kick>().EnsureIndex(warn => warn.Target.Id);
-                LiteDatabase.GetCollection<Kick>().EnsureIndex(warn => warn.Issuer.Id);
-                LiteDatabase.GetCollection<Kick>().EnsureIndex(warn => warn.Date);
-                LiteDatabase.GetCollection<Ban>().EnsureIndex(warn => warn.Target.Id);
-                LiteDatabase.GetCollection<Ban>().EnsureIndex(warn => warn.Issuer.Id);
-                LiteDatabase.GetCollection<Ban>().EnsureIndex(warn => warn.Date);
-                LiteDatabase.GetCollection<Ban>().EnsureIndex(warn => warn.Expire);
+                PlayerCollection.EnsureIndex(p => p.Id, true);
+                WarnCollection.EnsureIndex(w => w.Target.Id);
+                WarnCollection.EnsureIndex(w => w.Issuer.Id);
+                WarnCollection.EnsureIndex(w => w.Date);
+                KickCollection.EnsureIndex(k => k.Target.Id);
+                KickCollection.EnsureIndex(k => k.Issuer.Id);
+                KickCollection.EnsureIndex(k => k.Date);
+                MuteCollection.EnsureIndex(m => m.Target.Id);
+                MuteCollection.EnsureIndex(m => m.Issuer.Id);
+                MuteCollection.EnsureIndex(m => m.Date);
+                MuteCollection.EnsureIndex(m => m.Expire);
+                BanCollection.EnsureIndex(b => b.Target.Id);
+                BanCollection.EnsureIndex(b => b.Issuer.Id);
+                BanCollection.EnsureIndex(b => b.Date);
+                BanCollection.EnsureIndex(b => b.Expire);
                 Log.Info("Database Loaded!");
             }
             catch (Exception e)
