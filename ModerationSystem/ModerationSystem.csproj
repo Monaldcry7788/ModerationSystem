@@ -102,8 +102,28 @@
         <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>..\..\..\Desktop\DLL aggiornati\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
+        <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\..\..\Desktop\DLL aggiornati\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UnityWebRequestAudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\..\..\Desktop\DLL aggiornati\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UnityWebRequestModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\..\..\Desktop\DLL aggiornati\UnityEngine.UnityWebRequestModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UnityWebRequestTextureModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\..\..\Desktop\DLL aggiornati\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UnityWebRequestWWWModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\..\..\Desktop\DLL aggiornati\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+        </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Collections\Ban.cs" />
+        <Compile Include="Collections\Kick.cs" />
+        <Compile Include="Collections\Mute.cs" />
+        <Compile Include="Collections\Player.cs" />
+        <Compile Include="Collections\Warn.cs" />
         <Compile Include="Commands\Ban.cs" />
         <Compile Include="Commands\Kick.cs" />
         <Compile Include="Commands\Main.cs" />
@@ -114,18 +134,12 @@
         <Compile Include="Commands\Unwarn.cs" />
         <Compile Include="Commands\Warn.cs" />
         <Compile Include="Config.cs" />
-        <Compile Include="Database\Ban.cs" />
         <Compile Include="Database\Database.cs" />
-        <Compile Include="Database\Kick.cs" />
-        <Compile Include="Database\Mute.cs" />
-        <Compile Include="Database\Player.cs" />
-        <Compile Include="Database\Warn.cs" />
         <Compile Include="Events\Events.cs" />
         <Compile Include="Extensions.cs" />
         <Compile Include="Method.cs" />
         <Compile Include="Plugin.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="Webhook\Http.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="packages.config" />

@@ -4,7 +4,6 @@ using System.Linq;
 using CommandSystem;
 using Exiled.Permissions.Extensions;
 using NorthwoodLib.Pools;
-
 namespace ModerationSystem.Commands
 {
     public class Playerinfo : ICommand

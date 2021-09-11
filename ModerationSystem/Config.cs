@@ -34,19 +34,5 @@ namespace ModerationSystem
 
         [Description("The broadcast to the staff when player get banned")]
         public Exiled.API.Features.Broadcast StaffBanMessage { get; set; } = new Exiled.API.Features.Broadcast("<size=30><color=aqua>Staffer</color> <color=red>{staffer}</color> <color=aqua>banned</color> <color=red>{target}</color> <color=aqua>for</color> <color=red>{time}</color> <color=aqua>with reason:</color></size>\n<color=aqua>{reason}</color>");
-        [Description("WebHook URL")] public string WebHookURL { get; set; } = "CHANGE ME";
-        [Description("Name of WebHook")] public string WebHookName { get; set; } = "ModerationSystem WebHook";
-
-        [Description("The Message when player will be warned (Webhook)")]
-        public string WarnedMessageWebHook { get; set; } = "**Staffer:**\n {staffer}\n\n**Target:**\n {target.Name} {target.Id}\n\n**Warnid:**\n {warnid}\n\n**Reason:**\n {reason}";
-
-        [Description("The Message when player will be muted (Webhook)")]
-        public string MutedMessageWebHook { get; set; } = "**Staffer**\n {staffer}\n\n**Target:**\n {target.Name} {target.Id}\n\n**MuteId:**\n {muteid}\n\n **Duration**\n{duration} minutes\n\n**Reason**\n{reason}";
-
-        [Description("The Message when player will be banned (WebHook)")]
-        public string BanMessageWebHook { get; set; } = "**Staffer**\n {staffer}\n\n**Target:**\n {target.Name} {target.Id}\n\n**BanId:**\n {banid}\n\n **Duration**\n{duration} minutes\n\n**Reason**\n{reason}";
-
-        [Description("The Message when player will be kicked (Webhook)")]
-        public string KickedMessageWebHook { get; set; } = "**Staffer:**\n {staffer}\n\n**Target:**\n {target.Name} {target.Id}\n\n**Kickid:**\n {kickid}\n\n**Reason:**\n {reason}";
     }
 }
