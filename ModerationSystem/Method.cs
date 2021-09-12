@@ -20,7 +20,12 @@ namespace ModerationSystem
         public static void Mute(Player target, Collections.Player issuer, Collections.Player dPlayer, string reason, DateTime duration)
         {
             new Mute(dPlayer, issuer, reason, duration.ToString("HH:mm:ss"), DateTime.Now, DateTime.Now.AddSeconds(GetTotalSeconds(duration)), LiteDatabase.GetCollection<Mute>().Find(m => m.Target == dPlayer).ToList().Count).Save();
-            Timing.RunCoroutine(MutePlayer(GetTotalSeconds(duration), target));
+            MuteHandler.IssuePersistentMute(dPlayer.Id+dPlayer.Authentication);
+            if (target != null)
+            {
+                target.IsMuted = true;
+                target.IsIntercomMuted = true;
+            }
             target?.Broadcast(Plugin.Singleton.Config.PlayerMuteMessage.Duration, Plugin.Singleton.Config.PlayerMuteMessage.Content.Replace("{duration}", duration.ToString("HH:mm:ss")).Replace("{reason}", reason));
         }
 
@@ -39,15 +44,6 @@ namespace ModerationSystem
         public static void SendBroadcast(Exiled.API.Features.Broadcast broadcast)
         {
             foreach (var player in Player.List.Where(p => p.RemoteAdminAccess)) player.Broadcast(broadcast, true);
-        }
-
-        private static IEnumerator<float> MutePlayer(int duration, Player player)
-        {
-            player.IsMuted = true;
-            player.IsIntercomMuted = true;
-            yield return Timing.WaitForSeconds(duration);
-            player.IsMuted = false;
-            player.IsIntercomMuted = false;
         }
 
         private static int GetTotalSeconds(DateTime time)

@@ -1,4 +1,5 @@
-﻿using Exiled.Events.EventArgs;
+﻿using Exiled.API.Features;
+using Exiled.Events.EventArgs;
 
 namespace ModerationSystem.Events
 {
@@ -20,6 +21,18 @@ namespace ModerationSystem.Events
             {
                 dPlayer.Name = ev.Player.Nickname;
                 dPlayer.Save();
+            }
+            if (!dPlayer.IsMuted() && MuteHandler.QueryPersistentMute(ev.Player.UserId))
+            {
+                MuteHandler.RevokePersistentMute(ev.Player.UserId);
+                ev.Player.IsMuted = false;
+                ev.Player.IsIntercomMuted = false;
+                return;
+            }
+            if (dPlayer.IsMuted() && !ev.Player.IsMuted)
+            {
+                ev.Player.IsMuted = true;
+                ev.Player.IsIntercomMuted = true;
             }
         }
 
