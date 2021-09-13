@@ -75,7 +75,7 @@ namespace ModerationSystem.Commands
             }
             Method.Mute(target, issuer, dPlayer, reason, Convert.ToDateTime(duration));
             Method.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.StaffMuteMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}").Replace("{reason}", reason).Replace("{time}", duration)));
-            response = $"The player {dPlayer.Name} ({dPlayer.Name}@{dPlayer.Authentication}) has been muted for: {duration}. With reason: {reason}";
+            response = $"The player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) has been muted for: {duration}. With reason: {reason}";
             return true;
         }
     }

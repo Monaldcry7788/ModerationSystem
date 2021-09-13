@@ -6,11 +6,12 @@ namespace ModerationSystem.Collections
     public class Player
     {
         [BsonCtor]
-        public Player(string id, string authentication, string name)
+        public Player(string id, string authentication, string name, bool isactuallymuted)
         {
             Id = id;
             Authentication = authentication;
             Name = name;
+            IsActuallyMuted = isactuallymuted;
         }
 
         public string Id { get; }
@@ -18,6 +19,7 @@ namespace ModerationSystem.Collections
         public string Authentication { get; }
 
         public string Name { get; internal set; }
+        public bool IsActuallyMuted { get; internal set; }
 
 
         public bool IsMuted()

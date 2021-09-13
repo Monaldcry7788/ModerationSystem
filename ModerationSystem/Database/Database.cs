@@ -10,7 +10,7 @@ namespace ModerationSystem
 {
     internal static class Database
     {
-        public static Player ServerPlayer = new Player(null, null, "Server");
+        public static Player ServerPlayer = new Player(null, null, "Server", false);
         public static LiteDatabase LiteDatabase { get; private set; }
         public static ILiteCollection<Player> PlayerCollection { get; private set; }
         public static ILiteCollection<Warn> WarnCollection { get; private set; }

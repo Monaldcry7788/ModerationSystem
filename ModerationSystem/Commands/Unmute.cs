@@ -64,7 +64,8 @@ namespace ModerationSystem.Commands
         private void RemoveMute(Player player, int id)
         {
             LiteDatabase.GetCollection<Collections.Mute>().DeleteMany(x => x.Muteid == id && player == x.Target);
-            MuteHandler.RevokePersistentMute(player.Id+player.Authentication);
+            player.IsActuallyMuted = false;
+            player.Save();
         }
     }
 }

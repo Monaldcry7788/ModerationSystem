@@ -33,7 +33,8 @@ namespace ModerationSystem
             (
                 sender?.SenderId?.GetRawUserId() ?? "Server",
                 sender?.SenderId?.GetAuthentication() ?? "Server",
-                sender?.Nickname ?? "Server"
+                sender?.Nickname ?? "Server",
+                false
             );
         }
         private static string GetAuthentication(this string userId) => userId.Substring(userId.LastIndexOf('@') + 1);

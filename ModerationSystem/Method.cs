@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Exiled.API.Features;
 using MEC;
 using ModerationSystem.Collections;
 using static ModerationSystem.Database;
@@ -20,13 +22,9 @@ namespace ModerationSystem
         public static void Mute(Player target, Collections.Player issuer, Collections.Player dPlayer, string reason, DateTime duration)
         {
             new Mute(dPlayer, issuer, reason, duration.ToString("HH:mm:ss"), DateTime.Now, DateTime.Now.AddSeconds(GetTotalSeconds(duration)), LiteDatabase.GetCollection<Mute>().Find(m => m.Target == dPlayer).ToList().Count).Save();
-            MuteHandler.IssuePersistentMute(dPlayer.Id+dPlayer.Authentication);
-            if (target != null)
-            {
-                target.IsMuted = true;
-                target.IsIntercomMuted = true;
-            }
-            target?.Broadcast(Plugin.Singleton.Config.PlayerMuteMessage.Duration, Plugin.Singleton.Config.PlayerMuteMessage.Content.Replace("{duration}", duration.ToString("HH:mm:ss")).Replace("{reason}", reason));
+            if (target == null) return;
+            Mute(target);
+            target.Broadcast(Plugin.Singleton.Config.PlayerMuteMessage.Duration, Plugin.Singleton.Config.PlayerMuteMessage.Content.Replace("{duration}", duration.ToString("HH:mm:ss")).Replace("{reason}", reason));
         }
 
         public static void Kick(Player target, Collections.Player issuer, Collections.Player dPlayer, string reason)
@@ -50,6 +48,12 @@ namespace ModerationSystem
         {
             int totalSeconds = (time.Hour*3600)+(time.Minute*60)+time.Second;
             return totalSeconds;
+        }
+
+        private static void Mute(Player player)
+        {
+            player.IsMuted = true;
+            player.IsIntercomMuted = true;
         }
     }
 }

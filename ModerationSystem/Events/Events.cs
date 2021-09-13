@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs;
+using ModerationSystem.Collections;
 
 namespace ModerationSystem.Events
 {
@@ -13,7 +14,8 @@ namespace ModerationSystem.Events
             var dPlayer = ev.Player.GetPlayer() ?? new Collections.Player(
                 ev.Player.RawUserId,
                 ev.Player.AuthenticationType.ToString().ToLower(),
-                ev.Player.Nickname
+                ev.Player.Nickname,
+                false
             );
             PlayerData.Add(ev.Player, dPlayer);
 
@@ -22,11 +24,12 @@ namespace ModerationSystem.Events
                 dPlayer.Name = ev.Player.Nickname;
                 dPlayer.Save();
             }
-            if (!dPlayer.IsMuted() && MuteHandler.QueryPersistentMute(ev.Player.UserId))
+            if (!dPlayer.IsMuted() && dPlayer.IsActuallyMuted)
             {
-                MuteHandler.RevokePersistentMute(ev.Player.UserId);
                 ev.Player.IsMuted = false;
                 ev.Player.IsIntercomMuted = false;
+                dPlayer.IsActuallyMuted = false;
+                dPlayer.Save();
                 return;
             }
             if (dPlayer.IsMuted() && !ev.Player.IsMuted)
