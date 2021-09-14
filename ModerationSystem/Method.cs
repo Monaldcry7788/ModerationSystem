@@ -23,7 +23,7 @@ namespace ModerationSystem
         {
             new Mute(dPlayer, issuer, reason, duration.ToString("HH:mm:ss"), DateTime.Now, DateTime.Now.AddSeconds(GetTotalSeconds(duration)), LiteDatabase.GetCollection<Mute>().Find(m => m.Target == dPlayer).ToList().Count).Save();
             if (target == null) return;
-            Mute(target);
+            Mute(target, dPlayer);
             target.Broadcast(Plugin.Singleton.Config.PlayerMuteMessage.Duration, Plugin.Singleton.Config.PlayerMuteMessage.Content.Replace("{duration}", duration.ToString("HH:mm:ss")).Replace("{reason}", reason));
         }
 
@@ -50,10 +50,12 @@ namespace ModerationSystem
             return totalSeconds;
         }
 
-        private static void Mute(Player player)
+        private static void Mute(Player player, Collections.Player dPlayer)
         {
             player.IsMuted = true;
             player.IsIntercomMuted = true;
+            dPlayer.IsActuallyMuted = true;
+            dPlayer.Save();
         }
     }
 }

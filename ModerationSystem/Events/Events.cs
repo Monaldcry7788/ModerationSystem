@@ -36,6 +36,8 @@ namespace ModerationSystem.Events
             {
                 ev.Player.IsMuted = true;
                 ev.Player.IsIntercomMuted = true;
+                dPlayer.IsActuallyMuted = true;
+                dPlayer.Save();
             }
         }
 
