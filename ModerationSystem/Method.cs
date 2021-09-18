@@ -15,8 +15,7 @@ namespace ModerationSystem
         public static void Warn(Player target, Collections.Player issuer, Collections.Player dPlayer, string reason)
         {
             new Warn(dPlayer, issuer, reason, DateTime.Now, LiteDatabase.GetCollection<Warn>().Find(w => w.Target.Id == dPlayer.Id).ToList().Count).Save();
-            target?.Broadcast(Plugin.Singleton.Config.PlayerWarnMessage.Duration,
-                Plugin.Singleton.Config.PlayerWarnMessage.Content.Replace("{reason}", reason));
+            target?.Broadcast(Plugin.Singleton.Config.PlayerWarnMessage.Duration, Plugin.Singleton.Config.PlayerWarnMessage.Content.Replace("{reason}", reason), Broadcast.BroadcastFlags.Normal, false);
         }
 
         public static void Mute(Player target, Collections.Player issuer, Collections.Player dPlayer, string reason, DateTime duration)
@@ -24,7 +23,7 @@ namespace ModerationSystem
             new Mute(dPlayer, issuer, reason, duration.ToString("HH:mm:ss"), DateTime.Now, DateTime.Now.AddSeconds(GetTotalSeconds(duration)), LiteDatabase.GetCollection<Mute>().Find(m => m.Target == dPlayer).ToList().Count).Save();
             if (target == null) return;
             Mute(target, dPlayer);
-            target.Broadcast(Plugin.Singleton.Config.PlayerMuteMessage.Duration, Plugin.Singleton.Config.PlayerMuteMessage.Content.Replace("{duration}", duration.ToString("HH:mm:ss")).Replace("{reason}", reason));
+            target.Broadcast(Plugin.Singleton.Config.PlayerMuteMessage.Duration, Plugin.Singleton.Config.PlayerMuteMessage.Content.Replace("{duration}", duration.ToString("HH:mm:ss")).Replace("{reason}", reason), Broadcast.BroadcastFlags.Normal, false);
         }
 
         public static void Kick(Player target, Collections.Player issuer, Collections.Player dPlayer, string reason)

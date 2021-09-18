@@ -1,6 +1,5 @@
 ﻿using System;
 using Exiled.API.Features;
-using HarmonyLib;
 using Player = Exiled.Events.Handlers.Player;
 
 namespace ModerationSystem
@@ -13,8 +12,7 @@ namespace ModerationSystem
         public override string Author { get; } = "Monaldcry7788#9248";
         public override string Name { get; } = "ModerationSystem";
         public override Version Version { get; } = new Version(2, 0, 2);
-        public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
-        public Harmony Harmony { get; private set; }
+        public override Version RequiredExiledVersion { get; } = new Version(2, 14, 0);
 
         public override void OnEnabled()
         {
