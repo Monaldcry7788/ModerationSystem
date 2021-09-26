@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Exiled.API.Features;
-using MEC;
 using ModerationSystem.Collections;
 using static ModerationSystem.Database;
 using Player = Exiled.API.Features.Player;
@@ -14,14 +10,14 @@ namespace ModerationSystem
     {
         public static void Warn(Player target, Collections.Player issuer, Collections.Player dPlayer, string reason)
         {
-            new Warn(dPlayer, issuer, reason, DateTime.Now, WarnCollection.Find(w => w.Target.Id == dPlayer.Id).ToList().Count).Save();
+            new Warn(dPlayer, issuer, reason, DateTime.Now, WarnCollection.Find(w => w.Target.Id == dPlayer.Id).Count()).Save();
             target?.Broadcast(Plugin.Singleton.Config.PlayerWarnMessage.Duration,
                 Plugin.Singleton.Config.PlayerWarnMessage.Content.Replace("{reason}", reason));
         }
 
         public static void Mute(Player target, Collections.Player issuer, Collections.Player dPlayer, string reason, DateTime duration)
         {
-            new Mute(dPlayer, issuer, reason, duration.ToString("HH:mm:ss"), DateTime.Now, DateTime.Now.AddSeconds(GetTotalSeconds(duration)), MuteCollection.Find(m => m.Target == dPlayer).ToList().Count).Save();
+            new Mute(dPlayer, issuer, reason, duration.ToString("HH:mm:ss"), DateTime.Now, DateTime.Now.AddSeconds(GetTotalSeconds(duration)), MuteCollection.Find(m => m.Target == dPlayer).Count()).Save();
             if (target == null) return;
             Mute(target, dPlayer);
             target.Broadcast(Plugin.Singleton.Config.PlayerMuteMessage.Duration, Plugin.Singleton.Config.PlayerMuteMessage.Content.Replace("{duration}", duration.ToString("HH:mm:ss")).Replace("{reason}", reason));
@@ -29,13 +25,13 @@ namespace ModerationSystem
 
         public static void Kick(Player target, Collections.Player issuer, Collections.Player dPlayer, string reason)
         {
-            new Kick(dPlayer, issuer, reason, DateTime.Now, KickCollection.Find(x => x.Target.Id == dPlayer.Id).ToList().Count).Save();
+            new Kick(dPlayer, issuer, reason, DateTime.Now, KickCollection.Find(x => x.Target.Id == dPlayer.Id).Count()).Save();
             target?.Kick(Plugin.Singleton.Config.PlayerKickMessage.Replace("{reason}", reason));
         }
 
         public static void Ban(Player target, Collections.Player issuer, Collections.Player dPlayer, string reason, DateTime duration)
         {
-            new Ban(dPlayer, issuer, reason, duration.ToString("HH:mm:ss"), DateTime.Now, DateTime.Now.AddSeconds(GetTotalSeconds(duration)), BanCollection.Find(x => x.Target.Id == dPlayer.Id).ToList().Count).Save();
+            new Ban(dPlayer, issuer, reason, duration.ToString("HH:mm:ss"), DateTime.Now, DateTime.Now.AddSeconds(GetTotalSeconds(duration)), BanCollection.Find(x => x.Target.Id == dPlayer.Id).Count()).Save();
             target?.Ban(GetTotalSeconds(duration), Plugin.Singleton.Config.PlayerBanMessage.Replace("{reason}", reason), "ModerationSystem");
         }
 
