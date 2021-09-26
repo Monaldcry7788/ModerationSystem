@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using CommandSystem;
 using Exiled.Permissions.Extensions;
@@ -48,16 +48,17 @@ namespace ModerationSystem.Commands
                 return false;
             }
 
-            var warnid = WarnCollection.Find(x => x.Target.Id == dPlayer.Id && x.Warnid == id).ToList();
-            if (!warnid.IsEmpty())
+            var warnid = WarnCollection.FindOne(x => x.Target.Id == dPlayer.Id && x.Warnid == id);
+            if (warnid == null)
             {
-                RemoveWarn(dPlayer, id);
-                response = $"Warn {id} has been removed!";
-                return true;
+                
+                response = "Warn ID not found";
+                return false;
             }
+            RemoveWarn(dPlayer, id);
+            response = $"Warn {id} has been removed!";
+            return true;
 
-            response = "Warn ID not found";
-            return false;
         }
 
         private void RemoveWarn(Player player, int id)
