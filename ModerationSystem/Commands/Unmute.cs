@@ -36,7 +36,6 @@ namespace ModerationSystem.Commands
             }
 
             var dPlayer = arguments.At(0).GetPlayer();
-            var target = Exiled.API.Features.Player.Get(arguments.At(0));
             if (dPlayer == null)
             {
                 response = "Player not found!";
@@ -49,7 +48,7 @@ namespace ModerationSystem.Commands
                 return false;
             }
 
-            var muteid = LiteDatabase.GetCollection<Collections.Mute>().Find(x => x.Target == dPlayer).ToList();
+            var muteid = MuteCollection.Find(x => x.Target == dPlayer).ToList();
             if (!muteid.IsEmpty())
             {
                 RemoveMute(dPlayer, id);
@@ -63,7 +62,7 @@ namespace ModerationSystem.Commands
 
         private void RemoveMute(Player player, int id)
         {
-            LiteDatabase.GetCollection<Collections.Mute>().DeleteMany(x => x.Muteid == id && player == x.Target);
+            MuteCollection.DeleteMany(x => x.Muteid == id && player == x.Target);
             player.IsActuallyMuted = false;
             player.Save();
         }

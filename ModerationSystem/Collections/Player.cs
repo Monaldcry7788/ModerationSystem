@@ -24,14 +24,14 @@ namespace ModerationSystem.Collections
 
         public bool IsMuted()
         {
-            return Database.LiteDatabase.GetCollection<Mute>().Exists(mute => mute.Target.Id == Id && mute.Expire > DateTime.Now);
+            return Database.MuteCollection.Exists(mute => mute.Target.Id == Id && mute.Expire > DateTime.Now);
         }
 
-        public void Save() => Database.LiteDatabase.GetCollection<Player>().Upsert(this);
+        public void Save() => Database.PlayerCollection.Upsert(this);
 
-            public bool IsBanned()
+        public bool IsBanned()
         {
-            return Database.LiteDatabase.GetCollection<Ban>().Exists(ban => ban.Target.Id == Id && ban.Expire > DateTime.Now);
+            return Database.BanCollection.Exists(ban => ban.Target.Id == Id && ban.Expire > DateTime.Now);
         }
     }
 }

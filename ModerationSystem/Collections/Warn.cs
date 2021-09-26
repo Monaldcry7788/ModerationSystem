@@ -30,7 +30,7 @@ namespace ModerationSystem.Collections
         public DateTime Date { get; set; }
         public int Warnid { get; set; }
 
-        public void Save() => Database.LiteDatabase.GetCollection<Warn>().Insert(this);
-        
+        public void Save() => Database.WarnCollection.Insert(this);
+
     }
 }

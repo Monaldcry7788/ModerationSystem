@@ -8,10 +8,7 @@ namespace ModerationSystem
     {
         public static Collections.Player GetPlayer(this string player)
         {
-            return Player.Get(player)?.GetPlayer() ??
-                   LiteDatabase.GetCollection<Collections.Player>().Query()
-                       .Where(qPlayer => qPlayer.Id == player.GetRawUserId() || qPlayer.Name == player)
-                       .FirstOrDefault();
+            return Player.Get(player)?.GetPlayer() ?? PlayerCollection.Query().Where(qPlayer => qPlayer.Id == player.GetRawUserId() || qPlayer.Name == player).FirstOrDefault();
         }
 
         public static Collections.Player GetPlayer(this Player player)
@@ -19,7 +16,7 @@ namespace ModerationSystem
             if (player == null || string.IsNullOrEmpty(player.UserId) && !player.IsHost) return null;
             if (player.IsHost) return ServerPlayer;
             if (PlayerData.TryGetValue(player, out var dPlayer)) return dPlayer;
-            return LiteDatabase.GetCollection<Collections.Player>().FindById(player.RawUserId);
+            return PlayerCollection.FindById(player.RawUserId);
         }
         private static string GetRawUserId(this string userId)
         {
@@ -38,5 +35,5 @@ namespace ModerationSystem
             );
         }
         private static string GetAuthentication(this string userId) => userId.Substring(userId.LastIndexOf('@') + 1);
-        }
+    }
 }
