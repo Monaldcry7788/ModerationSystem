@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using CommandSystem;
 using Exiled.Permissions.Extensions;
@@ -48,16 +48,15 @@ namespace ModerationSystem.Commands
                 return false;
             }
 
-            var muteid = MuteCollection.Find(x => x.Target == dPlayer).ToList();
-            if (!muteid.IsEmpty())
+            var muteid = MuteCollection.FindOne(x => x.Target == dPlayer);
+            if (muteid == null)
             {
-                RemoveMute(dPlayer, id);
-                response = $"Mute {id} has been removed!";
-                return true;
+                response = "Mute ID not found";
+                return false;
             }
-
-            response = "Mute ID not found";
-            return false;
+            RemoveMute(dPlayer, id);
+            response = $"Mute {id} has been removed!";
+            return true;
         }
 
         private void RemoveMute(Player player, int id)
