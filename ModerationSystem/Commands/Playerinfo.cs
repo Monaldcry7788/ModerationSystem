@@ -43,13 +43,12 @@ namespace ModerationSystem.Commands
             var text = StringBuilderPool.Shared.Rent().AppendLine();
             text.AppendLine($"{dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication})").AppendLine();
             var message = StringBuilderPool.Shared.ToStringReturn(text) +
-                          GetWarn(Database.LiteDatabase.GetCollection<Collections.Warn>()
+                          GetWarn(Database.WarnCollection
                               .Find(w => w.Target.Id == dPlayer.Id).ToList()) +
-                          GetKick(Database.LiteDatabase.GetCollection<Collections.Kick>()
+                          GetKick(Database.KickCollection
                               .Find(k => k.Target.Id == dPlayer.Id).ToList()) +
-                          GetBan(Database.LiteDatabase.GetCollection<Collections.Ban>()
-                              .Find(b => b.Target.Id == dPlayer.Id).ToList()) + GetMute(Database.LiteDatabase
-                              .GetCollection<Collections.Mute>().Find(m => m.Target.Id == dPlayer.Id).ToList());
+                          GetBan(Database.BanCollection
+                              .Find(b => b.Target.Id == dPlayer.Id).ToList()) + GetMute(Database.MuteCollection.Find(m => m.Target.Id == dPlayer.Id).ToList());
             response = message;
             return true;
         }

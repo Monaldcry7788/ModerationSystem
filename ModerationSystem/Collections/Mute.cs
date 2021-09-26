@@ -37,9 +37,6 @@ namespace ModerationSystem.Collections
         public DateTime Expire { get; set; }
         public int Muteid { get; set; }
 
-        public void Save()
-        {
-            Database.LiteDatabase.GetCollection<Mute>().Insert(this);
-        }
+        public void Save() => Database.MuteCollection.Insert(this);
     }
 }

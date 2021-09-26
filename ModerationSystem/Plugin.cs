@@ -11,8 +11,8 @@ namespace ModerationSystem
         internal Events.Events Events { get; private set; }
         public override string Author { get; } = "Monaldcry7788#9248";
         public override string Name { get; } = "ModerationSystem";
-        public override Version Version { get; } = new Version(2, 0, 2);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 14, 0);
+        public override Version Version { get; } = new Version(2, 0, 3);
+        public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
 
         public override void OnEnabled()
         {

@@ -48,7 +48,7 @@ namespace ModerationSystem.Commands
                 return false;
             }
 
-            var warnid = LiteDatabase.GetCollection<Collections.Warn>().Find(x => x.Target.Id == dPlayer.Id && x.Warnid == id).ToList();
+            var warnid = WarnCollection.Find(x => x.Target.Id == dPlayer.Id && x.Warnid == id).ToList();
             if (!warnid.IsEmpty())
             {
                 RemoveWarn(dPlayer, id);
@@ -62,7 +62,7 @@ namespace ModerationSystem.Commands
 
         private void RemoveWarn(Player player, int id)
         {
-            LiteDatabase.GetCollection<Collections.Warn>().DeleteMany(x => x.Warnid == id && x.Target == player);
+            WarnCollection.DeleteMany(x => x.Warnid == id && x.Target == player);
         }
     }
 }

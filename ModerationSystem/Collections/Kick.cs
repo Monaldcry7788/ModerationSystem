@@ -31,6 +31,6 @@ namespace ModerationSystem.Collections
         public int Kickid { get; set; }
 
 
-        public void Save() => Database.LiteDatabase.GetCollection<Kick>().Insert(this);
+        public void Save() => Database.KickCollection.Insert(this);
     }
 }

@@ -39,7 +39,7 @@ namespace ModerationSystem.Collections
 
         public void Save()
         {
-            Database.LiteDatabase.GetCollection<Ban>().Insert(this);
+            Database.BanCollection.Insert(this);
         }
     }
 }

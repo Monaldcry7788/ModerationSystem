@@ -50,7 +50,7 @@ namespace ModerationSystem.Commands
             if (!dPlayer.IsBanned())
                 response = $"Player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) isn't banned!";
 
-            var banid = LiteDatabase.GetCollection<Collections.Ban>().Find(x => x.Target.Id == dPlayer.Id).ToList();
+            var banid = BanCollection.Find(x => x.Target.Id == dPlayer.Id).ToList();
             if (!banid.IsEmpty())
             {
                 RemoveBan(dPlayer, id);
@@ -66,7 +66,7 @@ namespace ModerationSystem.Commands
         {
             BanHandler.RemoveBan(player.Id+player.Authentication, BanHandler.BanType.UserId);
             BanHandler.RemoveBan(player.Id+player.Authentication, BanHandler.BanType.IP);
-            LiteDatabase.GetCollection<Collections.Ban>().DeleteMany(x => x.Banid == id && player == x.Target);
+            BanCollection.DeleteMany(x => x.Banid == id && player == x.Target);
         }
     }
 }
