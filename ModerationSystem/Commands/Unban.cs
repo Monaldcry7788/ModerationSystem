@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using CommandSystem;
 using Exiled.Permissions.Extensions;
@@ -50,16 +50,16 @@ namespace ModerationSystem.Commands
             if (!dPlayer.IsBanned())
                 response = $"Player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) isn't banned!";
 
-            var banid = BanCollection.Find(x => x.Target.Id == dPlayer.Id).ToList();
-            if (!banid.IsEmpty())
+            var banid = BanCollection.FindOne(x => x.Target.Id == dPlayer.Id);
+            if (banid == null)
             {
-                RemoveBan(dPlayer, id);
-                response = $"Player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) unbanned!";
-                return true;
+                response = "Ban ID not found!";
+                return false;
             }
-
-            response = "Ban ID not found!";
-            return false;
+            RemoveBan(dPlayer, id);
+            response = $"Player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) unbanned!";
+            return true;
+            
         }
 
         private void RemoveBan(Player player, int id)
