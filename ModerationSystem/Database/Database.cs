@@ -10,18 +10,23 @@ namespace ModerationSystem
 {
     internal static class Database
     {
-        public static Player ServerPlayer = new Player(null, null, "Server", false);
+        public static Player ServerPlayer = new Player(null, null, "Server");
         public static LiteDatabase LiteDatabase { get; private set; }
         public static ILiteCollection<Player> PlayerCollection { get; private set; }
         public static ILiteCollection<Warn> WarnCollection { get; private set; }
         public static ILiteCollection<Kick> KickCollection { get; private set; }
         public static ILiteCollection<Mute> MuteCollection { get; private set; }
         public static ILiteCollection<Ban> BanCollection { get; private set; }
+        public static ILiteCollection<SoftBan> SoftBanCollection { get; private set; }
+        public static ILiteCollection<SoftWarn> SoftWarnCollection { get; private set; }
+        public static ILiteCollection<WatchList> WatchListCollection { get; private set; }
 
         public static Dictionary<Exiled.API.Features.Player, Player> PlayerData { get; } = new Dictionary<Exiled.API.Features.Player, Player>();
 
-        public static string Folder => Path.Combine(Paths.Plugins, Plugin.Singleton.Config.DatabaseName);
-        public static string FullPath => Path.Combine(Folder, $"{Plugin.Singleton.Config.DatabaseName}.db");
+        public static string GlobalFolder => Path.Combine(Paths.Plugins, "ModerationSystem");
+        public static string Folder => Path.Combine(Path.Combine(GlobalFolder, $"ModerationSystem-{Server.Port}"));
+        public static string DatabasePath => Path.Combine(Folder, $"{Plugin.Singleton.Config.DatabaseName}-{Server.Port}.db");
+        public static string CacheFolder => Path.Combine(GlobalFolder, "Cache");
 
         public static void Open()
         {
@@ -29,13 +34,16 @@ namespace ModerationSystem
             {
                 if (!Directory.Exists(Folder)) Directory.CreateDirectory(Folder);
 
-                LiteDatabase = new LiteDatabase(FullPath);
+                LiteDatabase = new LiteDatabase(DatabasePath);
                 PlayerCollection = LiteDatabase.GetCollection<Player>();
                 WarnCollection = LiteDatabase.GetCollection<Warn>();
                 KickCollection = LiteDatabase.GetCollection<Kick>();
                 MuteCollection = LiteDatabase.GetCollection<Mute>();
                 BanCollection = LiteDatabase.GetCollection<Ban>();
-
+                SoftBanCollection = LiteDatabase.GetCollection<SoftBan>();
+                SoftWarnCollection = LiteDatabase.GetCollection<SoftWarn>();
+                WatchListCollection = LiteDatabase.GetCollection<WatchList>();
+                
                 PlayerCollection.EnsureIndex(p => p.Id, true);
                 WarnCollection.EnsureIndex(w => w.Target.Id);
                 WarnCollection.EnsureIndex(w => w.Issuer.Id);
@@ -51,6 +59,17 @@ namespace ModerationSystem
                 BanCollection.EnsureIndex(b => b.Issuer.Id);
                 BanCollection.EnsureIndex(b => b.Date);
                 BanCollection.EnsureIndex(b => b.Expire);
+                SoftBanCollection.EnsureIndex(sb => sb.Target.Id);
+                SoftBanCollection.EnsureIndex(sb => sb.Issuer.Id);
+                SoftBanCollection.EnsureIndex(sb => sb.Date);
+                SoftBanCollection.EnsureIndex(sb => sb.Expire);
+                SoftWarnCollection.EnsureIndex(sw => sw.Target.Id);
+                SoftWarnCollection.EnsureIndex(sw => sw.Issuer.Id);
+                SoftWarnCollection.EnsureIndex(sw => sw.Date);
+                WatchListCollection.EnsureIndex(wl => wl.Target.Id);
+                WatchListCollection.EnsureIndex(wl => wl.Issuer.Id);
+                WatchListCollection.EnsureIndex(wl => wl.Date);
+
                 Log.Info("Database Loaded!");
             }
             catch (Exception e)

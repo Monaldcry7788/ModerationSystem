@@ -5,12 +5,8 @@ namespace ModerationSystem.Collections
 {
     public class Ban
     {
-        public Ban()
-        {
-        }
-
         public Ban(Player target, Player issuer, string reason, string duration, DateTime date, DateTime expire,
-            int banid)
+            int banId, int server, bool clear)
         {
             Id = ObjectId.NewObjectId();
             Target = target;
@@ -19,11 +15,11 @@ namespace ModerationSystem.Collections
             Duration = duration;
             Date = date;
             Expire = expire;
-            Banid = banid;
+            BanId = banId;
+            Server = server;
+            Clear = clear;
         }
-
-        public ObjectId Id { get; }
-
+        public ObjectId Id { get; set; }
         public Player Target { get; set; }
 
         public Player Issuer { get; set; }
@@ -35,11 +31,11 @@ namespace ModerationSystem.Collections
         public DateTime Date { get; set; }
 
         public DateTime Expire { get; set; }
-        public int Banid { get; set; }
+        public int BanId { get; set; }
+        public int Server { get; set; }
+        public bool Clear { get; set; }
 
-        public void Save()
-        {
-            Database.BanCollection.Insert(this);
-        }
+        public void Save() => Database.BanCollection.Insert(this);
+        public void Update() => Database.BanCollection.Update(this);
     }
 }

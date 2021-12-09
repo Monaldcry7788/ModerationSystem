@@ -3,6 +3,7 @@ using System.Linq;
 using CommandSystem;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
+using ModerationSystem.Enums;
 
 namespace ModerationSystem.Commands
 {
@@ -22,44 +23,37 @@ namespace ModerationSystem.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            var kickTranslation = Plugin.Singleton.Config.Translation.KickTranslation;
             if (!sender.CheckPermission("ms.kick"))
             {
-                response = "You can't do this command";
+                response = kickTranslation.InvalidPermission.Replace("{permission}", "ms.kick");
                 return false;
             }
 
             if (arguments.Count < 1)
             {
-                response = "Usage: ms kick/k <player name or ID> <reason>";
+                response = kickTranslation.WrongUsage;
                 return false;
             }
 
             var dPlayer = arguments.At(0).GetPlayer();
-            var issuer = ((CommandSender)sender).GetStaffer();
-            var target = Player.Get(arguments.At(0));
             if (dPlayer == null)
             {
-                response = "Player not found!";
+                response = kickTranslation.PlayerNotFound;
                 return false;
             }
 
             var reason = string.Join(" ", arguments.Skip(1).Take(arguments.Count - 1));
             if (string.IsNullOrEmpty(reason))
             {
-                response = "Reason can't be null";
+                response = kickTranslation.ReasonNull;
                 return false;
             }
-
-            var players = Player.List.Where(x => x.RawUserId == dPlayer.Id).ToList();
-            if (!players.IsEmpty())
-            {
-                Method.Kick(target, issuer, dPlayer, reason);
-                Method.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.StaffKickMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}").Replace("{reason}", reason)));
-                response = $"The player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) has been kicked for: {reason}";
-                return true;
-            }
-            response = "Player not found!";
-            return false;
+            
+            Method.ApplyPunish(Player.Get(arguments.At(0)), ((CommandSender)sender).GetStaffer(), dPlayer, PunishType.Kick, reason, DateTime.MinValue);
+            Method.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.Translation.StaffTranslation.StaffKickMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}").Replace("{reason}", reason)));
+            response = kickTranslation.PlayerKicked.Replace("{player.name}", $"{dPlayer.Name}").Replace("{player.userid}", $"{dPlayer.Id}@{dPlayer.Authentication}").Replace("{reason}", reason);
+            return true;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using CommandSystem;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
+using ModerationSystem.Enums;
 
 namespace ModerationSystem.Commands
 {
@@ -22,60 +23,51 @@ namespace ModerationSystem.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            var muteTranslation = Plugin.Singleton.Config.Translation.MuteTranslation;
             if (!sender.CheckPermission("ms.mute"))
             {
-                response = "You can't do this command!";
+                response = muteTranslation.InvalidPermission.Replace("{permission}", "ms.mute");
                 return false;
             }
 
             if (arguments.Count < 2)
             {
-                response = "Usage: ms mute/m <player name or ID> <time(s/m/h/d)> <reason>";
+                response = muteTranslation.WrongUsage;
                 return false;
             }
 
-            var target = Player.Get(arguments.At(0));
             var dPlayer = arguments.At(0).GetPlayer();
-            var issuer = ((CommandSender)sender).GetStaffer();
 
             if (dPlayer == null)
             {
-                response = "Player not found!!";
-                return false;
-            }
-            
-            string duration;
-            try
-            {
-                duration = Convert.ToDateTime(arguments.At(1)).ToString("HH:mm:ss");
-                if (!DateTime.TryParse(duration, out DateTime durationDateTime))
-                {
-                    response = $"{durationDateTime} is not a valid duration. Valid id: ss:mm:hh:dd";
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                response = $"{arguments.At(1)} is not a valid duration. Valid duration: HH:mm:ss";
+                response = muteTranslation.PlayerNotFound;
                 return false;
             }
 
+            var duration = Method.ConvertToDateTime(arguments.At(1));
+
+            if (duration == null)
+            {
+                response = muteTranslation.InvalidDuration.Replace("{duration}", arguments.At(1));
+            }
             var reason = string.Join(" ", arguments.Skip(2).Take(arguments.Count - 2));
 
             if (string.IsNullOrEmpty(reason))
             {
-                response = "Reason can't be null";
+                response = muteTranslation.ReasonNull;
                 return false;
             }
 
             if (dPlayer.IsMuted())
             {
-                response = "Player already muted";
+                response = muteTranslation.PlayerAlreadyMuted;
                 return false;
             }
-            Method.Mute(target, issuer, dPlayer, reason, Convert.ToDateTime(duration));
-            Method.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.StaffMuteMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}").Replace("{reason}", reason).Replace("{time}", duration)));
-            response = $"The player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) has been muted for: {duration}. With reason: {reason}";
+            Method.ApplyPunish(Player.Get(arguments.At(0)), ((CommandSender)sender).GetStaffer(), dPlayer, PunishType.Mute, reason, Convert.ToDateTime(duration));
+            Method.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.Translation.StaffTranslation.StaffMuteMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}").Replace("{reason}", reason).Replace("{time}", duration.ToString())));
+            response = muteTranslation.PlayerMuted.Replace("{player.name}", dPlayer.Name)
+                .Replace("{player.userid}", $"{dPlayer.Id}@{dPlayer.Authentication}")
+                .Replace("{duration}", duration.ToString()).Replace("{reason}", reason);
             return true;
         }
     }

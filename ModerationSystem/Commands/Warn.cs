@@ -3,7 +3,7 @@ using System.Linq;
 using CommandSystem;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
-using Broadcast = Exiled.API.Features.Broadcast;
+using ModerationSystem.Enums;
 
 namespace ModerationSystem.Commands
 {
@@ -23,37 +23,36 @@ namespace ModerationSystem.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            var warnTranslation = Plugin.Singleton.Config.Translation.WarnTranslation;
             if (!sender.CheckPermission("ms.warn"))
             {
-                response = "You can't do this command";
+                response = warnTranslation.InvalidPermission.Replace("{permission}", "ms.warn");
                 return false;
             }
 
             if (arguments.Count < 1)
             {
-                response = "Usage: ms warn/w <player name or ID> <reason>";
+                response = warnTranslation.WrongUsage;
                 return false;
             }
 
             var dPlayer = arguments.At(0).GetPlayer();
-            var issuer = ((CommandSender)sender).GetStaffer();
-            var target = Player.Get(arguments.At(0));
             if (dPlayer == null)
             {
-                response = "Player not found!";
+                response = warnTranslation.PlayerNotFound;
                 return false;
             }
 
             var reason = string.Join(" ", arguments.Skip(1).Take(arguments.Count - 1));
             if (string.IsNullOrEmpty(reason))
             {
-                response = "Reason can't be null";
+                response = warnTranslation.ReasonNull;
                 return false;
             }
 
-            Method.Warn(target, issuer, dPlayer, reason);
-            Method.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.StaffWarnMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}").Replace("{reason}", reason)));
-            response = $"The player {dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication}) has been warned for: {reason}";
+            Method.ApplyPunish(Player.Get(arguments.At(0)), ((CommandSender)sender).GetStaffer(), dPlayer, PunishType.Warn, reason, DateTime.MinValue);
+            Method.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.Translation.StaffTranslation.StaffWarnMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}").Replace("{reason}", reason)));
+            response = warnTranslation.PlayerWarned.Replace("{player.name}", dPlayer.Name).Replace("{player.userid}", $"{dPlayer.Id}@{dPlayer.Authentication}").Replace("{reason}", reason);
             return true;
         }
     }

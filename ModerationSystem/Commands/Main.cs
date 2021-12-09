@@ -21,15 +21,15 @@ namespace ModerationSystem.Commands
             RegisterCommand(Warn.Instance);
             RegisterCommand(Kick.Instance);
             RegisterCommand(Ban.Instance);
-            RegisterCommand(Unwarn.Instance);
-            RegisterCommand(Unban.Instance);
-            RegisterCommand(Playerinfo.Instance);
-            RegisterCommand(Unmute.Instance);
+            RegisterCommand(PlayerInfo.Instance);
+            RegisterCommand(Clear.Instance);
+            RegisterCommand(SoftBan.Instance);
+            RegisterCommand(WatchList.Instance);
         }
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Please, specify a sub command: warn, ban, kick, mute, playerinfo, unmute, unwarn, unban";
+            response = "Please, specify a sub command: warn, ban, kick, mute, playerinfo, clear, softwarn, softban, watchlist";
             return false;
         }
     }

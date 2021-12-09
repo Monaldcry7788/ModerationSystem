@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ModerationSystem")]
 [assembly: AssemblyDescription("A moderation plugin for SCP:SL")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Monaldcry7788")]
+[assembly: AssemblyCompany("Monald")]
 [assembly: AssemblyProduct("ModerationSystem")]
-[assembly: AssemblyCopyright("Copyright © Monaldcry7788 2021")]
+[assembly: AssemblyCopyright("Copyright © Monald 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

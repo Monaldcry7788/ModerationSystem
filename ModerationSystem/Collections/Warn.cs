@@ -9,18 +9,19 @@ namespace ModerationSystem.Collections
         {
         }
 
-        public Warn(Player target, Player issuer, string reason, DateTime date, int warnid)
+        public Warn(Player target, Player issuer, string reason, DateTime date, int warnId, int server, bool clear)
         {
             Id = ObjectId.NewObjectId();
             Target = target;
             Issuer = issuer;
             Reason = reason;
             Date = date;
-            Warnid = warnid;
+            WarnId = warnId;
+            Server = server;
+            Clear = clear;
         }
 
-        public ObjectId Id { get; }
-
+        public ObjectId Id { get; set; }
         public Player Target { get; set; }
 
         public Player Issuer { get; set; }
@@ -28,9 +29,12 @@ namespace ModerationSystem.Collections
         public string Reason { get; set; }
 
         public DateTime Date { get; set; }
-        public int Warnid { get; set; }
+        public int WarnId { get; set; }
+        public int Server { get; set; }
+        public bool Clear { get; set; }
 
         public void Save() => Database.WarnCollection.Insert(this);
+        public void Update() => Database.WarnCollection.Update(this);
 
     }
 }
