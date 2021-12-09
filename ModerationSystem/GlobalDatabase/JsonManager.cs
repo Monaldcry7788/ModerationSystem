@@ -20,7 +20,7 @@ namespace ModerationSystem.GlobalDatabase
                         ban.Clear = true;
                         ban.Update();
                     }
-                    File.WriteAllText(Path.Combine(Database.CacheFolder, $"chache-ban-{dPlayer.Id}@{dPlayer.Authentication}-{dPlayer.Name}-{Server.Port}.json"), JsonConvert.SerializeObject(ban, Formatting.Indented));
+                    File.WriteAllText(Path.Combine(Database.CacheFolder, $"cache-ban-{dPlayer.Id}@{dPlayer.Authentication}-{dPlayer.Name}-{Server.Port}.json"), JsonConvert.SerializeObject(ban, Formatting.Indented));
                     break;
                 case PunishType.Kick:
                     var kick = JsonConvert.DeserializeObject<Kick>(json);
