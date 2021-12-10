@@ -19,7 +19,7 @@ Welcome to ModerationSystem plugin!
 
 ### Variables:
 - **{reason}**: reason
-- **{player.name} and {player.userid}: player name and steam/discord id
+- **{player.name} and {player.userid}**: player name and steam/discord id
 - **{duration}**: duration
 
 
