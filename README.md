@@ -39,13 +39,13 @@ Download latest version of plugin and put ModerationSystem.dll into Plugin Exile
 | ------------- | ------------- | ------------- | ------------- |
 | ModerationSystem / ms  | none  | none | show sub-command |
 | ms warn / w  | player name or id - reason  | ms.warn | Warn a player |
-| ms mute / m  | Player name or ID - time ( in minutes) - reason | ms.mute | Mute a player |
+| ms mute / m  | Player name or ID - time ( HH:mm:ss ) - reason | ms.mute | Mute a player |
 | ms kick / k | player name or ID - reason | ms.kick | Kick a player |
-| ms ban / b | player name or ID - time (in minutes) - reason | ms.ban | Ban a player |
+| ms ban / b | player name or ID - time ( HH:mm:ss ) - reason | ms.ban | Ban a player |
 | ms playerInfo / pi | Player name or ID | ms.playerinfo | Show infractions of player |
 | ms clear / cl | Player name or ID | ms.clear | clear player punishement |
 | ms softwarn / sw | Player name or ID | ms.softwarn | Softwarn a player |
-| ms softban / sb | Player name or ID | ms.softban | Softban a player |
+| ms softban / sb | Player name or ID - time ( HH:mm:ss ) - reason | ms.softban | Softban a player |
 | ms watchlist / wl | Player name or ID | ms.watchlist | add a player into watchlist |
 
 If you found bug please contact me on discord: **Monald#9248** .<br /><br />
