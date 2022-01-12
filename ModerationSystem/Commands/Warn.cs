@@ -1,18 +1,15 @@
-﻿using System;
-using System.Linq;
-using CommandSystem;
-using Exiled.API.Features;
-using Exiled.Permissions.Extensions;
-using ModerationSystem.Enums;
-
-namespace ModerationSystem.Commands
+﻿namespace ModerationSystem.Commands
 {
+    using System;
+    using System.Linq;
+    using CommandSystem;
+    using Exiled.API.Features;
+    using Exiled.Permissions.Extensions;
+    using ModerationSystem.Configs.CommandTranslation;
+    using ModerationSystem.Enums;
+
     public class Warn : ICommand
     {
-        private Warn()
-        {
-        }
-
         public static Warn Instance { get; } = new Warn();
 
         public string Description { get; } = "Warn a player";
@@ -23,7 +20,8 @@ namespace ModerationSystem.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            var warnTranslation = Plugin.Singleton.Config.Translation.WarnTranslation;
+            WarnTranslation warnTranslation = Plugin.Singleton.Config.Translation.WarnTranslation;
+
             if (!sender.CheckPermission("ms.warn"))
             {
                 response = warnTranslation.InvalidPermission.Replace("{permission}", "ms.warn");
@@ -36,14 +34,16 @@ namespace ModerationSystem.Commands
                 return false;
             }
 
-            var dPlayer = arguments.At(0).GetPlayer();
+            Collections.Player dPlayer = arguments.At(0).GetPlayer();
+
             if (dPlayer == null)
             {
                 response = warnTranslation.PlayerNotFound;
                 return false;
             }
 
-            var reason = string.Join(" ", arguments.Skip(1).Take(arguments.Count - 1));
+            string reason = string.Join(" ", arguments.Skip(1).Take(arguments.Count - 1));
+
             if (string.IsNullOrEmpty(reason))
             {
                 response = warnTranslation.ReasonNull;

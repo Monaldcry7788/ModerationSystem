@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
-
-namespace ModerationSystem.Configs.CommandTranslation
+﻿namespace ModerationSystem.Configs.CommandTranslation
 {
+    using System.ComponentModel;
+
     public class WatchListTranslation
     {
         [Description("Invalid permission")]

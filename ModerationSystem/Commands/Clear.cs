@@ -1,17 +1,14 @@
-﻿using System;
-using CommandSystem;
-using Exiled.API.Features;
-using Exiled.Permissions.Extensions;
-using Log = Exiled.API.Features.Log;
-
-namespace ModerationSystem.Commands
+﻿namespace ModerationSystem.Commands
 {
+    using System;
+    using CommandSystem;
+    using Exiled.Permissions.Extensions;
+    using ModerationSystem.Configs.CommandTranslation;
+    using ModerationSystem.Collections;
+    using ModerationSystem.Enums;
+
     public class Clear : ICommand
     {
-        private Clear()
-        {
-        }
-
         public static Clear Instance { get; } = new Clear();
 
         public string Description { get; } = "Clear a player";
@@ -22,7 +19,7 @@ namespace ModerationSystem.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            var clearTranslation = Plugin.Singleton.Config.Translation.ClearTranslation;
+            ClearTranslation clearTranslation = Plugin.Singleton.Config.Translation.ClearTranslation;
             if (!sender.CheckPermission("ms.clear"))
             {
                 response = clearTranslation.InvalidPermission.Replace("{permission}", "ms.clear");
@@ -34,7 +31,7 @@ namespace ModerationSystem.Commands
                 return false;
             }
 
-            var dPlayer = arguments.At(0).GetPlayer();
+            Player dPlayer = arguments.At(0).GetPlayer();
             if (dPlayer == null)
             {
                 response = clearTranslation.PlayerNotFound;
@@ -54,14 +51,14 @@ namespace ModerationSystem.Commands
                 case "softban":
                 case "softwarn":
                 case "watchlist":
-                    var action = arguments.At(1).GetPunishType();
-                    if (!int.TryParse(arguments.At(2), out var id))
+                    PunishType? action = arguments.At(1).GetPunishType();
+                    if (!int.TryParse(arguments.At(2), out int id))
                     {
                         response = clearTranslation.IdNotFound;
                         return false;
                     }
 
-                    if (!int.TryParse(arguments.At(3), out var server))
+                    if (!int.TryParse(arguments.At(3), out int server))
                     {
                         response = "Server port not found";
                         return false;

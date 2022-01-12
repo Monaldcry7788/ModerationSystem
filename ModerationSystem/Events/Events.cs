@@ -1,21 +1,18 @@
-﻿using System.IO;
-using Exiled.API.Features;
-using Exiled.Events.EventArgs;
-using ModerationSystem.Collections;
-using ModerationSystem.Enums;
-using Newtonsoft.Json;
-using Player = ModerationSystem.Collections.Player;
-
-namespace ModerationSystem.Events
+﻿namespace ModerationSystem.Events
 {
-    using static Database;
+    using System.IO;
+    using Exiled.Events.EventArgs;
+    using ModerationSystem.Collections;
+    using ModerationSystem.Enums;
+    using Newtonsoft.Json;
+    using Player = ModerationSystem.Collections.Player;
+    using static Database.Database;
 
     internal class Events
     {
-
         internal static void OnVerified(VerifiedEventArgs ev)
         {
-            var dPlayer = ev.Player.GetPlayer() ?? new Collections.Player(
+            Player dPlayer = ev.Player.GetPlayer() ?? new Collections.Player(
                 ev.Player.RawUserId,
                 ev.Player.AuthenticationType.ToString().ToLower(),
                 ev.Player.Nickname
@@ -27,6 +24,7 @@ namespace ModerationSystem.Events
                 dPlayer.Name = ev.Player.Nickname;
                 dPlayer.Save();
             }
+  
             if (!dPlayer.IsMuted() && MuteHandler.QueryPersistentMute($"{dPlayer.Id}@{dPlayer.Authentication}"))
                 MuteHandler.RevokePersistentMute($"{dPlayer.Id}@{dPlayer.Authentication}");
         }
@@ -47,12 +45,14 @@ namespace ModerationSystem.Events
         internal static void OnFileChanged(object sender, FileSystemEventArgs e)
         {
             if (!Plugin.Singleton.Config.IsDatabaseGlobal) return;
+
             if (!Plugin.Singleton.Config.ReceiveFrom.Contains(Path.GetFileNameWithoutExtension(e.Name)?.Split('-')[4])) return;
-            var playerId = Path.GetFileNameWithoutExtension(e.Name)?.Split('-')[2];
-            var rawPlayerId = playerId?.Split('@')[0];
+
+            string playerId = Path.GetFileNameWithoutExtension(e.Name)?.Split('-')[2];
+            string rawPlayerId = playerId?.Split('@')[0];
             if (!PlayerCollection.Exists(p => p.Id == rawPlayerId))
             {
-                var player = new Player
+                Player player = new Player
                 (
                     rawPlayerId, 
                     playerId?.Split('@')[1], 
@@ -64,7 +64,8 @@ namespace ModerationSystem.Events
             switch (Path.GetFileNameWithoutExtension(e.Name)?.Split('-')[1].GetPunishType())
             {
                 case PunishType.Ban:
-                    var ban = Utf8Json.JsonSerializer.Deserialize<Ban>(File.ReadAllText(e.FullPath));
+                    Ban ban = Utf8Json.JsonSerializer.Deserialize<Ban>(File.ReadAllText(e.FullPath));
+
                     if (ban != null && !ban.Clear)
                     {
                         new Ban(ban.Target, ban.Issuer, ban.Reason, ban.Duration, ban.Date, ban.Expire, ban.BanId,
@@ -75,8 +76,10 @@ namespace ModerationSystem.Events
                     BanCollection.DeleteMany(b =>
                         b.Target == ban.Target && b.BanId == ban.BanId && b.Server == ban.Server);
                     break;
+
                 case PunishType.Kick:
-                    var kick = Utf8Json.JsonSerializer.Deserialize<Kick>(File.ReadAllText(e.FullPath));
+                    Kick kick = Utf8Json.JsonSerializer.Deserialize<Kick>(File.ReadAllText(e.FullPath));
+
                     if (kick != null && !kick.Clear)
                     {
                         new Kick(kick.Target, kick.Issuer, kick.Reason, kick.Date, kick.KickId, kick.Server,
@@ -87,8 +90,10 @@ namespace ModerationSystem.Events
                     KickCollection.DeleteMany(k =>
                         k.Target == kick.Target && k.KickId == kick.KickId && k.Server == kick.Server);
                     break;
+
                 case PunishType.Mute:
-                    var mute = Utf8Json.JsonSerializer.Deserialize<Mute>(File.ReadAllText(e.FullPath));
+                    Mute mute = Utf8Json.JsonSerializer.Deserialize<Mute>(File.ReadAllText(e.FullPath));
+
                     if (mute != null && !mute.Clear)
                     {
                         new Mute(mute.Target, mute.Issuer, mute.Reason, mute.Duration, mute.Date, mute.Expire,
@@ -99,8 +104,10 @@ namespace ModerationSystem.Events
                     KickCollection.DeleteMany(m =>
                         m.Target == mute.Target && m.KickId == mute.MuteId && m.Server == mute.Server);
                     break;
+
                 case PunishType.Warn:
-                    var warn = Utf8Json.JsonSerializer.Deserialize<Warn>(File.ReadAllText(e.FullPath));
+                    Warn warn = Utf8Json.JsonSerializer.Deserialize<Warn>(File.ReadAllText(e.FullPath));
+
                     if (warn != null && !warn.Clear)
                     {
                         new Warn(warn.Target, warn.Issuer, warn.Reason, warn.Date, warn.WarnId, warn.Server,
@@ -111,8 +118,10 @@ namespace ModerationSystem.Events
                     WarnCollection.DeleteMany(w =>
                         w.Target == warn.Target && w.WarnId == warn.WarnId && w.Server == warn.Server);
                     break;
+
                 case PunishType.SoftBan:
-                    var softBan = Utf8Json.JsonSerializer.Deserialize<SoftBan>(File.ReadAllText(e.FullPath));
+                    SoftBan softBan = Utf8Json.JsonSerializer.Deserialize<SoftBan>(File.ReadAllText(e.FullPath));
+
                     if (softBan != null && !softBan.Clear)
                     {
                         new SoftBan(softBan.Target, softBan.Issuer, softBan.Reason, softBan.Duration, softBan.Date,
@@ -124,8 +133,10 @@ namespace ModerationSystem.Events
                         sb.Target == softBan.Target && sb.SoftBanId == softBan.SoftBanId &&
                         sb.Server == softBan.Server);
                     break;
+
                 case PunishType.SoftWarn:
-                    var softWan = Utf8Json.JsonSerializer.Deserialize<SoftWarn>(File.ReadAllText(e.FullPath));
+                    SoftWarn softWan = Utf8Json.JsonSerializer.Deserialize<SoftWarn>(File.ReadAllText(e.FullPath));
+
                     if (softWan != null && !softWan.Clear)
                     {
                         new SoftWarn(softWan.Target, softWan.Issuer, softWan.Reason, softWan.Date, softWan.SoftWarnId,
@@ -137,8 +148,10 @@ namespace ModerationSystem.Events
                         sw.Target == softWan.Target && sw.SoftWarnId == softWan.SoftWarnId &&
                         sw.Server == softWan.Server);
                     break;
+
                 case PunishType.WatchList:
-                    var watchList = JsonConvert.DeserializeObject<WatchList>(File.ReadAllText(e.FullPath));
+                    WatchList watchList = JsonConvert.DeserializeObject<WatchList>(File.ReadAllText(e.FullPath));
+
                     if (watchList != null && !watchList.Clear)
                     {
                         new WatchList(watchList.Target, watchList.Issuer, watchList.Reason, watchList.Date,
@@ -150,10 +163,12 @@ namespace ModerationSystem.Events
                         wl.Target == watchList.Target && wl.WatchListId == watchList.WatchListId &&
                         wl.Server == watchList.Server);
                     break;
+
                 case PunishType.All:
                     JsonConvert.DeserializeObject<Player>(File.ReadAllText(e.FullPath)).Clear();
                     break;
             }
+
             File.Delete(e.FullPath);
 
         }

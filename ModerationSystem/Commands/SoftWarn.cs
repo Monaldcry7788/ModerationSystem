@@ -1,18 +1,15 @@
-﻿using System;
-using System.Linq;
-using CommandSystem;
-using Exiled.API.Features;
-using Exiled.Permissions.Extensions;
-using ModerationSystem.Enums;
-
-namespace ModerationSystem.Commands
+﻿namespace ModerationSystem.Commands
 {
+    using System;
+    using System.Linq;
+    using CommandSystem;
+    using Exiled.API.Features;
+    using Exiled.Permissions.Extensions;
+    using ModerationSystem.Configs.CommandTranslation;
+    using ModerationSystem.Enums;
+
     public class SoftWarn : ICommand
     {
-        private SoftWarn()
-        {
-        }
-
         public static SoftWarn Instance { get; } = new SoftWarn();
 
         public string Description { get; } = "Softwarn a player";
@@ -23,7 +20,8 @@ namespace ModerationSystem.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            var softWarnTranslation = Plugin.Singleton.Config.Translation.SoftWarnTranslation;
+            SoftWarnTranslation softWarnTranslation = Plugin.Singleton.Config.Translation.SoftWarnTranslation;
+
             if (!sender.CheckPermission("ms.softwarn"))
             {
                 response = softWarnTranslation.InvalidPermission.Replace("{permission}", "ms.softwarn");
@@ -36,14 +34,16 @@ namespace ModerationSystem.Commands
                 return false;
             }
 
-            var dPlayer = arguments.At(0).GetPlayer();
+            Collections.Player dPlayer = arguments.At(0).GetPlayer();
+
             if (dPlayer == null)
             {
                 response = softWarnTranslation.PlayerNotFound;
                 return false;
             }
 
-            var reason = string.Join(" ", arguments.Skip(1).Take(arguments.Count - 1));
+            string reason = string.Join(" ", arguments.Skip(1).Take(arguments.Count - 1));
+
             if (string.IsNullOrEmpty(reason))
             {
                 response = softWarnTranslation.ReasonNull;

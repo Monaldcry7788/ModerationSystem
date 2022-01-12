@@ -1,8 +1,8 @@
-﻿using System;
-using CommandSystem;
-
-namespace ModerationSystem.Commands
+﻿namespace ModerationSystem.Commands
 {
+    using System;
+    using CommandSystem;
+
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Main : ParentCommand

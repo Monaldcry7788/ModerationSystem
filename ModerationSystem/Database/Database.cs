@@ -1,31 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Exiled.API.Features;
-using LiteDB;
-using ModerationSystem.Collections;
-using Player = ModerationSystem.Collections.Player;
-
-namespace ModerationSystem
+﻿namespace ModerationSystem.Database
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using Exiled.API.Features;
+    using LiteDB;
+    using ModerationSystem.Collections;
+    using Player = ModerationSystem.Collections.Player;
+
     internal static class Database
     {
         public static Player ServerPlayer = new Player(null, null, "Server");
+
         public static LiteDatabase LiteDatabase { get; private set; }
+
         public static ILiteCollection<Player> PlayerCollection { get; private set; }
+
         public static ILiteCollection<Warn> WarnCollection { get; private set; }
+
         public static ILiteCollection<Kick> KickCollection { get; private set; }
+
         public static ILiteCollection<Mute> MuteCollection { get; private set; }
+
         public static ILiteCollection<Ban> BanCollection { get; private set; }
+
         public static ILiteCollection<SoftBan> SoftBanCollection { get; private set; }
+
         public static ILiteCollection<SoftWarn> SoftWarnCollection { get; private set; }
+
         public static ILiteCollection<WatchList> WatchListCollection { get; private set; }
 
         public static Dictionary<Exiled.API.Features.Player, Player> PlayerData { get; } = new Dictionary<Exiled.API.Features.Player, Player>();
 
         public static string GlobalFolder => Path.Combine(Paths.Plugins, "ModerationSystem");
+
         public static string Folder => Path.Combine(Path.Combine(GlobalFolder, $"ModerationSystem-{Server.Port}"));
+
         public static string DatabasePath => Path.Combine(Folder, $"{Plugin.Singleton.Config.DatabaseName}-{Server.Port}.db");
+
         public static string CacheFolder => Path.Combine(GlobalFolder, "Cache");
 
         public static void Open()
@@ -43,7 +55,7 @@ namespace ModerationSystem
                 SoftBanCollection = LiteDatabase.GetCollection<SoftBan>();
                 SoftWarnCollection = LiteDatabase.GetCollection<SoftWarn>();
                 WatchListCollection = LiteDatabase.GetCollection<WatchList>();
-                
+
                 PlayerCollection.EnsureIndex(p => p.Id, true);
                 WarnCollection.EnsureIndex(w => w.Target.Id);
                 WarnCollection.EnsureIndex(w => w.Issuer.Id);

@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CommandSystem;
-using Exiled.Permissions.Extensions;
-using NorthwoodLib.Pools;
-namespace ModerationSystem.Commands
+﻿namespace ModerationSystem.Commands
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using CommandSystem;
+    using Exiled.Permissions.Extensions;
+    using ModerationSystem.Collections;
+    using ModerationSystem.Configs.CommandTranslation;
+    using NorthwoodLib.Pools;
+
     public class PlayerInfo : ICommand
     {
-        private PlayerInfo()
-        {
-        }
-
         public static PlayerInfo Instance { get; } = new PlayerInfo();
 
         public string Command { get; } = "playerinfo";
@@ -22,7 +22,8 @@ namespace ModerationSystem.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            var playerInfoTranslation = Plugin.Singleton.Config.Translation.PlayerInfoTranslation;
+            PlayerInfoTranslation playerInfoTranslation = Plugin.Singleton.Config.Translation.PlayerInfoTranslation;
+
             if (!sender.CheckPermission("ms.playerinfo"))
             {
                 response = playerInfoTranslation.InvalidPermission.Replace("{permission}", "ms.playerinfo");
@@ -34,83 +35,58 @@ namespace ModerationSystem.Commands
                 response = playerInfoTranslation.WrongUsage;
                 return false;
             }
-            var dPlayer = arguments.At(0).GetPlayer();
+
+            Player dPlayer = arguments.At(0).GetPlayer();
+
             if (dPlayer == null)
             {
                 response = playerInfoTranslation.PlayerNotFound;
                 return false;
             }
 
-            var text = StringBuilderPool.Shared.Rent().AppendLine();
+            StringBuilder text = StringBuilderPool.Shared.Rent().AppendLine();
+
             text.AppendLine($"{dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication})").AppendLine();
-            var message = StringBuilderPool.Shared.ToStringReturn(text) +
-                          GetWarn(Database.WarnCollection
-                              .Find(w => w.Target.Id == dPlayer.Id).ToList()) +
-                          GetSoftWarn(Database.SoftWarnCollection
-                              .Find(sw => sw.Target.Id == dPlayer.Id).ToList()) +
-                          GetKick(Database.KickCollection
-                              .Find(k => k.Target.Id == dPlayer.Id).ToList()) +
-                          GetBan(Database.BanCollection
-                              .Find(b => b.Target.Id == dPlayer.Id).ToList()) +
-                          GetMute(Database.MuteCollection.
-                              Find(m => m.Target.Id == dPlayer.Id).ToList()) +
-                          GetSoftBan(Database.SoftBanCollection
-                              .Find(sb => sb.Target.Id == dPlayer.Id).ToList());
-            response = message;
+
+            string message = StringBuilderPool.Shared.ToStringReturn(text) + GetSanctions(
+                Database.Database.WarnCollection.Find(w => w.Target.Id == dPlayer.Id),
+                Database.Database.MuteCollection.Find(w => w.Target.Id == dPlayer.Id),
+                Database.Database.KickCollection.Find(w => w.Target.Id == dPlayer.Id),
+                Database.Database.BanCollection.Find(w => w.Target.Id == dPlayer.Id),
+                Database.Database.SoftBanCollection.Find(w => w.Target.Id == dPlayer.Id),
+                Database.Database.SoftWarnCollection.Find(w => w.Target.Id == dPlayer.Id));
+                          response = message;
             return true;
         }
 
-        private string GetWarn(List<Collections.Warn> warns)
+        private string GetSanctions(IEnumerable<Collections.Warn> warns, IEnumerable<Collections.Mute> mutes, IEnumerable<Collections.Kick> kicks, IEnumerable<Collections.Ban> bans, IEnumerable<Collections.SoftBan> softBans, IEnumerable<Collections.SoftWarn> softWarns)
         {
-            var message = StringBuilderPool.Shared.Rent();
-            message.Append($"[Warns: ({warns.Count})]").AppendLine().AppendLine();
-            foreach (var p in warns)
+            StringBuilder message = StringBuilderPool.Shared.Rent();
+
+            message.Append($"[Warns: ({warns.Count()})]").AppendLine().AppendLine();
+            foreach (Collections.Warn p in warns)
                 message.AppendLine($"Warn ID: {p.WarnId}").AppendLine($"Reason: {p.Reason}").AppendLine($"Issuer: {p.Issuer.Name}").AppendLine($"Date: {p.Date}").AppendLine($"Server: {p.Server}").AppendLine();
-            return StringBuilderPool.Shared.ToStringReturn(message);
-        }
 
-        private string GetMute(List<Collections.Mute> mutes)
-        {
-            var message = StringBuilderPool.Shared.Rent();
-            message.Append($"[Mutes: ({mutes.Count})]").AppendLine().AppendLine();
-            foreach (var p in mutes)
+            message.Append($"[Mutes: ({mutes.Count()})]").AppendLine().AppendLine();
+            foreach (Collections.Mute p in mutes)
                 message.AppendLine($"Mute ID: {p.MuteId}").AppendLine($"Reason: {p.Reason}").AppendLine($"Issuer: {p.Issuer.Name}").AppendLine($"Duration: {p.Duration}").AppendLine($"Date: {p.Date}").AppendLine($"Expire: {p.Expire}").AppendLine($"Server: {p.Server}").AppendLine();
-            return StringBuilderPool.Shared.ToStringReturn(message);
-        }
 
-        private string GetKick(List<Collections.Kick> kicks)
-        {
-            var message = StringBuilderPool.Shared.Rent();
-            message.Append($"[Kick: ({kicks.Count})]").AppendLine().AppendLine();
-            foreach (var p in kicks)
+            message.Append($"[Kick: ({kicks.Count()})]").AppendLine().AppendLine();
+            foreach (Collections.Kick p in kicks)
                 message.AppendLine($"Kick ID: {p.KickId}").AppendLine($"Reason: {p.Reason}").AppendLine($"Issuer: {p.Issuer.Name}").AppendLine($"Date: {p.Date}").AppendLine($"Server: {p.Server}").AppendLine();
-            return StringBuilderPool.Shared.ToStringReturn(message);
-        }
 
-        private string GetBan(List<Collections.Ban> bans)
-        {
-            var message = StringBuilderPool.Shared.Rent();
-            message.Append($"[Ban: ({bans.Count})]").AppendLine().AppendLine();
-            foreach (var p in bans)
+            message.Append($"[Ban: ({bans.Count()})]").AppendLine().AppendLine();
+            foreach (Collections.Ban p in bans)
                 message.AppendLine($"Warn ID: {p.BanId}").AppendLine($"Reason: {p.Reason}").AppendLine($"Issuer: {p.Issuer.Name}").AppendLine($"Duration: {p.Duration}").AppendLine($"Date: {p.Date}").AppendLine($"Expire: {p.Expire}").AppendLine($"Server: {p.Server}").AppendLine();
-            return StringBuilderPool.Shared.ToStringReturn(message);
-        }
 
-        private string GetSoftBan(List<Collections.SoftBan> softBans)
-        {
-            var message = StringBuilderPool.Shared.Rent();
-            message.Append($"[SoftBan: ({softBans.Count})]").AppendLine().AppendLine();
-            foreach (var p in softBans)
+            message.Append($"[SoftBan: ({softBans.Count()})]").AppendLine().AppendLine();
+            foreach (Collections.SoftBan p in softBans)
                 message.AppendLine($"SoftBan ID: {p.SoftBanId}").AppendLine($"Reason: {p.Reason}").AppendLine($"Issuer: {p.Issuer.Name}").AppendLine($"Duration: {p.Duration}").AppendLine($"Date: {p.Date}").AppendLine($"Expire: {p.Expire}").AppendLine($"Server: {p.Server}").AppendLine();
-            return StringBuilderPool.Shared.ToStringReturn(message);
-        }
-        
-        private string GetSoftWarn(List<Collections.SoftWarn> softWarns)
-        {
-            var message = StringBuilderPool.Shared.Rent();
-            message.Append($"[SoftWarns: ({softWarns.Count})]").AppendLine().AppendLine();
-            foreach (var p in softWarns)
+
+            message.Append($"[SoftWarns: ({softWarns.Count()})]").AppendLine().AppendLine();
+            foreach (Collections.SoftWarn p in softWarns)
                 message.AppendLine($"SoftWarn ID: {p.SoftWarnId}").AppendLine($"Reason: {p.Reason}").AppendLine($"Issuer: {p.Issuer.Name}").AppendLine($"Date: {p.Date}").AppendLine($"Server: {p.Server}").AppendLine();
+ 
             return StringBuilderPool.Shared.ToStringReturn(message);
         }
     }

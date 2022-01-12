@@ -1,8 +1,7 @@
-﻿using System.ComponentModel;
-using ModerationSystem.Configs.CommandTranslation;
-
-namespace ModerationSystem.Configs
+﻿namespace ModerationSystem.Configs.CommandTranslation
 {
+    using System.ComponentModel;
+
     public class Translation
     {
         [Description("Ban translation")] public BanTranslation BanTranslation { get; set; } = new BanTranslation();

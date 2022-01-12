@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using Exiled.API.Interfaces;
-
-namespace ModerationSystem.Configs
+﻿namespace ModerationSystem.Configs
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using Exiled.API.Interfaces;
+    using ModerationSystem.Configs.CommandTranslation;
+
     public class Config : IConfig
     {
         [Description("Enable or disable the plugin")]

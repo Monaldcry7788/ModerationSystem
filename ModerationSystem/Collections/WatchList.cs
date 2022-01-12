@@ -1,15 +1,11 @@
-﻿using System;
-using LiteDB;
-
-namespace ModerationSystem.Collections
+﻿namespace ModerationSystem.Collections
 {
+    using System;
+    using LiteDB;
+
     public class WatchList
     {
-        public WatchList()
-            {
-            }
-
-            public WatchList(Player target, Player issuer, string reason, DateTime date, int watchListId, int server, bool clear)
+        public WatchList(Player target, Player issuer, string reason, DateTime date, int watchListId, int server, bool clear)
             {
                 Id = ObjectId.NewObjectId();
                 Target = target;
@@ -22,6 +18,7 @@ namespace ModerationSystem.Collections
             }
 
             public ObjectId Id { get; set; }
+
             public Player Target { get; set; }
 
             public Player Issuer { get; set; }
@@ -29,11 +26,15 @@ namespace ModerationSystem.Collections
             public string Reason { get; set; }
 
             public DateTime Date { get; set; }
+
             public int WatchListId { get; set; }
+
             public int Server { get; set; }
+
             public bool Clear { get; set; }
 
-            public void Save() => Database.WatchListCollection.Insert(this);
-            public void Update() => Database.WatchListCollection.Update(this);
+            public void Save() => Database.Database.WatchListCollection.Insert(this);
+
+            public void Update() => Database.Database.WatchListCollection.Update(this);
     }
 }

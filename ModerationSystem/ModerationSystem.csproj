@@ -33,48 +33,48 @@
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\Desktop\DLL aggiornati\DLL 11.1\Assembly-CSharp-Publicized.dll</HintPath>
+          <HintPath>..\..\RolePlus-master\References\Assembly-CSharp-Publicized.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\Desktop\DLL aggiornati\DLL 11.1\Assembly-CSharp-firstpass.dll</HintPath>
+          <HintPath>..\..\RolePlus-master\References\Assembly-CSharp-firstpass.dll</HintPath>
         </Reference>
         <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\Desktop\DLL aggiornati\DLL 11.1\CommandSystem.Core.dll</HintPath>
+          <HintPath>..\..\RolePlus-master\References\CommandSystem.Core.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.API, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.API.dll</HintPath>
+        <Reference Include="Exiled.API, Version=4.2.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.API.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Bootstrap, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.Bootstrap.dll</HintPath>
+        <Reference Include="Exiled.Bootstrap, Version=4.2.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.Bootstrap.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.CreditTags, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.CreditTags.dll</HintPath>
+        <Reference Include="Exiled.CreditTags, Version=4.2.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.CreditTags.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.CustomItems, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.CustomItems.dll</HintPath>
+        <Reference Include="Exiled.CustomItems, Version=4.2.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.CustomItems.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.CustomRoles, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.CustomRoles.dll</HintPath>
+        <Reference Include="Exiled.CustomRoles, Version=4.2.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.CustomRoles.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Events, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.Events.dll</HintPath>
+        <Reference Include="Exiled.Events, Version=4.2.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.Events.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Loader, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.Loader.dll</HintPath>
+        <Reference Include="Exiled.Loader, Version=4.2.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.Loader.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Permissions, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.Permissions.dll</HintPath>
+        <Reference Include="Exiled.Permissions, Version=4.2.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.Permissions.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.Updater.dll</HintPath>
+          <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.Updater.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="LiteDB, Version=5.0.11.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27">
@@ -89,7 +89,7 @@
           <Private>True</Private>
         </Reference>
         <Reference Include="NorthwoodLib, Version=1.2.1.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\Desktop\DLL aggiornati\DLL 11.1\NorthwoodLib.dll</HintPath>
+          <HintPath>..\..\RolePlus-master\References\NorthwoodLib.dll</HintPath>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
@@ -98,31 +98,12 @@
         <Reference Include="System.Data.DataSetExtensions" />
         <Reference Include="Microsoft.CSharp" />
         <Reference Include="System.Data" />
-        <Reference Include="System.Net.Http" />
         <Reference Include="System.Xml" />
         <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\Desktop\DLL aggiornati\DLL 11.1\UnityEngine.dll</HintPath>
+          <HintPath>..\..\RolePlus-master\References\UnityEngine.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\..\Desktop\DLL aggiornati\DLL 11.1\UnityEngine.CoreModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.UnityConnectModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\Desktop\DLL aggiornati\DLL 11.1\UnityEngine.UnityConnectModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\Desktop\DLL aggiornati\DLL 11.1\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.UnityWebRequestAudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\Desktop\DLL aggiornati\DLL 11.1\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.UnityWebRequestModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\Desktop\DLL aggiornati\DLL 11.1\UnityEngine.UnityWebRequestModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.UnityWebRequestTextureModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\Desktop\DLL aggiornati\DLL 11.1\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.UnityWebRequestWWWModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\Desktop\DLL aggiornati\DLL 11.1\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>

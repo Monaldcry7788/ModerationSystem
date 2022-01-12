@@ -1,14 +1,9 @@
-﻿using System;
-using LiteDB;
-
-namespace ModerationSystem.Collections
+﻿namespace ModerationSystem.Collections
 {
+    using System;
+    using LiteDB;
     public class SoftBan
     {
-        public SoftBan()
-        {
-        }
-        
         public SoftBan(Player target, Player issuer, string reason, string duration, DateTime date, DateTime expire, int softBanId, int server, bool clear)
         {
             Id = ObjectId.NewObjectId();
@@ -23,6 +18,7 @@ namespace ModerationSystem.Collections
             Clear = clear;
         }
         public ObjectId Id { get; set; }
+
         public Player Target { get; set; }
 
         public Player Issuer { get; set; }
@@ -34,11 +30,15 @@ namespace ModerationSystem.Collections
         public DateTime Date { get; set; }
 
         public DateTime Expire { get; set; }
+
         public int SoftBanId { get; set; }
+
         public int Server { get; set; }
+
         public bool Clear { get; set; }
 
-        public void Save() => Database.SoftBanCollection.Insert(this);
-        public void Update() => Database.SoftBanCollection.Update(this);
+        public void Save() => Database.Database.SoftBanCollection.Insert(this);
+
+        public void Update() => Database.Database.SoftBanCollection.Update(this);
     }
 }

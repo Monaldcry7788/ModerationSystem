@@ -1,14 +1,10 @@
-﻿using System;
-using LiteDB;
-
-namespace ModerationSystem.Collections
+﻿namespace ModerationSystem.Collections
 {
+    using System;
+    using LiteDB;
+
     public class Kick
     {
-        public Kick()
-        {
-        }
-
         public Kick(Player target, Player issuer, string reason, DateTime date, int kickId, int server, bool clear)
         {
             Id = ObjectId.NewObjectId();
@@ -21,6 +17,7 @@ namespace ModerationSystem.Collections
             Clear = clear;
         }
         public ObjectId Id { get; set; }
+
         public Player Target { get; set; }
 
         public Player Issuer { get; set; }
@@ -28,12 +25,15 @@ namespace ModerationSystem.Collections
         public string Reason { get; set; }
 
         public DateTime Date { get; set; }
+
         public int KickId { get; set; }
+
         public int Server { get; set; }
+
         public bool Clear { get; set; }
 
+        public void Save() => Database.Database.KickCollection.Insert(this);
 
-        public void Save() => Database.KickCollection.Insert(this);
-        public void Update() => Database.KickCollection.Update(this);
+        public void Update() => Database.Database.KickCollection.Update(this);
     }
 }

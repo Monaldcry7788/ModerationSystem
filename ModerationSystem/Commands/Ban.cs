@@ -1,18 +1,15 @@
-﻿using System;
-using System.Linq;
-using CommandSystem;
-using Exiled.API.Features;
-using Exiled.Permissions.Extensions;
-using ModerationSystem.Enums;
-
-namespace ModerationSystem.Commands
+﻿namespace ModerationSystem.Commands
 {
+    using System;
+    using System.Linq;
+    using CommandSystem;
+    using Exiled.API.Features;
+    using Exiled.Permissions.Extensions;
+    using ModerationSystem.Enums;
+    using ModerationSystem.Configs.CommandTranslation;
+
     public class Ban : ICommand
     {
-        private Ban()
-        {
-        }
-
         public static Ban Instance { get; } = new Ban();
 
         public string Description { get; } = "Ban a player";
@@ -23,7 +20,8 @@ namespace ModerationSystem.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            var banTranslation = Plugin.Singleton.Config.Translation.BanTranslation;
+            BanTranslation banTranslation = Plugin.Singleton.Config.Translation.BanTranslation;
+ 
             if (!sender.CheckPermission("ms.ban"))
             {
                 response = banTranslation.InvalidPermission.Replace("{permission}", "ms.ban");
@@ -36,21 +34,23 @@ namespace ModerationSystem.Commands
                 return false;
             }
 
-            var dPlayer = arguments.At(0).GetPlayer();
+            Collections.Player dPlayer = arguments.At(0).GetPlayer();
+
             if (dPlayer == null)
             {
                 response = banTranslation.PlayerNotFound;
                 return false;
             }
 
-            var duration = Method.ConvertToDateTime(arguments.At(1));
+            DateTime? duration = Method.ConvertToDateTime(arguments.At(1));
 
             if (duration == null)
             {
                 response = banTranslation.InvalidDuration.Replace("{duration}", arguments.At(1));
                 return false;
             }
-            var reason = string.Join(" ", arguments.Skip(2).Take(arguments.Count - 2));
+ 
+            string reason = string.Join(" ", arguments.Skip(2).Take(arguments.Count - 2));
             if (string.IsNullOrEmpty(reason))
             {
                 response = banTranslation.ReasonNull;
@@ -62,12 +62,10 @@ namespace ModerationSystem.Commands
                 response = banTranslation.PlayerAlreadyBanned;
                 return false;
             }
-            
+
             Method.ApplyPunish(Player.Get(arguments.At(0)), ((CommandSender)sender).GetStaffer(), dPlayer, PunishType.Ban, reason, Convert.ToDateTime(duration));
-            Method.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.Translation.StaffTranslation.StaffBanMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}").Replace("{reason}", reason).Replace("{time}", duration.ToString())));
-            response = banTranslation.PlayerBanned.Replace("{player.name}", dPlayer.Name)
-                .Replace("{player.userid}", $"{dPlayer.Id}@{dPlayer.Authentication}")
-                .Replace("{duration}", duration.ToString()).Replace("{reason}", reason);
+            Method.SendBroadcast(new Broadcast(Plugin.Singleton.Config.Translation.StaffTranslation.StaffBanMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}").Replace("{reason}", reason).Replace("{time}", duration.ToString())));
+            response = banTranslation.PlayerBanned.Replace("{player.name}", dPlayer.Name).Replace("{player.userid}", $"{dPlayer.Id}@{dPlayer.Authentication}").Replace("{duration}", duration.ToString()).Replace("{reason}", reason);
             return true;
         }
     }
