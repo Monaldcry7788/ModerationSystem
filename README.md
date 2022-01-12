@@ -28,7 +28,7 @@ Welcome to ModerationSystem plugin!
 Download latest version of plugin and put ModerationSystem.dll into Plugin Exiled folder, place LiteDB.dll and Newtonsoft.Json.dll into dependeces folder and restart the server!
 
 ### Minium Required: 
-- Exiled ![4.1.2](https://github.com/Exiled-Team/EXILED/releases/tag/4.1.2)
+- Exiled ![4.2.2](https://github.com/Exiled-Team/EXILED/releases/tag/4.2.2)
 - LiteDB ![5.0.11.0](https://github.com/mbdavid/LiteDB/releases/tag/v5.0.11)
 - Newtonsoft.Json ![13.0.1](https://github.com/JamesNK/Newtonsoft.Json/releases/tag/13.0.1)
 
