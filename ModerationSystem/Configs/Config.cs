@@ -13,7 +13,8 @@
         [Description("The name of the database")]
         public string DatabaseName { get; set; } = "ModerationSystem";
 
-        [Description("Is database global")] public bool IsDatabaseGlobal { get; set; } = false;
+        [Description("Is database global")]
+        public bool IsDatabaseGlobal { get; set; } = false;
 
         [Description("List of server ports to receive data from")]
         public List<string> ReceiveFrom { get; set; } = new List<string>
@@ -21,6 +22,8 @@
             "7778",
             "7779"
         };
-        [Description("Plugin translation")] public Translation Translation { get; set; } = new Translation();
+
+        [Description("Plugin translation")]
+        public Translation Translation { get; set; } = new Translation();
     }
 }
