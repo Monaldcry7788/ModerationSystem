@@ -6,7 +6,7 @@
     using ModerationSystem.Configs.CommandTranslation;
     using ModerationSystem.Collections;
     using ModerationSystem.Enums;
-
+    using API;
     public class Clear : ICommand
     {
         public static Clear Instance { get; } = new Clear();
@@ -65,13 +65,13 @@
                         return false;
                     }
 
-                    if (!Method.CheckId(dPlayer, action, id, server))
+                    if (!ModerationSystemAPI.CheckId(dPlayer, action, id, server))
                     {
                         response = clearTranslation.IdNotFound;
                         return false;
                     }
 
-                    Method.ClearPunishment(dPlayer, action, id, server);
+                    ModerationSystemAPI.ClearPunishment(dPlayer, action, id, server);
                     response = clearTranslation.PunishmentCleared.Replace("{player.name}", dPlayer.Name).Replace("{player.userid}", $"{dPlayer.Id}@{dPlayer.Authentication}");
                     return true;
                 default:

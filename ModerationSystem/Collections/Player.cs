@@ -19,12 +19,6 @@
 
         public string Name { get; internal set; }
 
-        public bool IsMuted() => Database.Database.MuteCollection.Exists(mute => mute.Target.Id == Id && mute.Expire > DateTime.Now);
-
         public void Save() => Database.Database.PlayerCollection.Upsert(this);
-
-        public bool IsBanned() => Database.Database.BanCollection.Exists(ban => ban.Target.Id == Id && ban.Expire > DateTime.Now);
-
-        public bool IsSoftBanned() => Database.Database.SoftBanCollection.Exists(sb => sb.Target.Id == Id && sb.Expire > DateTime.Now);
     }
 }

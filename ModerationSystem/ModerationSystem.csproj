@@ -107,6 +107,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="API\ModerationSystemAPI.cs" />
         <Compile Include="Collections\Ban.cs" />
         <Compile Include="Collections\Kick.cs" />
         <Compile Include="Collections\Mute.cs" />
@@ -141,9 +142,7 @@
         <Compile Include="Enums\ActionType.cs" />
         <Compile Include="Enums\PunishType.cs" />
         <Compile Include="Events\Events.cs" />
-        <Compile Include="Extensions.cs" />
         <Compile Include="GlobalDatabase\JsonManager.cs" />
-        <Compile Include="Method.cs" />
         <Compile Include="Plugin.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

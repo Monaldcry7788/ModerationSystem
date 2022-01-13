@@ -7,6 +7,7 @@
     using Exiled.Permissions.Extensions;
     using ModerationSystem.Enums;
     using ModerationSystem.Configs.CommandTranslation;
+    using API;
 
     public class Ban : ICommand
     {
@@ -41,7 +42,7 @@
                 return false;
             }
 
-            DateTime? duration = Method.ConvertToDateTime(arguments.At(1));
+            DateTime? duration = ModerationSystemAPI.ConvertToDateTime(arguments.At(1));
             if (duration == null)
             {
                 response = banTranslation.InvalidDuration.Replace("{duration}", arguments.At(1));
@@ -61,8 +62,8 @@
                 return false;
             }
 
-            Method.ApplyPunish(Player.Get(arguments.At(0)), ((CommandSender)sender).GetStaffer(), dPlayer, PunishType.Ban, reason, Convert.ToDateTime(duration));
-            Method.SendBroadcast(new Broadcast(Plugin.Singleton.Config.Translation.StaffTranslation.StaffBanMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}").Replace("{reason}", reason).Replace("{time}", duration.ToString())));
+            ModerationSystemAPI.ApplyPunish(Player.Get(arguments.At(0)), ((CommandSender)sender).GetStaffer(), dPlayer, PunishType.Ban, reason, Convert.ToDateTime(duration));
+            ModerationSystemAPI.SendBroadcast(new Broadcast(Plugin.Singleton.Config.Translation.StaffTranslation.StaffBanMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}").Replace("{reason}", reason).Replace("{time}", duration.ToString())));
             response = banTranslation.PlayerBanned.Replace("{player.name}", dPlayer.Name).Replace("{player.userid}", $"{dPlayer.Id}@{dPlayer.Authentication}").Replace("{duration}", duration.ToString()).Replace("{reason}", reason);
             return true;
         }

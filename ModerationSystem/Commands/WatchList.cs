@@ -7,6 +7,7 @@
     using Exiled.Permissions.Extensions;
     using ModerationSystem.Configs.CommandTranslation;
     using ModerationSystem.Enums;
+    using API;
 
     public class WatchList : ICommand
     {
@@ -51,7 +52,7 @@
             switch (arguments.At(0))
             {
                 case "add":
-                    Method.ApplyPunish(Player.Get(arguments.At(1)), ((CommandSender)sender).GetStaffer(), dPlayer,
+                    ModerationSystemAPI.ApplyPunish(Player.Get(arguments.At(1)), ((CommandSender)sender).GetStaffer(), dPlayer,
                         PunishType.WatchList, reason, DateTime.MinValue);
                     response = watchListTranslation.PlayerAddedWatchlist.Replace("{player.name}", dPlayer.Name)
                         .Replace("{player.userid}", $"{dPlayer.Id}@{dPlayer.Authentication}");
@@ -60,11 +61,11 @@
                 case "list":
                     if (arguments.Count == 1)
                     {
-                        response = Method.GetWatchList(null);
+                        response = ModerationSystemAPI.GetWatchList(null);
                         return true;
                     }
 
-                    response = Method.GetWatchList(dPlayer);
+                    response = ModerationSystemAPI.GetWatchList(dPlayer);
                     return true;
 
                 default: response = watchListTranslation.ActionNotFounded;

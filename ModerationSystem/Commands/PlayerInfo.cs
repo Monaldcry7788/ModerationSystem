@@ -9,6 +9,7 @@
     using ModerationSystem.Collections;
     using ModerationSystem.Configs.CommandTranslation;
     using NorthwoodLib.Pools;
+    using API;
 
     public class PlayerInfo : ICommand
     {

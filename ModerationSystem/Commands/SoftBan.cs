@@ -7,6 +7,7 @@
     using Exiled.Permissions.Extensions;
     using ModerationSystem.Configs.CommandTranslation;
     using ModerationSystem.Enums;
+    using API;
 
     public class SoftBan : ICommand
     {
@@ -41,7 +42,7 @@
                 return false;
             }
 
-            DateTime? duration = Method.ConvertToDateTime(arguments.At(1));
+            DateTime? duration = ModerationSystemAPI.ConvertToDateTime(arguments.At(1));
             if (duration == null)
             {
                 response = softBanTranslation.InvalidDuration.Replace("{duration}", arguments.At(1));
@@ -61,8 +62,8 @@
                 return false;
             }
 
-            Method.ApplyPunish(Player.Get(arguments.At(0)), ((CommandSender)sender).GetStaffer(), dPlayer, PunishType.SoftBan, reason, Convert.ToDateTime(duration));
-            Method.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.Translation.StaffTranslation.StaffWarnMessage.Content
+            ModerationSystemAPI.ApplyPunish(Player.Get(arguments.At(0)), ((CommandSender)sender).GetStaffer(), dPlayer, PunishType.SoftBan, reason, Convert.ToDateTime(duration));
+            ModerationSystemAPI.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.Translation.StaffTranslation.StaffWarnMessage.Content
                 .Replace("{staffer}", sender.LogName)
                 .Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}")
                 .Replace("{reason}", reason)));

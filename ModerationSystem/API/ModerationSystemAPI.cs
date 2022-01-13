@@ -1,22 +1,30 @@
-namespace ModerationSystem
+﻿namespace ModerationSystem.API
 {
     using System;
     using System.Linq;
     using System.Text;
     using Exiled.API.Features;
     using JetBrains.Annotations;
-    using Collections;
-    using Enums;
-    using GlobalDatabase;
+    using ModerationSystem.Collections;
+    using ModerationSystem.Enums;
+    using ModerationSystem.GlobalDatabase;
     using Newtonsoft.Json;
     using NorthwoodLib.Pools;
-    using static ModerationSystem.Database.Database;
+    using static Database.Database;
     using Player = Exiled.API.Features.Player;
 
-    public static class Method
+    public static class ModerationSystemAPI
     {
-        internal static void ApplyPunish(Player target, Collections.Player issuer, Collections.Player dPlayer,
-            PunishType punishType, string reason, DateTime duration)
+        /// <summary>
+        /// Apply a punish to the specified <see cref="Player"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="Exiled.API.Features.Player"/> player.</param>
+        /// <param name="issuer">The <see cref="Collections.Player"/> staffer.</param>
+        /// <param name="dPlayer">The <see cref="Collections.Player"/> player.</param>
+        /// <param name="punishType">The <see cref="Enums.PunishType"/> punish.</param>
+        /// <param name="reason">The reason of the punish.</param>
+        /// <param name="duration">The <see cref="DateTime"/> duration.</param>
+        public static void ApplyPunish(Player target, Collections.Player issuer, Collections.Player dPlayer, PunishType punishType, string reason, DateTime duration)
         {
             switch (punishType)
             {
@@ -109,14 +117,11 @@ namespace ModerationSystem
             }
         }
 
-        internal static void SendBroadcast(Broadcast broadcast)
-        {
-            foreach (Player player in Player.List.Where(p => p.RemoteAdminAccess)) player.Broadcast(broadcast, true);
-        }
-
-        private static int GetTotalSeconds(DateTime time) => (time.Hour * 3600) + (time.Minute * 60) + time.Second;
-
-        internal static void Clear(this Collections.Player player)
+        /// <summary>
+        /// Clear all punishment from player <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Collections.Player"/> player.</param>
+        public static void Clear(this Collections.Player player)
         {
             BanCollection.DeleteMany(p => p.Target == player);
             MuteCollection.DeleteMany(p => p.Target == player);
@@ -127,7 +132,12 @@ namespace ModerationSystem
             JsonManager.PunishToCache(PunishType.All, JsonConvert.SerializeObject(player), player, ActionType.Remove);
         }
 
-        internal static PunishType? GetPunishType(this string punish)
+        /// <summary>
+        /// Clear all punishment from <see cref="Player"/>.
+        /// </summary>
+        /// <param name="punish"> the punish name.</param>
+        /// <returns> the punish using the name.</returns>
+        public static PunishType? GetPunishType(this string punish)
         {
             switch (punish)
             {
@@ -147,7 +157,14 @@ namespace ModerationSystem
             }
         }
 
-        internal static void ClearPunishment(Collections.Player player, PunishType? type, int id, int server)
+        /// <summary>
+        /// Clear a punish to the specified <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Collections.Player"/> player.</param>
+        /// <param name="type"> the <see cref="Enums.PunishType"/>.</param>
+        /// <param name="id"> the punish id.</param>
+        /// <param name="server"> the server port.</param>
+        public static void ClearPunishment(Collections.Player player, PunishType? type, int id, int server)
         {
             switch (type)
             {
@@ -215,7 +232,50 @@ namespace ModerationSystem
             }
         }
 
-        internal static bool CheckId(Collections.Player player, PunishType? type, int id, int server)
+        /// <summary>
+        /// Gets the specified <see cref="Collections.Player"/>.
+        /// </summary>
+        /// <param name="player">The nickname or steamid64</param>
+        public static Collections.Player GetPlayer(this string player) => Player.Get(player)?.GetPlayer() ?? PlayerCollection.Query().Where(qPlayer => qPlayer.Id == player.GetRawUserId() || qPlayer.Name == player).FirstOrDefault();
+
+        /// <summary>
+        /// Gets the specified <see cref="Collections.Player"/>.
+        /// </summary>
+        /// <param name="player">The specified <see cref="Exiled.API.Features.Player"/>.</param>
+        public static Collections.Player GetPlayer(this Player player)
+        {
+            if (player == null || string.IsNullOrEmpty(player.UserId) && !player.IsHost) return null;
+
+            if (player.IsHost) return ServerPlayer;
+
+            if (PlayerData.TryGetValue(player, out Collections.Player dPlayer)) return dPlayer;
+
+            return PlayerCollection.FindById(player.RawUserId);
+        }
+
+        /// <summary>
+        /// Gets the specified <see cref="Collections.Player"/> staffer.
+        /// </summary>
+        /// <param name="sender">The specified CommandSender.</param>
+        public static Collections.Player GetStaffer(this CommandSender sender)
+        {
+            return new Collections.Player
+            (
+                sender?.SenderId?.GetRawUserId() ?? "Server",
+                sender?.SenderId?.GetAuthentication() ?? "Server",
+                sender?.Nickname ?? "Server"
+            );
+        }
+
+        /// <summary>
+        /// Check if exists a specified punish.
+        /// </summary>
+        /// <param name="player">The <see cref="Collections.Player"/> player.</param>
+        /// <param name="type"> the <see cref="Enums.PunishType"/>.</param>
+        /// <param name="id"> the punish id.</param>
+        /// <param name="server"> the server port.</param>
+        /// <returns> true if the punish exists, false if not.</returns>
+        public static bool CheckId(Collections.Player player, PunishType? type, int id, int server)
         {
             switch (type)
             {
@@ -245,14 +305,33 @@ namespace ModerationSystem
             }
         }
 
-        internal static DateTime? ConvertToDateTime(string stringDuration)
-        {
-            string duration = Convert.ToDateTime(stringDuration).ToString("HH:mm:ss");
+        /// <summary>
+        /// Gets a value indicating wherever or not the specified <see cref="Collections.Player"/> is muted.
+        /// </summary>
+        /// <param name="dPlayer"> the specified <see cref="Collections.Player"/>.</param>
+        /// <returns> true if is muted, false if not.</returns>
+        public static bool IsMuted(this Collections.Player dPlayer) => MuteCollection.Exists(mute => mute.Target.Id == dPlayer.Id && mute.Expire > DateTime.Now);
 
-            return !DateTime.TryParse(duration, out DateTime dateTime) ? (DateTime?)null : dateTime;
-        }
+        /// <summary>
+        /// Gets a value indicating wherever or not the specified <see cref="Collections.Player"/> is banned.
+        /// </summary>
+        /// <param name="dPlayer"> the specified <see cref="Collections.Player"/>.</param>
+        /// <returns> true if is banned, false if not.</returns>
+        public static bool IsBanned(this Collections.Player dPlayer) => BanCollection.Exists(ban => ban.Target.Id == dPlayer.Id && ban.Expire > DateTime.Now);
 
-        internal static string GetWatchList([CanBeNull] Collections.Player player)
+        /// <summary>
+        /// Gets a value indicating wherever or not the specified <see cref="Collections.Player"/> is soft-banned.
+        /// </summary>
+        /// <param name="dPlayer"> the specified <see cref="Collections.Player"/>.</param>
+        /// <returns> true if is soft-banned, false if not.</returns>
+        public static bool IsSoftBanned(this Collections.Player dPlayer) => SoftBanCollection.Exists(sb => sb.Target.Id == dPlayer.Id && sb.Expire > DateTime.Now);
+
+        /// <summary>
+        /// Get all the watchlist or <see cref="Collections.Player"/> watchlist.
+        /// </summary>
+        /// <param name="player">The <see cref="Collections.Player"/> player, but can be null.</param>
+        /// <returns> the watchlist.</returns>
+        public static string GetWatchList([CanBeNull] Collections.Player player)
         {
             StringBuilder text = StringBuilderPool.Shared.Rent().AppendLine();
 
@@ -282,5 +361,28 @@ namespace ModerationSystem
 
             return StringBuilderPool.Shared.ToStringReturn(text);
         }
+
+        internal static DateTime? ConvertToDateTime(string stringDuration)
+        {
+            string duration = Convert.ToDateTime(stringDuration).ToString("HH:mm:ss");
+
+            return !DateTime.TryParse(duration, out DateTime dateTime) ? (DateTime?)null : dateTime;
+        }
+
+        internal static void SendBroadcast(Broadcast broadcast)
+        {
+            foreach (Player player in Player.List.Where(p => p.RemoteAdminAccess)) player.Broadcast(broadcast, true);
+        }
+
+        private static int GetTotalSeconds(DateTime time) => (time.Hour * 3600) + (time.Minute * 60) + time.Second;
+
+        private static string GetRawUserId(this string userId)
+        {
+            int index = userId.LastIndexOf('@');
+            return index == -1 ? userId : userId.Substring(0, index);
+        }
+
+        private static string GetAuthentication(this string userId) => userId.Substring(userId.LastIndexOf('@') + 1);
+
     }
 }
