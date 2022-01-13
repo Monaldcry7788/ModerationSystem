@@ -50,7 +50,5 @@ Download latest version of plugin and put ModerationSystem.dll into Plugin Exile
 
 If you found bug please contact me on discord: **Monald#9248** .<br /><br />
 
-If you like the plugin, you can make a donation on paypal: ![PayPal](https://www.paypal.com/paypalme/monaldcry7788)
-
 ### Downloads
 ![img](https://img.shields.io/github/downloads/Monaldcry7788/ModerationSystem/total?style=for-the-badge)
