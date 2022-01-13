@@ -18,7 +18,8 @@
 
         [Description("Action not founded error")]
         public string ActionNotFounded { get; set; } = "Action not founded! Avariable action: add, remove";
-        [Description("Reason null error")] public string ReasonNull { get; set; } = "Reason can't be null";
 
+        [Description("Reason null error")]
+        public string ReasonNull { get; set; } = "Reason can't be null";
     }
 }

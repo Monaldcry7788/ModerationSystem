@@ -2,6 +2,7 @@
 {
     using System.IO;
     using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
     using ModerationSystem.Collections;
     using ModerationSystem.Enums;
     using Newtonsoft.Json;
@@ -46,7 +47,7 @@
         {
             if (!Plugin.Singleton.Config.IsDatabaseGlobal) return;
 
-            if (!Plugin.Singleton.Config.ReceiveFrom.Contains(Path.GetFileNameWithoutExtension(e.Name)?.Split('-')[4])) return;
+            if (!Plugin.Singleton.Config.ReceiveFrom.Contains(Path.GetFileNameWithoutExtension(e.Name)?.Split('-')[4]) || Path.GetFileNameWithoutExtension(e.Name)?.Split('-')[4] == Server.Port.ToString()) return;
 
             string playerId = Path.GetFileNameWithoutExtension(e.Name)?.Split('-')[2];
             string rawPlayerId = playerId?.Split('@')[0];

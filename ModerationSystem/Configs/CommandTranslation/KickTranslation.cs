@@ -16,10 +16,10 @@
         [Description("Player not found error")]
         public string PlayerNotFound { get; set; } = "Player not found";
 
-        [Description("Reason null error")] public string ReasonNull { get; set; } = "Reason can't be null";
-        
+        [Description("Reason null error")]
+        public string ReasonNull { get; set; } = "Reason can't be null";
+
         [Description("Player succesfully kicked")]
         public string PlayerKicked { get; set; } = "Player {player.name} ({player.userid}) has been kicked with reason {reason}";
-
     }
 }

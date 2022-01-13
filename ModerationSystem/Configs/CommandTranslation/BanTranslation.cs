@@ -19,13 +19,13 @@
         [Description("Invalid duration error")]
         public string InvalidDuration { get; set; } = "Invalid duration {duration}";
 
-        [Description("Reason null error")] public string ReasonNull { get; set; } = "Reason can't be null";
+        [Description("Reason null error")]
+        public string ReasonNull { get; set; } = "Reason can't be null";
 
-        [Description("Player already banned")] public string PlayerAlreadyBanned { get; set; } = "Player is already banned";
+        [Description("Player already banned")]
+        public string PlayerAlreadyBanned { get; set; } = "Player is already banned";
 
         [Description("Player succesfully banned")]
         public string PlayerBanned { get; set; } = "Player {player.name} ({player.userid}) has been banned for {duration} with reason {reason}";
-        
-
     }
 }

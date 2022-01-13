@@ -15,13 +15,14 @@
 
         [Description("Message when player will be cleared")]
         public string PlayerCleared { get; set; } = "Player {player.name} ({player.userid}) cleared";
-        [Description("Id not found error")] public string IdNotFound { get; set; } = "Id not found";
+
+        [Description("Id not found error")]
+        public string IdNotFound { get; set; } = "Id not found";
 
         [Description("Punishment cleared from player")]
         public string PunishmentCleared { get; set; } = "Punishment cleared from {player.name} ({player.userid})";
 
         [Description("Action not founded error")]
-        public string ActionNotFounded { get; set; } =
-            "Action not founded! Avariable action: ban, kickm mute, warn, softban, softwarn";
+        public string ActionNotFounded { get; set; } = "Action not founded! Avariable action: ban, kickm mute, warn, softban, softwarn";
     }
 }

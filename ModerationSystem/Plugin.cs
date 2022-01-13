@@ -17,7 +17,7 @@
 
         public override Version Version => new Version(4, 0, 0);
 
-        public override Version RequiredExiledVersion => new Version(4, 0, 0);
+        public override Version RequiredExiledVersion => new Version(4, 0, 1);
 
         private FileSystemWatcher _fileSystemWatcher;
 
@@ -36,12 +36,15 @@
             {
                 if (!Directory.Exists(Database.Database.CacheFolder))
                     Directory.CreateDirectory(Database.Database.CacheFolder);
+
+                
                 _fileSystemWatcher = new FileSystemWatcher(Database.Database.CacheFolder)
                 {
                     NotifyFilter = NotifyFilters.LastWrite,
                     Filter = "*.json",
                     EnableRaisingEvents = true
                 };
+
                 _fileSystemWatcher.Created += ModerationSystem.Events.Events.OnFileChanged;
             }
 

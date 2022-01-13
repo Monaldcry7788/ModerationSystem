@@ -15,7 +15,6 @@
             {
                 case PunishType.Ban:
                     Ban ban = JsonConvert.DeserializeObject<Ban>(json);
-     
                     if (actionType == ActionType.Remove)
                     {
                         ban.Clear = true;
@@ -27,7 +26,6 @@
 
                 case PunishType.Kick:
                     Kick kick = JsonConvert.DeserializeObject<Kick>(json);
-
                     if (actionType == ActionType.Remove)
                     {
                         kick.Clear = true;
@@ -39,7 +37,6 @@
 
                 case PunishType.Mute:
                     Mute mute = JsonConvert.DeserializeObject<Mute>(json);
-
                     if (actionType == ActionType.Remove)
                     {
                         mute.Clear = true;
@@ -51,7 +48,6 @@
 
                 case PunishType.Warn:
                     Warn warn = JsonConvert.DeserializeObject<Warn>(json);
-
                     if (actionType == ActionType.Remove)
                     {
                         warn.Clear = true;
@@ -63,7 +59,6 @@
 
                 case PunishType.SoftBan:
                     SoftBan softBan = JsonConvert.DeserializeObject<SoftBan>(json);
-
                     if (actionType == ActionType.Remove)
                     {
                         softBan.Clear = true;
@@ -75,7 +70,6 @@
 
                 case PunishType.SoftWarn:
                     SoftWarn softWarn = JsonConvert.DeserializeObject<SoftWarn>(json);
-
                     if (actionType == ActionType.Remove)
                     {
                         softWarn.Clear = true;
@@ -87,7 +81,6 @@
 
                 case PunishType.WatchList:
                     WatchList watchList = JsonConvert.DeserializeObject<WatchList>(json);
-
                     if (actionType == ActionType.Remove)
                     {
                         watchList.Clear = true;

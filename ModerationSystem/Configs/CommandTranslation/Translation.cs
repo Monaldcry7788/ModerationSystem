@@ -4,10 +4,17 @@
 
     public class Translation
     {
-        [Description("Ban translation")] public BanTranslation BanTranslation { get; set; } = new BanTranslation();
-        [Description("Kick translation")] public KickTranslation KickTranslation { get; set; } = new KickTranslation();
-        [Description("Mute translation")] public MuteTranslation MuteTranslation { get; set; } = new MuteTranslation();
-        [Description("Warn translatiob")] public WarnTranslation WarnTranslation { get; set; } = new WarnTranslation();
+        [Description("Ban translation")]
+        public BanTranslation BanTranslation { get; set; } = new BanTranslation();
+
+        [Description("Kick translation")]
+        public KickTranslation KickTranslation { get; set; } = new KickTranslation();
+
+        [Description("Mute translation")]
+        public MuteTranslation MuteTranslation { get; set; } = new MuteTranslation();
+
+        [Description("Warn translatiob")]
+        public WarnTranslation WarnTranslation { get; set; } = new WarnTranslation();
 
         [Description("SoftBan translation")]
         public SoftBanTranslation SoftBanTranslation { get; set; } = new SoftBanTranslation();

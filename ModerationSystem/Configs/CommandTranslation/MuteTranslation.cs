@@ -19,12 +19,13 @@
         [Description("Invalid duration error")]
         public string InvalidDuration { get; set; } = "Invalid duration {duration}";
 
-        [Description("Reason null error")] public string ReasonNull { get; set; } = "Reason can't be null";
+        [Description("Reason null error")]
+        public string ReasonNull { get; set; } = "Reason can't be null";
 
-        [Description("Player already muted")] public string PlayerAlreadyMuted { get; set; } = "Player is already muted";
+        [Description("Player already muted")]
+        public string PlayerAlreadyMuted { get; set; } = "Player is already muted";
 
         [Description("Player succesfully banned")]
         public string PlayerMuted { get; set; } = "Player {player.name} ({player.userid}) has been muted for {duration} with reason {reason}";
-
     }
 }

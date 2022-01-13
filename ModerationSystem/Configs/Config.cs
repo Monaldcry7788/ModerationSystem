@@ -11,10 +11,11 @@
         public bool IsEnabled { get; set; } = true;
 
         [Description("The name of the database")]
-        public string DatabaseName { get; set; } = "Warns";
+        public string DatabaseName { get; set; } = "ModerationSystem";
+
         [Description("Is database global")] public bool IsDatabaseGlobal { get; set; } = false;
 
-        [Description("List of server to List of servers to receive data from (server port, do not put this server port)")]
+        [Description("List of server ports to receive data from")]
         public List<string> ReceiveFrom { get; set; } = new List<string>
         {
             "7778",

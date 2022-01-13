@@ -19,12 +19,13 @@
         [Description("Invalid duration error")]
         public string InvalidDuration { get; set; } = "Invalid duration {duration}";
 
-        [Description("Reason null error")] public string ReasonNull { get; set; } = "Reason can't be null";
+        [Description("Reason null error")]
+        public string ReasonNull { get; set; } = "Reason can't be null";
 
-        [Description("Player already soft-banned")] public string PlayerAlreadySoftBanned { get; set; } = "Player is already soft-banned";
+        [Description("Player already soft-banned")]
+        public string PlayerAlreadySoftBanned { get; set; } = "Player is already soft-banned";
 
         [Description("Player succesfully soft-banned")]
         public string PlayerSoftBanned { get; set; } = "Player {player.name} ({player.userid}) has been softbanned for {duration} with reason {reason}";
-
     }
 }
