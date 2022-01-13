@@ -37,7 +37,6 @@
             }
 
             Player dPlayer = arguments.At(0).GetPlayer();
-
             if (dPlayer == null)
             {
                 response = playerInfoTranslation.PlayerNotFound;
@@ -45,7 +44,6 @@
             }
 
             StringBuilder text = StringBuilderPool.Shared.Rent().AppendLine();
-
             text.AppendLine($"{dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication})").AppendLine();
 
             string message = StringBuilderPool.Shared.ToStringReturn(text) + GetSanctions(

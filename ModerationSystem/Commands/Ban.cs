@@ -35,7 +35,6 @@
             }
 
             Collections.Player dPlayer = arguments.At(0).GetPlayer();
-
             if (dPlayer == null)
             {
                 response = banTranslation.PlayerNotFound;
@@ -43,7 +42,6 @@
             }
 
             DateTime? duration = Method.ConvertToDateTime(arguments.At(1));
-
             if (duration == null)
             {
                 response = banTranslation.InvalidDuration.Replace("{duration}", arguments.At(1));

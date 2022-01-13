@@ -25,6 +25,7 @@
                 response = clearTranslation.InvalidPermission.Replace("{permission}", "ms.clear");
                 return false;
             }
+
             if (arguments.Count == 0 || arguments.Count > 4 || arguments.Count == 3 || arguments.Count == 1 || (arguments.Count == 2 && !arguments.At(1).Equals("all")))
             {
                 response = clearTranslation.WrongUsage;

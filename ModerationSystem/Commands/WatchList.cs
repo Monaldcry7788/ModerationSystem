@@ -35,14 +35,13 @@
             }
 
             Collections.Player dPlayer = arguments.At(1).GetPlayer();
-
             if (dPlayer == null)
             {
                 response = watchListTranslation.PlayerNotFound;
                 return false;
             }
-            string reason = string.Join(" ", arguments.Skip(2).Take(arguments.Count - 1));
 
+            string reason = string.Join(" ", arguments.Skip(2).Take(arguments.Count - 1));
             if (string.IsNullOrEmpty(reason))
             {
                 response = watchListTranslation.ReasonNull;

@@ -35,7 +35,6 @@
             }
 
             Collections.Player dPlayer = arguments.At(0).GetPlayer();
-
             if (dPlayer == null)
             {
                 response = muteTranslation.PlayerNotFound;
@@ -43,14 +42,12 @@
             }
 
             DateTime? duration = Method.ConvertToDateTime(arguments.At(1));
-
             if (duration == null)
             {
                 response = muteTranslation.InvalidDuration.Replace("{duration}", arguments.At(1));
             }
 
             string reason = string.Join(" ", arguments.Skip(2).Take(arguments.Count - 2));
-
             if (string.IsNullOrEmpty(reason))
             {
                 response = muteTranslation.ReasonNull;

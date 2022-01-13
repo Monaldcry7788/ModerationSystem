@@ -35,7 +35,6 @@
             }
 
             Collections.Player dPlayer = arguments.At(0).GetPlayer();
-
             if (dPlayer == null)
             {
                 response = softBanTranslation.PlayerNotFound;
@@ -43,7 +42,6 @@
             }
 
             DateTime? duration = Method.ConvertToDateTime(arguments.At(1));
-
             if (duration == null)
             {
                 response = softBanTranslation.InvalidDuration.Replace("{duration}", arguments.At(1));
@@ -51,7 +49,6 @@
             }
             
             string reason = string.Join(" ", arguments.Skip(1).Take(arguments.Count - 1));
-
             if (string.IsNullOrEmpty(reason))
             {
                 response = softBanTranslation.ReasonNull;

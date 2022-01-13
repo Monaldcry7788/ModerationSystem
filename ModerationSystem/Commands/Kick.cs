@@ -35,7 +35,6 @@
             }
 
             Collections.Player dPlayer = arguments.At(0).GetPlayer();
-
             if (dPlayer == null)
             {
                 response = kickTranslation.PlayerNotFound;
@@ -43,7 +42,6 @@
             }
 
             string reason = string.Join(" ", arguments.Skip(1).Take(arguments.Count - 1));
-
             if (string.IsNullOrEmpty(reason))
             {
                 response = kickTranslation.ReasonNull;
