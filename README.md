@@ -4,7 +4,7 @@
 
 Welcome to ModerationSystem plugin!
 
-**What is ModerationSystem plugin?**: ModerationSystem plugin is a moderation plugin, you can find many commands to moderate your server: mute, ban, kick, warn, playerinfo, unmute and unwarn.
+**What is ModerationSystem plugin?** ModerationSystem plugin is a moderation plugin, you can find many commands to moderate your server: mute, ban, kick, warn, playerinfo, unmute and unwarn.
 
 - **Warn Command:** You can warn a player, and everything will be stored in the database
 - **Mute Command:** You can mute a player and decide the mute time, and everything will be stored in the database
