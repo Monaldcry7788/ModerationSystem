@@ -39,15 +39,15 @@
 
         internal static void OnChangingRole(ChangingRoleEventArgs e)
         {
+            if (e.Player is null) return;
+
             if (e.Player.GetPlayer().IsSoftBanned())
                 e.IsAllowed = false;
         }
 
         internal static void OnFileChanged(object sender, FileSystemEventArgs e)
         {
-            if (!Plugin.Singleton.Config.IsDatabaseGlobal) return;
-
-            if (!Plugin.Singleton.Config.ReceiveFrom.Contains(Path.GetFileNameWithoutExtension(e.Name)?.Split('-')[4]) || Path.GetFileNameWithoutExtension(e.Name)?.Split('-')[4] == Server.Port.ToString()) return;
+            if (!Plugin.Singleton.Config.IsDatabaseGlobal || !Plugin.Singleton.Config.ReceiveFrom.Contains(Path.GetFileNameWithoutExtension(e.Name)?.Split('-')[4]) || Path.GetFileNameWithoutExtension(e.Name)?.Split('-')[4] == Server.Port.ToString()) return;
 
             string playerId = Path.GetFileNameWithoutExtension(e.Name)?.Split('-')[2];
             string rawPlayerId = playerId?.Split('@')[0];
@@ -171,7 +171,6 @@
             }
 
             File.Delete(e.FullPath);
-
         }
     }
 }
