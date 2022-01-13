@@ -215,7 +215,7 @@ namespace ModerationSystem
             }
         }
 
-    internal static bool CheckId(Collections.Player player, PunishType? type, int id, int server)
+        internal static bool CheckId(Collections.Player player, PunishType? type, int id, int server)
         {
             switch (type)
             {
