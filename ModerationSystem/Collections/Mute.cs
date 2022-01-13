@@ -18,6 +18,7 @@
             Server = server;
             Clear = clear;
         }
+
         public ObjectId Id { get; set; }
 
         public Player Target { get; set; }

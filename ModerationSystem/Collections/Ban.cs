@@ -2,6 +2,7 @@
 {
     using System;
     using LiteDB;
+
     public class Ban
     {
         public Ban(Player target, Player issuer, string reason, string duration, DateTime date, DateTime expire, int banId, int server, bool clear)
@@ -17,6 +18,7 @@
             Server = server;
             Clear = clear;
         }
+
         public ObjectId Id { get; set; }
 
         public Player Target { get; set; }
