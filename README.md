@@ -4,7 +4,7 @@
 
 Welcome to ModerationSystem plugin!
 
-**What is ModerationSystem plugin?**: ModerationSystem plugin is a moderation plugin, you can find many commands to moderate your server: mute, ban, kick, warn, playerinfo, unmute and unwarn.
+**What is ModerationSystem plugin?** ModerationSystem plugin is a moderation plugin, you can find many commands to moderate your server: mute, ban, kick, warn, playerinfo, unmute and unwarn.
 
 - **Warn Command:** You can warn a player, and everything will be stored in the database
 - **Mute Command:** You can mute a player and decide the mute time, and everything will be stored in the database
@@ -49,8 +49,6 @@ Download latest version of plugin and put ModerationSystem.dll into Plugin Exile
 | ms watchlist / wl | Player name or ID | ms.watchlist | add a player into watchlist |
 
 If you found bug please contact me on discord: **Monald#9248** .<br /><br />
-
-If you like the plugin, you can make a donation on paypal: ![PayPal](https://www.paypal.com/paypalme/monaldcry7788)
 
 ### Downloads
 ![img](https://img.shields.io/github/downloads/Monaldcry7788/ModerationSystem/total?style=for-the-badge)
