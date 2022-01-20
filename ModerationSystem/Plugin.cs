@@ -15,9 +15,9 @@
 
         public override string Name => "ModerationSystem";
 
-        public override Version Version => new Version(4, 0, 1);
+        public override Version Version => new Version(4, 0, 2);
 
-        public override Version RequiredExiledVersion => new Version(4, 2, 3);
+        public override Version RequiredExiledVersion => new Version(4, 2, 2);
 
         private FileSystemWatcher _fileSystemWatcher;
 
