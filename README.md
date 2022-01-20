@@ -13,7 +13,7 @@ Welcome to ModerationSystem plugin!
 - **PlayerInfo Command:** You can see the penalties of the selected player
 - **Clear command:** Able to clear player's punishement!
 - **SoftBan:** Player can't spawn!
-- **SoftWarn**
+- **SoftWarn**: Send a message to the player. It is a type of warn
 - **Watchlist:** Watchlist for all players
 - **Global Database**
 
