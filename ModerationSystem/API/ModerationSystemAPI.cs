@@ -12,6 +12,8 @@
     using NorthwoodLib.Pools;
     using static Database.Database;
     using Player = Exiled.API.Features.Player;
+    using MEC;
+    using ModerationSystem.Discord;
 
     public static class ModerationSystemAPI
     {
@@ -26,6 +28,7 @@
         /// <param name="duration">The <see cref="DateTime"/> duration.</param>
         public static void ApplyPunish(Player target, Collections.Player issuer, Collections.Player dPlayer, PunishType punishType, string reason, DateTime duration)
         {
+            Log.Debug(issuer.Name);
             switch (punishType)
             {
                 case PunishType.Warn:
@@ -115,6 +118,10 @@
                     JsonManager.PunishToCache(punishType, JsonConvert.SerializeObject(watchList), dPlayer, ActionType.Add);
                     break;
             }
+            
+            if (punishType is PunishType.WatchList or PunishType.All) return;
+
+            Timing.RunCoroutine(DiscordHandler.SendMessage(Plugin.Singleton.Config.Translation.DiscordTranslation.MessageContent.Replace("{target}", $"{dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication})").Replace("{reason}", reason).Replace("{action}", punishType.ToString()).Replace("{issuer}", $"{issuer.Name} ({issuer.Id}@{issuer.Authentication})").Replace("{duration}", duration.ToString()), Plugin.Singleton.Config.Translation.DiscordTranslation.WebhookUrl));
         }
 
         /// <summary>
@@ -383,6 +390,5 @@
         }
 
         private static string GetAuthentication(this string userId) => userId.Substring(userId.LastIndexOf('@') + 1);
-
     }
 }

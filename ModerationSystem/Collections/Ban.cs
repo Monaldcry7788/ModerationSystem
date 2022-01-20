@@ -5,6 +5,10 @@
 
     public class Ban
     {
+        public Ban()
+        {
+        }
+
         public Ban(Player target, Player issuer, string reason, string duration, DateTime date, DateTime expire, int banId, int server, bool clear)
         {
             Id = ObjectId.NewObjectId();

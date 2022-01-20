@@ -11,6 +11,11 @@
     {
         internal static void PunishToCache(PunishType? type, string json, Player dPlayer, ActionType actionType)
         {
+            if (!Plugin.Singleton.Config.IsDatabaseGlobal) return;
+
+            if (!Directory.Exists(Database.Database.CacheFolder))
+                Directory.CreateDirectory(Database.Database.CacheFolder);
+
             switch (type)
             {
                 case PunishType.Ban:

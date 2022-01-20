@@ -5,6 +5,10 @@
 
     public class WatchList
     {
+        public WatchList()
+        {
+        }
+
         public WatchList(Player target, Player issuer, string reason, DateTime date, int watchListId, int server, bool clear)
             {
                 Id = ObjectId.NewObjectId();

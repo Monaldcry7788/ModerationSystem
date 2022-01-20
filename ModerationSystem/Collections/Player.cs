@@ -5,6 +5,10 @@
 
     public class Player
     {
+        public Player()
+        {
+        }
+
         [BsonCtor]
         public Player(string id, string authentication, string name)
         {

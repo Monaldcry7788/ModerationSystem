@@ -5,6 +5,10 @@
 
     public class SoftWarn
     {
+        public SoftWarn()
+        {
+        }
+
         public SoftWarn(Player target, Player issuer, string reason, DateTime date, int softWarnId, int server, bool clear)
         {
             Id = ObjectId.NewObjectId();

@@ -5,6 +5,10 @@
 
     public class Warn
     {
+        public Warn()
+        {
+        }
+
         public Warn(Player target, Player issuer, string reason, DateTime date, int warnId, int server, bool clear)
         {
             Id = ObjectId.NewObjectId();

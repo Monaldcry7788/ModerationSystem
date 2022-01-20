@@ -5,6 +5,10 @@
 
     public class SoftBan
     {
+        public SoftBan()
+        {
+        }
+
         public SoftBan(Player target, Player issuer, string reason, string duration, DateTime date, DateTime expire, int softBanId, int server, bool clear)
         {
             Id = ObjectId.NewObjectId();

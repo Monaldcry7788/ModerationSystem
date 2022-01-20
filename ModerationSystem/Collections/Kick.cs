@@ -5,6 +5,10 @@
 
     public class Kick
     {
+        public Kick()
+        {
+        }
+
         public Kick(Player target, Player issuer, string reason, DateTime date, int kickId, int server, bool clear)
         {
             Id = ObjectId.NewObjectId();

@@ -33,5 +33,8 @@
 
         [Description("WatchList translation")]
         public WatchListTranslation WatchListTranslation { get; set; } = new WatchListTranslation();
+
+        [Description("Discord translation")]
+        public DiscordTranslation.DiscordTranslation DiscordTranslation { get; set; } = new DiscordTranslation.DiscordTranslation();
     }
 }

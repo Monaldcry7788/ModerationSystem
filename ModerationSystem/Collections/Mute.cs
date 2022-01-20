@@ -5,6 +5,10 @@
 
     public class Mute
     {
+        public Mute()
+        {
+        }
+
         public Mute(Player target, Player issuer, string reason, string duration, DateTime date, DateTime expire, int muteId, int server, bool clear)
         {
             Id = ObjectId.NewObjectId();
