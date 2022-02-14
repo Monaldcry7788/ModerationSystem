@@ -1,4 +1,9 @@
-﻿namespace ModerationSystem.API
+﻿using System.Globalization;
+using Exiled.Permissions.Extensions;
+using InventorySystem.Items.Usables.Scp244;
+using Respawning;
+
+namespace ModerationSystem.API
 {
     using System;
     using System.Linq;
@@ -26,9 +31,8 @@
         /// <param name="punishType">The <see cref="Enums.PunishType"/> punish.</param>
         /// <param name="reason">The reason of the punish.</param>
         /// <param name="duration">The <see cref="DateTime"/> duration.</param>
-        public static void ApplyPunish(Player target, Collections.Player issuer, Collections.Player dPlayer, PunishType punishType, string reason, DateTime duration)
+        public static void ApplyPunish(Player target, Collections.Player issuer, Collections.Player dPlayer, PunishType punishType, string reason, string duration)
         {
-            Log.Debug(issuer.Name);
             switch (punishType)
             {
                 case PunishType.Warn:
@@ -37,19 +41,19 @@
 
                     target?.Broadcast(Plugin.Singleton.Config.Translation.WarnTranslation.PlayerWarnedMessage.Duration,
                         Plugin.Singleton.Config.Translation.WarnTranslation.PlayerWarnedMessage.Content.Replace(
-                            "{reason}", reason));
+                            "{reason}", reason), global::Broadcast.BroadcastFlags.Normal, true);
 
                     JsonManager.PunishToCache(punishType, JsonConvert.SerializeObject(warn), dPlayer, ActionType.Add);
                     break;
 
                 case PunishType.Mute:
-                    Mute mute = new Mute(dPlayer, issuer, reason, duration.ToString("HH:mm:ss"), DateTime.Now, DateTime.Now.AddSeconds(GetTotalSeconds(duration)), MuteCollection.Find(m => m.Target == dPlayer).Count(), Server.Port, false);
+                    Mute mute = new Mute(dPlayer, issuer, reason, GetDate(duration), DateTime.Now, DateTime.Now.AddSeconds(GetTotalSeconds(duration).TotalSeconds), MuteCollection.Find(m => m.Target == dPlayer).Count(), Server.Port, false);
                     mute.Save();
 
                     MuteHandler.IssuePersistentMute(dPlayer.Id + dPlayer.Authentication);
                     target?.Broadcast(Plugin.Singleton.Config.Translation.MuteTranslation.PlayerMuteMessage.Duration,
                         Plugin.Singleton.Config.Translation.WarnTranslation.PlayerWarnedMessage.Content
-                            .Replace("{duration}", duration.ToString("HH:mm:ss")).Replace("{reason}", reason));
+                            .Replace("{duration}", GetDate(duration)).Replace("{reason}", reason));
 
                     JsonManager.PunishToCache(punishType, JsonConvert.SerializeObject(mute), dPlayer, ActionType.Add);
                     break;
@@ -64,22 +68,9 @@
                     break;
 
                 case PunishType.Ban:
-                    Ban ban = new Ban(dPlayer, issuer, reason, duration.ToString("HH:mm:ss"), DateTime.Now, DateTime.Now.AddSeconds(GetTotalSeconds(duration)), BanCollection.Find(x => x.Target.Id == dPlayer.Id).Count(), Server.Port, false);
+                    Ban ban = new Ban(dPlayer, issuer, reason, GetDate(duration, true), DateTime.Now, DateTime.Now.AddSeconds(GetTotalSeconds(duration, true).TotalSeconds), BanCollection.Find(x => x.Target.Id == dPlayer.Id).Count(), Server.Port, false);
                     ban.Save();
-
-                    BanDetails details = new BanDetails
-                    {
-                        Expires = GetTotalSeconds(duration),
-                        Id = dPlayer.Id + dPlayer.Authentication,
-                        IssuanceTime = DateTime.Now.Ticks,
-                        Issuer = issuer.Name,
-                        OriginalName = dPlayer.Name,
-                        Reason = reason
-                    };
-
-                    BanHandler.IssueBan(details, BanHandler.BanType.IP);
                     target?.Disconnect(Plugin.Singleton.Config.Translation.BanTranslation.PlayerBanMessage.Replace("{reason}", reason));
-
                     JsonManager.PunishToCache(punishType, JsonConvert.SerializeObject(ban), dPlayer, ActionType.Add);
                     break;
 
@@ -89,7 +80,7 @@
 
                     target?.Broadcast(
                         Plugin.Singleton.Config.Translation.SoftWarnTranslation.PlayerSoftWarnedMessage.Duration,
-                        Plugin.Singleton.Config.Translation.StaffTranslation.StaffSoftWarnMessage.Content.Replace(
+                        Plugin.Singleton.Config.Translation.SoftWarnTranslation.PlayerSoftWarnedMessage.Content.Replace(
                             "{reason}", reason));
 
                     JsonManager.PunishToCache(punishType, JsonConvert.SerializeObject(softWarn), dPlayer,
@@ -97,16 +88,16 @@
                     break;
 
                 case PunishType.SoftBan:
-                    SoftBan softBan = new SoftBan(dPlayer, issuer, reason, duration.ToString("HH:mm:ss"), DateTime.Now, DateTime.Now.AddSeconds(GetTotalSeconds(duration)), SoftBanCollection.Find(sb => sb.Target.Id == dPlayer.Id).Count(), Server.Port, false);
+                    SoftBan softBan = new SoftBan(dPlayer, issuer, reason, GetDate(duration), DateTime.Now, DateTime.Now.AddSeconds(GetTotalSeconds(duration).TotalSeconds), SoftBanCollection.Find(sb => sb.Target.Id == dPlayer.Id).Count(), Server.Port, false);
                     softBan.Save();
 
                     target?.Broadcast(
                         Plugin.Singleton.Config.Translation.SoftBanTranslation.PlayerSoftBanMessage.Duration,
                         Plugin.Singleton.Config.Translation.StaffTranslation.StaffSoftBanMessage.Content.Replace(
                             "{duration}",
-                            duration.ToString("HH:mm:ss").Replace("{reason}", reason)));
+                            GetDate(duration).Replace("{reason}", reason)));
 
-                    if (target != null && target.Role != RoleType.Spectator) target.Role = RoleType.Spectator;
+                    if (target != null && target.Role != RoleType.Spectator) target.Role.Type = RoleType.Spectator;
 
                     JsonManager.PunishToCache(punishType, JsonConvert.SerializeObject(softBan), dPlayer, ActionType.Add);
                     break;
@@ -119,9 +110,11 @@
                     break;
             }
             
-            if (punishType is PunishType.WatchList or PunishType.All) return;
+            if (punishType is PunishType.WatchList)
+                Timing.RunCoroutine(DiscordHandler.SendMessage(Plugin.Singleton.Config.Translation.DiscordTranslation.MessageContentWatchlist.Replace("{target}", $"{dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication})").Replace("{reason}", reason).Replace("{issuer}", $"{issuer.Name} ({issuer.Id}@{issuer.Authentication})"), Plugin.Singleton.Config.Translation.DiscordTranslation.WebhookUrlWatchlist));
 
-            Timing.RunCoroutine(DiscordHandler.SendMessage(Plugin.Singleton.Config.Translation.DiscordTranslation.MessageContent.Replace("{target}", $"{dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication})").Replace("{reason}", reason).Replace("{action}", punishType.ToString()).Replace("{issuer}", $"{issuer.Name} ({issuer.Id}@{issuer.Authentication})").Replace("{duration}", duration.ToString()), Plugin.Singleton.Config.Translation.DiscordTranslation.WebhookUrl));
+            Timing.RunCoroutine(DiscordHandler.SendMessage(Plugin.Singleton.Config.Translation.DiscordTranslation.MessageContent.Replace("{target}", $"{dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication})").Replace("{reason}", reason).Replace("{action}", punishType.ToString()).Replace("{issuer}", $"{issuer.Name} ({issuer.Id}@{issuer.Authentication})").Replace("{duration}", GetDate(duration, true)), Plugin.Singleton.Config.Translation.DiscordTranslation.WebhookUrl));
+
         }
 
         /// <summary>
@@ -136,6 +129,7 @@
             WarnCollection.DeleteMany(p => p.Target == player);
             SoftBanCollection.DeleteMany(p => p.Target == player);
             SoftWarnCollection.DeleteMany(p => p.Target == player);
+            WatchListCollection.DeleteMany(p => p.Target == player);
             JsonManager.PunishToCache(PunishType.All, JsonConvert.SerializeObject(player), player, ActionType.Remove);
         }
 
@@ -371,9 +365,27 @@
 
         internal static DateTime? ConvertToDateTime(string stringDuration)
         {
-            string duration = Convert.ToDateTime(stringDuration).ToString("HH:mm:ss");
+            if (stringDuration is null)
+                return null;
 
-            return !DateTime.TryParse(duration, out DateTime dateTime) ? (DateTime?)null : dateTime;
+            int[] durationSplit = Array.ConvertAll(stringDuration.Split(':'), int.Parse);
+
+            if (durationSplit.Length < 4)
+                return null;
+
+            return DateTime.Now.AddDays(durationSplit.ElementAt(0)).AddHours(durationSplit.ElementAt(1)).AddMinutes(durationSplit.ElementAt(2)).AddSeconds(durationSplit.ElementAt(3));
+        }
+
+        internal static string GetDate(string duration, bool isRa = false)
+        {
+            string[] durationSplit = duration.Split(':');
+            if (isRa)
+            {
+                TimeSpan timeSpan = TimeSpan.FromSeconds(Convert.ToInt32(duration));
+                return $"{timeSpan.Days}d:{timeSpan.Hours}h:{timeSpan.Minutes}m:{timeSpan.Seconds}s";
+            }
+
+            return duration != DateTime.MinValue.ToString(CultureInfo.InvariantCulture) ? $"{durationSplit.ElementAt(0)}d:{durationSplit.ElementAt(1)}h:{durationSplit.ElementAt(2)}m:{durationSplit.ElementAt(3)}s" : "//";
         }
 
         internal static void SendBroadcast(Broadcast broadcast)
@@ -381,7 +393,30 @@
             foreach (Player player in Player.List.Where(p => p.RemoteAdminAccess)) player.Broadcast(broadcast, true);
         }
 
-        private static int GetTotalSeconds(DateTime time) => (time.Hour * 3600) + (time.Minute * 60) + time.Second;
+        internal static bool MaxDuration(string duration, Player staffer)
+        {
+            foreach (var permission in Plugin.Singleton.Config.StaffersDurationPermission.Where(dur => dur.Value > GetTotalSeconds(duration).TotalSeconds / 60))
+            {
+                if (!staffer.CheckPermission(permission.Key)) continue;
+                return false;
+            }
+
+            return true;
+        }
+
+        internal static TimeSpan GetTotalSeconds(string timeString, bool isRa = false)
+        {
+            if (isRa)
+            {
+                TimeSpan duration = DateTime.Now.AddSeconds(Convert.ToInt32(timeString)) - DateTime.Now;
+                return duration;
+            }
+
+            int[] durationSplit = Array.ConvertAll(timeString.Split(':'), int.Parse);
+
+            TimeSpan dur = DateTime.Now.AddDays(durationSplit.ElementAt(0)).AddHours(durationSplit.ElementAt(1)).AddMinutes(durationSplit.ElementAt(2)).AddSeconds(durationSplit.ElementAt(3)) - DateTime.Now;
+            return dur;
+        }
 
         private static string GetRawUserId(this string userId)
         {

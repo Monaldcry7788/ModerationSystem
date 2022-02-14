@@ -1,4 +1,6 @@
-﻿namespace ModerationSystem
+﻿using ModerationSystem.API;
+
+namespace ModerationSystem
 {
     using System;
     using System.IO;

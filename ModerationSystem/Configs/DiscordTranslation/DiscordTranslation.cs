@@ -15,5 +15,11 @@
 
         [Description("Message content")]
         public string MessageContent { get; set; } = "```diff\n+ Player: {target}\n+ Reason: {reason}\n+ Action: {action}\n+ Duration: {duration}\n- Staffer: {issuer}\n```";
+
+        [Description("Webhook for watchlist")]
+        public string WebhookUrlWatchlist { get; set; } = "https://discord.com/api/webhooks/";
+
+        [Description("Message content")]
+        public string MessageContentWatchlist { get; set; } = "```diff\n+ Player: {target}\n+ Reason: {reason}\n- Staffer: {issuer}```";
     }
 }

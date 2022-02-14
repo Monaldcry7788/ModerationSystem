@@ -1,4 +1,9 @@
-﻿namespace ModerationSystem.Events
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using MEC;
+
+namespace ModerationSystem.Events
 {
     using System.IO;
     using Exiled.Events.EventArgs;
@@ -29,6 +34,11 @@
   
             if (!dPlayer.IsMuted() && MuteHandler.QueryPersistentMute($"{dPlayer.Id}@{dPlayer.Authentication}"))
                 MuteHandler.RevokePersistentMute($"{dPlayer.Id}@{dPlayer.Authentication}");
+            if (!WatchListCollection.Exists(p => p.Target == ev.Player.GetPlayer())) return;
+            foreach (Exiled.API.Features.Player staffer in Exiled.API.Features.Player.List.Where(ply => ply.RemoteAdminAccess))
+                staffer.Broadcast(Plugin.Singleton.Config.Translation.WatchlistStaffersBroadcastJoin.Duration, Plugin.Singleton.Config.Translation.WatchlistStaffersBroadcastJoin.Content.Replace("{player}", $"{ev.Player.Nickname} ({ev.Player.UserId})").Replace("{reason}", WatchListCollection.Find(ply => ply.Target == ev.Player.GetPlayer()).Last().Reason), global::Broadcast.BroadcastFlags.Normal, true);
+            if (dPlayer.IsBanned())
+                ev.Player?.Disconnect(Plugin.Singleton.Config.Translation.BanTranslation.PlayerBanMessage.Replace("{reason}", BanCollection.Find(b => b.Target == dPlayer).Last().Reason));
         }
 
         internal static void OnDestroying(DestroyingEventArgs ev)
@@ -170,7 +180,6 @@
                     JsonConvert.DeserializeObject<Player>(File.ReadAllText(e.FullPath)).Clear();
                     break;
             }
-
             File.Delete(e.FullPath);
         }
     }

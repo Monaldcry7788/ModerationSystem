@@ -1,4 +1,8 @@
-﻿namespace ModerationSystem.Commands
+﻿using System.Collections.Generic;
+using System.Globalization;
+using MEC;
+
+namespace ModerationSystem.Commands
 {
     using System;
     using System.Linq;
@@ -35,11 +39,37 @@
                 return false;
             }
 
-            Collections.Player dPlayer = arguments.At(0).GetPlayer();
-            if (dPlayer == null)
+            List<Collections.Player> targets = new();
+
+            if (arguments.At(0).Split(',').Length > 1)
             {
-                response = warnTranslation.PlayerNotFound;
-                return false;
+                foreach (var player in arguments.At(0).Split(','))
+                {
+                    Collections.Player target = player.GetPlayer();
+                    if (target is null)
+                    {
+                        response = warnTranslation.PlayerNotFound.Replace("{target}", player);
+                        return false;
+                    }
+
+                    if (targets.Contains(target))
+                    {
+                        continue;
+                    }
+                    targets.Add(target);
+                }
+            }
+            else
+            {
+                Collections.Player dPlayer = arguments.At(0).GetPlayer();
+                if (dPlayer == null)
+                {
+                    response = warnTranslation.PlayerNotFound.Replace("{player}", arguments.At(0));
+                    return false;
+                }
+
+                if (!targets.Contains(dPlayer))
+                    targets.Add(dPlayer);
             }
 
             string reason = string.Join(" ", arguments.Skip(1).Take(arguments.Count - 1));
@@ -49,9 +79,13 @@
                 return false;
             }
 
-            ModerationSystemAPI.ApplyPunish(Player.Get(arguments.At(0)), ((CommandSender)sender).GetStaffer(), dPlayer, PunishType.Warn, reason, DateTime.MinValue);
-            ModerationSystemAPI.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.Translation.StaffTranslation.StaffWarnMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}").Replace("{reason}", reason)));
-            response = warnTranslation.PlayerWarned.Replace("{player.name}", dPlayer.Name).Replace("{player.userid}", $"{dPlayer.Id}@{dPlayer.Authentication}").Replace("{reason}", reason);
+            foreach (var target in targets)
+            {
+                ModerationSystemAPI.ApplyPunish(Player.Get($"{target.Id}@{target.Authentication}"), ((CommandSender)sender).GetStaffer(), target, PunishType.Warn, reason, DateTime.MinValue.ToString(CultureInfo.InvariantCulture));
+                ModerationSystemAPI.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.Translation.StaffTranslation.StaffWarnMessage.Content.Replace("{staffer}", sender.LogName).Replace("{target}", $"{target.Name} {target.Id}{target.Authentication}").Replace("{reason}", reason)));
+            }
+
+            response = warnTranslation.PlayerWarned;
             return true;
         }
     }

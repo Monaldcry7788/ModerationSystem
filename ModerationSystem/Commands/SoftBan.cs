@@ -1,4 +1,6 @@
-﻿namespace ModerationSystem.Commands
+﻿using System.Collections.Generic;
+
+namespace ModerationSystem.Commands
 {
     using System;
     using System.Linq;
@@ -35,11 +37,34 @@
                 return false;
             }
 
-            Collections.Player dPlayer = arguments.At(0).GetPlayer();
-            if (dPlayer == null)
+            HashSet<Collections.Player> targets = new();
+
+            if (arguments.At(0).Split(',').Length > 1)
             {
-                response = softBanTranslation.PlayerNotFound;
-                return false;
+                foreach (var player in arguments.At(0).Split(','))
+                {
+                    Collections.Player target = player.GetPlayer();
+                    if (target is null)
+                    {
+                        response = softBanTranslation.PlayerNotFound.Replace("{target}", player);
+                        continue;
+                    }
+
+                    if (targets.Contains(target)) continue;
+                    targets.Add(target);
+                }
+            }
+            else
+            {
+                Collections.Player dPlayer = arguments.At(0).GetPlayer();
+                if (dPlayer == null)
+                {
+                    response = softBanTranslation.PlayerNotFound.Replace("{player}", arguments.At(0));
+                    return false;
+                }
+
+                if (!targets.Contains(dPlayer))
+                    targets.Add(dPlayer);
             }
 
             DateTime? duration = ModerationSystemAPI.ConvertToDateTime(arguments.At(1));
@@ -56,18 +81,28 @@
                 return false;
             }
 
-            if (dPlayer.IsSoftBanned())
+            if (!ModerationSystemAPI.MaxDuration(arguments.At(1), Player.Get(sender)))
             {
-                response = softBanTranslation.PlayerAlreadySoftBanned;
+                response = "You can't do this duration";
                 return false;
             }
 
-            ModerationSystemAPI.ApplyPunish(Player.Get(arguments.At(0)), ((CommandSender)sender).GetStaffer(), dPlayer, PunishType.SoftBan, reason, Convert.ToDateTime(duration));
-            ModerationSystemAPI.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.Translation.StaffTranslation.StaffWarnMessage.Content
-                .Replace("{staffer}", sender.LogName)
-                .Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}")
-                .Replace("{reason}", reason)));
-            response = softBanTranslation.PlayerSoftBanned.Replace("{player.name}", dPlayer.Name).Replace("{player.userid}", $"{dPlayer.Id}@{dPlayer.Authentication}").Replace("{duration}", duration.ToString()).Replace("{reason}", reason);
+            foreach (var dPlayer in targets)
+            {
+                if (dPlayer.IsSoftBanned())
+                {
+                    response = softBanTranslation.PlayerAlreadySoftBanned;
+                    return false;
+                }
+
+                ModerationSystemAPI.ApplyPunish(Player.Get($"{dPlayer.Id}@{dPlayer.Authentication}"), ((CommandSender)sender).GetStaffer(), dPlayer, PunishType.SoftBan, reason, arguments.At(1));
+                ModerationSystemAPI.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.Translation.StaffTranslation.StaffWarnMessage.Content
+                    .Replace("{staffer}", sender.LogName)
+                    .Replace("{target}", $"{dPlayer.Name} {dPlayer.Id}{dPlayer.Authentication}")
+                    .Replace("{reason}", reason)));
+                response = softBanTranslation.PlayerSoftBanned.Replace("{player.name}", dPlayer.Name).Replace("{player.userid}", $"{dPlayer.Id}@{dPlayer.Authentication}").Replace("{duration}", duration.ToString()).Replace("{reason}", reason);
+            }
+            response = "";
             return true;
         }
     }

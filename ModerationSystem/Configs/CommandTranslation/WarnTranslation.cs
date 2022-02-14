@@ -14,7 +14,7 @@
         public string WrongUsage { get; set; } = "Invalid usage. Usage: ms warn/w <player name or ID> <reason>";
 
         [Description("Player not found error")]
-        public string PlayerNotFound { get; set; } = "Player not found";
+        public string PlayerNotFound { get; set; } = "Player {player} not found, skipping";
 
         [Description("Reason null error")]
         public string ReasonNull { get; set; } = "Reason can't be null";

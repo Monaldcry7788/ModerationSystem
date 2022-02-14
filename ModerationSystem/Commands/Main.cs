@@ -25,6 +25,7 @@
             RegisterCommand(Clear.Instance);
             RegisterCommand(SoftBan.Instance);
             RegisterCommand(WatchList.Instance);
+            RegisterCommand(SoftWarn.Instance);
         }
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)

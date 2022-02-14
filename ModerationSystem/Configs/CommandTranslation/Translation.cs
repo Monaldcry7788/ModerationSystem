@@ -36,5 +36,8 @@
 
         [Description("Discord translation")]
         public DiscordTranslation.DiscordTranslation DiscordTranslation { get; set; } = new DiscordTranslation.DiscordTranslation();
+
+        [Description("Watchlist staff broadcast")]
+        public Exiled.API.Features.Broadcast WatchlistStaffersBroadcastJoin { get; set; } = new Exiled.API.Features.Broadcast("<color=aqua>Player</color> <color=red>{player}</color> <color=aqua>è nella watchlist per:\n</color><color=red>{reason}</color>");
     }
 }

@@ -25,5 +25,13 @@
 
         [Description("Plugin translation")]
         public Translation Translation { get; set; } = new Translation();
+
+        [Description("Staffer max duration permission (in minute)")]
+        public Dictionary<string, int> StaffersDurationPermission { get; set; } = new()
+        {
+            {
+                "ms.duration.60", 60
+            }
+        };
     }
 }
