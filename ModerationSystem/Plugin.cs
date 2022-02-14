@@ -17,9 +17,9 @@ namespace ModerationSystem
 
         public override string Name => "ModerationSystem";
 
-        public override Version Version => new Version(4, 0, 2);
+        public override Version Version => new(4, 1, 0);
 
-        public override Version RequiredExiledVersion => new Version(4, 2, 2);
+        public override Version RequiredExiledVersion => new(5, 0, 18);
 
         private FileSystemWatcher _fileSystemWatcher;
 
