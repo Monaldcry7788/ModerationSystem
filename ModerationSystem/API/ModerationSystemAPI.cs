@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using Exiled.Permissions.Extensions;
 using InventorySystem.Items.Usables.Scp244;
 using Respawning;
@@ -395,7 +396,7 @@ namespace ModerationSystem.API
 
         internal static bool MaxDuration(string duration, Player staffer)
         {
-            foreach (var permission in Plugin.Singleton.Config.StaffersDurationPermission.Where(dur => dur.Value > GetTotalSeconds(duration).TotalSeconds / 60))
+            foreach (KeyValuePair<string, int> permission in Plugin.Singleton.Config.StaffersDurationPermission.Where(dur => dur.Value > GetTotalSeconds(duration).TotalSeconds / 60))
             {
                 if (!staffer.CheckPermission(permission.Key)) continue;
                 return false;

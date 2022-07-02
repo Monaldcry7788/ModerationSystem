@@ -41,7 +41,7 @@ namespace ModerationSystem.Commands
 
             if (arguments.At(0).Split(',').Length > 1)
             {
-                foreach (var player in arguments.At(0).Split(','))
+                foreach (string player in arguments.At(0).Split(','))
                 {
                     Collections.Player target = player.GetPlayer();
                     if (target is null)
@@ -74,7 +74,7 @@ namespace ModerationSystem.Commands
                 return false;
             }
 
-            foreach (var target in targets)
+            foreach (Collections.Player target in targets)
             {
                 ModerationSystemAPI.ApplyPunish(Player.Get($"{target.Id}@{target.Authentication}"), ((CommandSender)sender).GetStaffer(), target, PunishType.SoftWarn, reason, DateTime.MinValue.ToString(CultureInfo.InvariantCulture));
                 ModerationSystemAPI.SendBroadcast(new Exiled.API.Features.Broadcast(Plugin.Singleton.Config.Translation.StaffTranslation.StaffWarnMessage.Content

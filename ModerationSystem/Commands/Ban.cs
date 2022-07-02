@@ -41,7 +41,7 @@ namespace ModerationSystem.Commands
 
             if (arguments.At(0).Split(',').Length > 1)
             {
-                foreach (var player in arguments.At(0).Split(','))
+                foreach (string player in arguments.At(0).Split(','))
                 {
                     Collections.Player target = player.GetPlayer();
                     if (target is null)
@@ -87,7 +87,7 @@ namespace ModerationSystem.Commands
                 return false;
             }
 
-            foreach (var dPlayer in targets)
+            foreach (Collections.Player dPlayer in targets)
             {
                 if (dPlayer.IsBanned())
                 {

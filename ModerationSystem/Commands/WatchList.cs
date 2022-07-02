@@ -52,7 +52,7 @@ namespace ModerationSystem.Commands
 
                     if (arguments.At(0).Split(',').Length > 1)
                     {
-                        foreach (var player in arguments.At(0).Split(','))
+                        foreach (string player in arguments.At(0).Split(','))
                         {
                             Collections.Player dPlayer = player.GetPlayer();
                             if (dPlayer is null)
@@ -78,7 +78,7 @@ namespace ModerationSystem.Commands
                             targets.Add(dPlayer);
                     }
 
-                    foreach (var player in targets)
+                    foreach (Collections.Player player in targets)
                     {
                         ModerationSystemAPI.ApplyPunish(Player.Get(arguments.At(1)), ((CommandSender)sender).GetStaffer(), player,
                             PunishType.WatchList, reason, DateTime.MinValue.ToString(CultureInfo.InvariantCulture));
