@@ -39,11 +39,10 @@ namespace ModerationSystem.API
                 case PunishType.Warn:
                     Warn warn = new Warn(dPlayer, issuer, reason, DateTime.Now, WarnCollection.Find(w => w.Target.Id == dPlayer.Id).Count(), Server.Port, false);
                     warn.Save();
-
                     target?.Broadcast(Plugin.Singleton.Config.Translation.WarnTranslation.PlayerWarnedMessage.Duration,
                         Plugin.Singleton.Config.Translation.WarnTranslation.PlayerWarnedMessage.Content.Replace(
                             "{reason}", reason), global::Broadcast.BroadcastFlags.Normal, true);
-
+                    
                     JsonManager.PunishToCache(punishType, JsonConvert.SerializeObject(warn), dPlayer, ActionType.Add);
                     break;
 
@@ -114,7 +113,7 @@ namespace ModerationSystem.API
             if (punishType is PunishType.WatchList)
                 Timing.RunCoroutine(DiscordHandler.SendMessage(Plugin.Singleton.Config.Translation.DiscordTranslation.MessageContentWatchlist.Replace("{target}", $"{dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication})").Replace("{reason}", reason).Replace("{issuer}", $"{issuer.Name} ({issuer.Id}@{issuer.Authentication})"), Plugin.Singleton.Config.Translation.DiscordTranslation.WebhookUrlWatchlist));
 
-            Timing.RunCoroutine(DiscordHandler.SendMessage(Plugin.Singleton.Config.Translation.DiscordTranslation.MessageContent.Replace("{target}", $"{dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication})").Replace("{reason}", reason).Replace("{action}", punishType.ToString()).Replace("{issuer}", $"{issuer.Name} ({issuer.Id}@{issuer.Authentication})").Replace("{duration}", GetDate(duration, true)), Plugin.Singleton.Config.Translation.DiscordTranslation.WebhookUrl));
+            Timing.RunCoroutine(DiscordHandler.SendMessage(Plugin.Singleton.Config.Translation.DiscordTranslation.MessageContent.Replace("{target}", $"{dPlayer.Name} ({dPlayer.Id}@{dPlayer.Authentication})").Replace("{reason}", reason).Replace("{action}", punishType.ToString()).Replace("{issuer}", $"{issuer.Name} ({issuer.Id}@{issuer.Authentication})").Replace("{duration}", GetDate(duration)), Plugin.Singleton.Config.Translation.DiscordTranslation.WebhookUrl));
 
         }
 
@@ -391,7 +390,8 @@ namespace ModerationSystem.API
 
         internal static void SendBroadcast(Broadcast broadcast)
         {
-            foreach (Player player in Player.List.Where(p => p.RemoteAdminAccess)) player.Broadcast(broadcast, true);
+            foreach (Player player in Player.Get(p => p.RemoteAdminAccess))
+                player.Broadcast(broadcast, true);
         }
 
         internal static bool MaxDuration(string duration, Player staffer)
